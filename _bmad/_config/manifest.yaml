@@ -1,0 +1,41 @@
+installation:
+  version: 6.6.0
+  installDate: 2026-05-07T02:17:08.139Z
+  lastUpdated: 2026-05-07T02:17:08.139Z
+modules:
+  - name: core
+    version: 6.6.0
+    installDate: 2026-05-07T02:17:04.162Z
+    lastUpdated: 2026-05-07T02:17:07.975Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmm
+    version: 6.6.0
+    installDate: 2026-05-07T02:17:04.117Z
+    lastUpdated: 2026-05-07T02:17:07.976Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: cis
+    version: v0.2.0
+    installDate: 2026-05-07T02:17:04.307Z
+    lastUpdated: 2026-05-07T02:17:08.031Z
+    source: external
+    npmPackage: bmad-creative-intelligence-suite
+    repoUrl: https://github.com/bmad-code-org/bmad-module-creative-intelligence-suite
+    channel: stable
+    sha: 14a63b893c07173b7a6cfe0fb6a9a72ba51d3cf1
+  - name: wds
+    version: v0.1.0
+    installDate: 2026-05-07T02:17:04.855Z
+    lastUpdated: 2026-05-07T02:17:08.139Z
+    source: community
+    npmPackage: bmad-method-wds-expansion
+    repoUrl: https://github.com/bmad-code-org/bmad-method-wds-expansion
+    channel: stable
+    sha: 50312755ca93d6667f9a9087cfe72cfd378b5329
+    registryApprovedTag: v0.1.0
+ides:
+  - claude-code
+  - codex
