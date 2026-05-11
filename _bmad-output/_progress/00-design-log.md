@@ -68,12 +68,19 @@
 - Summary: Created four scenario outlines covering first real preview, second style exploration, try-on decision, and in-result learning feedback. Scope stayed at four scenarios because the 18-page inventory was fully assigned without needing a fifth chain. Two user-burden reductions were baked into the flow: photo usage guidance was merged into the upload page, and feedback was moved into a quick result-page panel instead of a separate screen.
 - Next: Phase 4 — UX Design
 
+### 2026-05-11 - Logo creative brief drafted
+- Agent: Freya (WDS Designer)
+- Artifact: `_bmad-output/E-Assets/brand-logo/logo-creative-brief.md`
+- Scope: Lightweight brand anchor before Phase 4 UX Design.
+- Recommendation: Use "Mirror Window + Subtle Spark" as the primary logo direction, then validate candidates inside startup/login and homepage contexts before finalizing.
+
 ## Key Decisions
 
 | Date | Decision | Context | Author |
 |------|----------|---------|--------|
 | 2026-05-11 | Kept Phase 3 at four scenarios because the full 18-page inventory could be covered without a fifth chain. | Phase 3: Scenarios | Codex + Sue |
 | 2026-05-11 | Merged photo usage guidance into the upload page and converted feedback into an in-result quick panel to reduce user burden. | Phase 3: Scenarios | Codex + Sue |
+| 2026-05-11 | Treat Logo as a lightweight brand anchor before Phase 4 rather than a full brand identity project. | Phase 6: Asset Generation | Freya + Sue |
 
 ---
 
