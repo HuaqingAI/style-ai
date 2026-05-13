@@ -142,6 +142,13 @@
 - Result: catalog status updated from `pending` to `generated`.
 - Next: continue adding reusable product UI components through Phase 7 Create, then refresh the browser catalog.
 
+### 2026-05-13 - App icon edge cleanup selected
+- Agent: Freya (WDS Designer)
+- Candidate: `_bmad-output/E-Assets/brand-logo/edge-cleanup-candidates/01-edge-feather-light.png`
+- Preview: `_bmad-output/E-Assets/brand-logo/style-ai-expo-assets-preview.png`
+- Decision: apply light raster edge cleanup only; do not redraw or reinterpret the S glyph, arrow terminal, or central spark.
+- Production update: regenerated `assets/images/icon.png`, `adaptive-icon.png`, `splash-icon.png`, and a 192px `favicon.png` from the selected light-cleanup treatment.
+
 ## Key Decisions
 
 | Date | Decision | Context | Author |
@@ -153,6 +160,7 @@
 | 2026-05-12 | Revised the icon draft to preserve the selected reference's continuous S glyph instead of a two-semicircle/refresh-loop interpretation. | Phase 6: Asset Generation | Freya + Sue |
 | 2026-05-12 | Replaced Expo app icon assets with the approved Reversible S mark and configured black adaptive/splash backgrounds. | Phase 6: Asset Generation | Freya + Sue |
 | 2026-05-13 | Initialized Phase 7 as a custom design system instead of mapping to a third-party component library, because the app is Expo / React Native and has no shadcn/Radix/MUI dependency. | Phase 7: Design System | Codex |
+| 2026-05-13 | Applied only light raster edge cleanup to reduce visible burrs while preserving the approved S silhouette and spark. | Phase 6: Asset Generation | Freya + Sue |
 
 ---
 
