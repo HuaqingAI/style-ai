@@ -11,6 +11,7 @@
 - [x] Complete product brief - Phase 1
 - [x] Define trigger map - Phase 2
 - [x] Create user scenarios - Phase 3
+- [ ] Start WDS-05 prototyping for DD-001 first real preview - Phase 5
 
 ---
 
@@ -27,6 +28,13 @@
 
 | Scenario | Step | Page | Status | Updated |
 |----------|------|------|--------|---------|
+| 01 | 01.1 | start-login | Handoff-ready textual spec | 2026-05-13 |
+| 01 | 01.2 | home-dual-entry | Handoff-ready textual spec | 2026-05-13 |
+| 01 | 01.3 | photo-upload | Handoff-ready textual spec | 2026-05-13 |
+| 01 | 01.4 | photo-quality-check | Handoff-ready textual spec | 2026-05-13 |
+| 01 | 01.5 | generation-setup | Handoff-ready textual spec | 2026-05-13 |
+| 01 | 01.6 | generation-waiting | Handoff-ready textual spec | 2026-05-13 |
+| 01 | 01.7 | image-result | Handoff-ready textual spec | 2026-05-13 |
 
 ---
 
@@ -142,6 +150,34 @@
 - Result: catalog status updated from `pending` to `generated`.
 - Next: continue adding reusable product UI components through Phase 7 Create, then refresh the browser catalog.
 
+### 2026-05-13 - Initial component catalog documented
+- Agent: Freya / Codex
+- Artifact: `_bmad-output/D-Design-System/component-catalog.md`
+- Config: `_bmad-output/D-Design-System/component-library-config.md`
+- Scope: kept the design system intentionally small. `icn-001` remains the only approved component; DD-001 product UI patterns are listed as candidates to extract after the first vertical slice is prototyped.
+- Next: do not expand Phase 7 ahead of usage; let DD-001 implementation reveal which primitives should be promoted.
+
+### 2026-05-13 - DD-001 first real preview specs completed
+- Agent: Freya / Codex
+- Flow: `01-xiaoyu-first-preview`
+- Page specs completed:
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.1-start-login/01.1-start-login.md`
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.2-home-dual-entry/01.2-home-dual-entry.md`
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.3-photo-upload/01.3-photo-upload.md`
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.4-photo-quality-check/01.4-photo-quality-check.md`
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.5-generation-setup/01.5-generation-setup.md`
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.6-generation-waiting/01.6-generation-waiting.md`
+  - `_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.7-image-result/01.7-image-result.md`
+- Note: Local repository previously only contained the scenario overview and `01.1`; missing `01.2` through `01.7` specs were created to make the flow handoff-ready.
+
+### 2026-05-13 - Design Delivery DD-001 prepared
+- Agent: Freya / Codex
+- Delivery: `deliveries/DD-001-first-real-preview.yaml`
+- Test Scenario: `test-scenarios/TS-001-first-real-preview.yaml`
+- Handoff notes: `deliveries/DD-001-handoff-log.md`
+- Status: ready for WDS-05 prototyping or BMad Architect walkthrough; official handoff has not been conducted yet, so DD-001 is not marked `in_development`.
+- Next: run WDS-05 `[P] Prototyping` unless backend contracts are already ready for `[D] Development`.
+
 ### 2026-05-13 - App icon edge cleanup selected
 - Agent: Freya (WDS Designer)
 - Candidate: `_bmad-output/E-Assets/brand-logo/edge-cleanup-candidates/01-edge-feather-light.png`
@@ -161,6 +197,8 @@
 | 2026-05-12 | Replaced Expo app icon assets with the approved Reversible S mark and configured black adaptive/splash backgrounds. | Phase 6: Asset Generation | Freya + Sue |
 | 2026-05-13 | Initialized Phase 7 as a custom design system instead of mapping to a third-party component library, because the app is Expo / React Native and has no shadcn/Radix/MUI dependency. | Phase 7: Design System | Codex |
 | 2026-05-13 | Applied only light raster edge cleanup to reduce visible burrs while preserving the approved S silhouette and spark. | Phase 6: Asset Generation | Freya + Sue |
+| 2026-05-13 | Use DD-001 first real preview as the first WDS-05 vertical slice instead of expanding the design system ahead of real usage. | Phase 4/5 Handoff | Freya + Sue |
+| 2026-05-13 | Treat `icn-001` as the only approved component for now; DD-001 screen patterns stay as component candidates until validated in prototype or implementation. | Phase 7: Design System | Freya + Codex |
 
 ---
 

@@ -1,0 +1,193 @@
+delivery:
+  id: "DD-001"
+  name: "First Real Preview Flow"
+  type: "user_flow"
+  status: "ready"
+  priority: "high"
+  created_by: "Freya / WDS Designer"
+  created_at: "2026-05-13T14:04:48+08:00"
+  updated_at: "2026-05-13T14:04:48+08:00"
+  version: "1.0"
+  handoff_status: "prepared_pending_bmad_architect_walkthrough"
+
+description: |
+  DD-001 packages the first complete MVP value flow for Style AI:
+  Xiaoyu logs in, chooses the personal image generation entry, uploads a current
+  photo with clear photo/profile boundaries, passes photo quality guidance,
+  selects a low-pressure style direction, waits for image generation, and sees
+  a result that helps her judge whether the direction is useful in real life.
+
+  This is the first vertical slice because it validates the project's primary
+  strategic question: do seed users believe the generated result looks like them
+  and is useful for judgment?
+
+user_value:
+  problem: "Daily beauty beginners cannot judge whether inspiration from social or shopping content will work on their own face/body/style context."
+  solution: "Let the user use one current photo to generate a personal style preview with gentle, practical recommendation and caution notes, without forcing a long-term profile."
+  success_criteria:
+    - "At least 60% of seed users complete first personal image generation or try-on generation and say the result looks like them or is useful for judgment."
+    - "The user can distinguish current-use photo, saved history result, and optional reusable profile."
+    - "The user sees quota cost and failure handling before generation starts."
+    - "Seed feedback captures looks-like-me, useful-for-judgment, and specific issue signals."
+
+design_artifacts:
+  scenarios:
+    - id: "01-xiaoyu-first-preview"
+      path: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01-xiaoyu-first-preview.md"
+      screens:
+        - "01.1-start-login"
+        - "01.2-home-dual-entry"
+        - "01.3-photo-upload"
+        - "01.4-photo-quality-check"
+        - "01.5-generation-setup"
+        - "01.6-generation-waiting"
+        - "01.7-image-result"
+  page_specs:
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.1-start-login/01.1-start-login.md"
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.2-home-dual-entry/01.2-home-dual-entry.md"
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.3-photo-upload/01.3-photo-upload.md"
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.4-photo-quality-check/01.4-photo-quality-check.md"
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.5-generation-setup/01.5-generation-setup.md"
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.6-generation-waiting/01.6-generation-waiting.md"
+    - "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.7-image-result/01.7-image-result.md"
+  user_flows:
+    - name: "First real preview"
+      entry: "Seed invite or app launch"
+      exit: "Result viewed, feedback/save/next action available"
+      steps:
+        - "Login"
+        - "Home primary entry"
+        - "Photo upload"
+        - "Photo quality check"
+        - "Generation setup"
+        - "Generation waiting"
+        - "Result judgment"
+  design_system:
+    path: "_bmad-output/D-Design-System/"
+    approved_components:
+      - "icn-001 Style AI App Icon System"
+    candidate_components:
+      - "hdr-001 Authenticated App Header"
+      - "act-001 Entry Action Card"
+      - "upl-001 Photo Picker Panel"
+      - "inf-001 Trust Boundary Note"
+      - "crd-001 Credit Summary Panel"
+      - "prg-001 Generation Progress Panel"
+      - "res-001 Result Image Viewer"
+      - "fbk-001 Seed Feedback Panel"
+
+technical_requirements:
+  platform:
+    frontend: "Expo 54, React Native 0.81, expo-router 6"
+    backend: "Required for production MVP; mockable for prototype"
+    primary_device: "Native mobile app, portrait"
+  current_repo_context:
+    - "Existing app has local photo selection, analysis result storage, tab navigation, and AI chat-completion based image analysis."
+    - "DD-001 requires reframing from style analysis to personal image generation with async image2 generation."
+  integrations:
+    - name: "Authentication / seed account"
+      purpose: "Login for quota, history, account management, and seed test access."
+      required: true
+    - name: "Camera and photo library"
+      purpose: "Capture or select the user's current photo."
+      required: true
+    - name: "Image storage"
+      purpose: "Store current generation source image and generated result with explicit retention rules."
+      required: true
+    - name: "image2 generation service"
+      purpose: "Generate personal style preview image from the selected photo and style direction."
+      required: true
+    - name: "Credit/quota service"
+      purpose: "Show available quota, reserve or deduct credits, and avoid charging failed generations."
+      required: true
+    - name: "Feedback capture"
+      purpose: "Record seed-test quality signals for learning loop."
+      required: true
+  data_models:
+    - name: "UserAccount"
+      fields: ["id", "seed_account_code", "phone", "created_at", "status"]
+    - name: "CreditBalance"
+      fields: ["user_id", "available_credits", "reserved_credits", "updated_at"]
+    - name: "PhotoSession"
+      fields: ["id", "user_id", "source_uri", "retention_scope", "quality_status", "created_at"]
+    - name: "GenerationTask"
+      fields: ["id", "user_id", "photo_session_id", "style_direction", "status", "credit_policy", "created_at", "completed_at"]
+    - name: "GenerationResult"
+      fields: ["id", "task_id", "image_urls", "recommended_direction", "reasons", "caution_notes", "saved_to_history", "saved_as_profile"]
+    - name: "SeedFeedback"
+      fields: ["id", "result_id", "looks_like_me", "useful_for_judgment", "issue_tags", "free_text", "created_at"]
+  performance:
+    - "Initial page transitions should feel immediate on current iOS/Android seed-test devices."
+    - "Generation waiting page must survive app background/foreground and recover task state."
+    - "Image upload and result loading need clear progress, timeout, and retry states."
+
+acceptance_criteria:
+  functional:
+    - "User can log in with a seed account or supported phone flow."
+    - "Home shows two entries and routes the primary personal generation entry to photo upload."
+    - "Photo upload supports camera and album selection with permission recovery."
+    - "Photo boundary copy appears before upload: current photo, history, and optional profile are distinct."
+    - "Photo quality step supports pass, warning, fail, and service-unavailable states."
+    - "User can select a style direction and see expected credit cost before generation."
+    - "Generation task shows queued, processing, finalizing, success, timeout, and failed states."
+    - "Result page displays generated image, recommendation, caution note, next actions, profile-save prompt, and seed feedback panel."
+    - "Saving result to history does not automatically save a reusable profile."
+    - "Failed generation does not charge the user from the user's perspective."
+  non_functional:
+    - "UI copy follows the product tone: gentle, concrete, practical, not appearance-shaming."
+    - "All touch targets for key actions are at least 44x44 logical points."
+    - "Every interactive element has accessible label or visible text."
+    - "Photo and profile retention boundaries are visible before actions that create risk."
+    - "The implementation must not expose raw model/API complexity to the user."
+  edge_cases:
+    - "Camera or album permission denied -> explain why access is needed and offer recovery."
+    - "No photo selected -> continue action remains unavailable with a helpful prompt."
+    - "Photo read/upload fails -> user can retry or choose another photo."
+    - "Photo quality check fails -> no credit consumed; user receives specific retry guidance."
+    - "Insufficient credits -> generation cannot start; user can view quota rules."
+    - "Generation times out -> user can keep waiting, check history later, or retry according to task status."
+    - "Generated image available but analysis text fails -> show image and allow analysis refresh."
+    - "Feedback skipped -> user can still save, change style, or return home."
+
+testing_guidance:
+  user_testing:
+    - "Observe whether seed users understand that login is not the same as saving a long-term profile."
+    - "Ask after result viewing: does this look like you, and can you use it to judge the style direction?"
+    - "Watch for hesitation at photo upload, credit cost, and profile-save prompt."
+  qa_testing:
+    - "Test on Expo development build or equivalent native target for camera/photo permissions."
+    - "Test Android and iOS permission denial/retry flows."
+    - "Test mocked generation success, failure, timeout, and partial result states."
+    - "Verify no failure path incorrectly deducts visible credits."
+  design_validation:
+    - "Check all page Object IDs from the seven page specs are represented in implementation or consciously deferred."
+    - "Confirm `icn-001` is used only as product identity, not as a generic magic/AI action icon."
+    - "Confirm product UI component candidates are either local implementation or promoted to design system after reuse."
+
+estimated_complexity:
+  size: "large"
+  effort: "Prototype with mocks: 1-2 weeks; production MVP with backend/image2/credits: 3-5 weeks"
+  risk: "high"
+  risk_rationale:
+    - "Async image generation, photo storage, quota semantics, and domestic access are core technical risks."
+    - "Existing app uses AI analysis, not image generation, so the result model and task model must change."
+    - "Trust copy and retention semantics must match actual backend behavior."
+  dependencies:
+    - "Seed account or phone login strategy"
+    - "Backend generation task API"
+    - "Credit policy for success/failure"
+    - "Image storage and retention rules"
+    - "image2 generation prompt and result contract"
+
+assumptions:
+  - "DD-001 focuses on personal image generation, not external reference try-on."
+  - "The try-on entry can be visible on home but does not need full implementation in this delivery."
+  - "Profile save is optional and appears after the user sees generated value."
+  - "No public landing page is required for this delivery."
+
+notes: |
+  Official BMad handoff has not been conducted yet. This file is ready for
+  WDS-05 prototyping or for a BMad Architect walkthrough. During implementation,
+  preserve the strategic distinction between current photo, saved history result,
+  and reusable personal profile; this is a trust requirement, not just copy.
+

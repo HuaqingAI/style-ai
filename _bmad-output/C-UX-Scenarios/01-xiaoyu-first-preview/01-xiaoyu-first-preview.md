@@ -3,7 +3,7 @@ project: style-ai
 created: 2026-05-11
 method: Whiteport Design Studio (WDS)
 design_intent: D
-design_status: not-started
+design_status: handoff-ready
 ---
 
 # 01: 小雨的首次真实预览
@@ -102,3 +102,18 @@ Steps are outlined one at a time after scenario creation. The first step is proc
 
 **First step** (01.1) includes full entry context (Q3 + Q4 + Q5 + Q6).
 **On-step interactions** (that don't leave the step) are documented as storyboard items within each page spec.
+
+## Page Specification Status
+
+| Step | Spec File | Status | Updated |
+|------|-----------|--------|---------|
+| 01.1 | `01.1-start-login/01.1-start-login.md` | Handoff-ready textual spec | 2026-05-13 |
+| 01.2 | `01.2-home-dual-entry/01.2-home-dual-entry.md` | Handoff-ready textual spec | 2026-05-13 |
+| 01.3 | `01.3-photo-upload/01.3-photo-upload.md` | Handoff-ready textual spec | 2026-05-13 |
+| 01.4 | `01.4-photo-quality-check/01.4-photo-quality-check.md` | Handoff-ready textual spec | 2026-05-13 |
+| 01.5 | `01.5-generation-setup/01.5-generation-setup.md` | Handoff-ready textual spec | 2026-05-13 |
+| 01.6 | `01.6-generation-waiting/01.6-generation-waiting.md` | Handoff-ready textual spec | 2026-05-13 |
+| 01.7 | `01.7-image-result/01.7-image-result.md` | Handoff-ready textual spec | 2026-05-13 |
+
+**Delivery Package:** `deliveries/DD-001-first-real-preview.yaml`  
+**Test Scenario:** `test-scenarios/TS-001-first-real-preview.yaml`
