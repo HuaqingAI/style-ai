@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Style AI Design System Browser</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="/components" aria-label="Style AI design system">
+        <img src="/asset/assets/images/icon.png" alt="" class="brand-mark">
+        <span>
+          <strong>Style AI</strong>
+          <small>Design System</small>
+        </span>
+      </a>
+      <nav class="view-tabs" aria-label="Design system views">
+        <a href="/tokens" data-route="/tokens">Tokens</a>
+        <a href="/components" data-route="/components">Components</a>
+        <a href="/graph" data-route="/graph">Graph</a>
+        <a href="/search" data-route="/search">Search</a>
+      </nav>
+      <button class="icon-button" id="refreshButton" type="button" title="Refresh design system data" aria-label="Refresh design system data">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5"/><path d="M4 18v-5h5"/><path d="M18.6 9A7 7 0 0 0 6.4 6.6L4 9"/><path d="M5.4 15A7 7 0 0 0 17.6 17.4L20 15"/></svg>
+      </button>
+    </header>
+
+    <main>
+      <section class="summary-band" aria-label="Design system summary">
+        <div>
+          <p class="eyebrow">Custom Expo / React Native system</p>
+          <h1>Design system browser</h1>
+        </div>
+        <dl class="metrics" id="metrics"></dl>
+      </section>
+
+      <section id="tokensView" class="view" aria-labelledby="tokensTitle">
+        <div class="view-heading">
+          <div>
+            <p class="eyebrow">Token Explorer</p>
+            <h2 id="tokensTitle">Tokens</h2>
+          </div>
+          <div class="toolbar">
+            <input id="tokenSearch" type="search" placeholder="Search name, value, category">
+            <select id="tokenCategory">
+              <option value="">All categories</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-shell">
+          <table class="token-table">
+            <thead>
+              <tr>
+                <th><button data-sort="name" type="button">Name</button></th>
+                <th><button data-sort="category" type="button">Category</button></th>
+                <th><button data-sort="value" type="button">Value</button></th>
+                <th>Preview</th>
+              </tr>
+            </thead>
+            <tbody id="tokenRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="componentsView" class="view" aria-labelledby="componentsTitle">
+        <div class="view-heading">
+          <div>
+            <p class="eyebrow">Component Catalog</p>
+            <h2 id="componentsTitle">Components</h2>
+          </div>
+          <div class="toolbar">
+            <input id="componentSearch" type="search" placeholder="Search component, variant, usage">
+            <select id="componentCategory">
+              <option value="">All categories</option>
+            </select>
+          </div>
+        </div>
+        <div class="component-grid" id="componentGrid"></div>
+      </section>
+
+      <section id="graphView" class="view" aria-labelledby="graphTitle">
+        <div class="view-heading">
+          <div>
+            <p class="eyebrow">Relationship Viewer</p>
+            <h2 id="graphTitle">Components and tokens</h2>
+          </div>
+          <div class="toolbar">
+            <input id="graphSearch" type="search" placeholder="Highlight component or token">
+          </div>
+        </div>
+        <div class="graph-layout">
+          <svg id="relationshipGraph" role="img" aria-label="Design token relationship graph"></svg>
+          <aside class="detail-panel" id="graphDetails"></aside>
+        </div>
+      </section>
+
+      <section id="searchView" class="view" aria-labelledby="searchTitle">
+        <div class="view-heading">
+          <div>
+            <p class="eyebrow">Intent Search</p>
+            <h2 id="searchTitle">Find by use case</h2>
+          </div>
+          <div class="toolbar wide">
+            <input id="intentSearch" type="search" placeholder="I need a background, small icon, watermark, splash asset...">
+          </div>
+        </div>
+        <div class="intent-results" id="intentResults"></div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
