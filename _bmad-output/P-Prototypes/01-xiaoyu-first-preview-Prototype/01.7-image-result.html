@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.7 Image Result - Style AI</title>
+  <link rel="icon" href="assets/style-ai-reversible-s-symbol.svg" type="image/svg+xml">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .tap-highlight {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .result-hero {
+      background:
+        radial-gradient(circle at 20% 14%, rgb(154 230 196 / 0.16), transparent 26%),
+        radial-gradient(circle at 80% 18%, rgb(157 122 255 / 0.20), transparent 28%),
+        linear-gradient(145deg, #252522 0%, #171717 56%, #0D0D0D 100%);
+    }
+
+    .atlas-preview {
+      filter: saturate(1.02) contrast(1.04);
+    }
+
+    .soft-panel {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.032));
+      border: 1px solid rgb(255 255 255 / 0.10);
+    }
+
+    .detail-crop {
+      background: #F7F4ED;
+      object-fit: cover;
+    }
+
+    .mini-style-portrait {
+      background:
+        radial-gradient(circle at 48% 28%, #3A2116 0 25%, transparent 26%),
+        radial-gradient(ellipse at 50% 50%, #D49A75 0 19%, transparent 20%),
+        linear-gradient(180deg, #F7F4ED 0%, #ECE6DC 100%);
+    }
+
+    .mini-style-portrait::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: 44%;
+      height: 8%;
+      border: 2px solid #7464A6;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      opacity: 0.85;
+    }
+
+    details > summary {
+      list-style: none;
+    }
+
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main
+    id="app"
+    class="mx-auto flex min-h-[100svh] w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="01.7-image-result"
+    data-state="default"
+    data-result-saved="false"
+    data-profile-saved="false"
+    data-detail-open="false"
+  >
+    <header class="shrink-0" aria-label="结果页顶部">
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="01.5-generation-setup.html"
+          class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回生成设置"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img src="assets/style-ai-reversible-s-symbol.svg" alt="" class="h-full w-full" aria-hidden="true">
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">结果预览</p>
+            <p id="image-result-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的首次预览</p>
+          </div>
+        </div>
+
+        <a
+          href="01.2-home-dual-entry.html"
+          class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-xs font-semibold text-white/70 no-underline"
+          aria-label="返回首页"
+        >
+          首页
+        </a>
+      </div>
+    </header>
+
+    <section id="image-result-error-state" class="mt-5 hidden rounded-lg border border-[#F2A7A0]/26 bg-[#F2A7A0]/10 p-4" role="alert">
+      <p class="text-sm font-semibold leading-5 text-[#F6C4BF]">这张历史结果暂时没有打开成功</p>
+      <p class="mt-1.5 text-xs leading-5 text-[#F6C4BF]/72">
+        可能是网络或本地缓存问题。你可以重试，或者先回首页查看其他入口。
+      </p>
+      <div class="mt-3 grid grid-cols-2 gap-2">
+        <button
+          id="image-result-retry-button"
+          type="button"
+          class="tap-highlight min-h-[42px] rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111]"
+        >
+          重试打开
+        </button>
+        <a
+          href="01.2-home-dual-entry.html"
+          class="tap-highlight flex min-h-[42px] items-center justify-center rounded-lg border border-white/10 px-3 text-sm font-semibold text-white/76 no-underline"
+        >
+          返回首页
+        </a>
+      </div>
+    </section>
+
+    <div id="image-result-content">
+      <section class="mt-5" aria-label="结果页说明">
+        <div class="flex items-center justify-between gap-3">
+          <p class="text-xs font-medium text-[#C9BAFF]">首次真实预览已完成</p>
+          <span id="image-result-save-chip" class="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/54">未保存</span>
+        </div>
+        <h1 class="mt-2 text-[25px] font-semibold leading-[1.12] text-[#FAFAF7]">
+          这次有 3 个发型方向可以参考。
+        </h1>
+        <p id="image-result-intro-copy" class="mt-3 text-sm leading-6 text-white/58">
+          先看主推荐，再比较另外两个方向，判断哪一个最像你会真实尝试的样子。
+        </p>
+      </section>
+
+      <section
+        id="image-result-viewer"
+        data-object-id="image-result-viewer"
+        class="mt-4 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035]"
+        aria-label="生成结果图"
+      >
+        <div class="result-hero relative aspect-[5/4] w-full overflow-hidden">
+          <img
+            id="image-result-preview-image"
+            src="assets/image-result-atlas-preview.png"
+            alt="小雨本次生成后的自然清爽发型预览"
+            class="atlas-preview absolute left-1/2 top-1/2 h-[105%] w-auto max-w-none -translate-x-1/2 -translate-y-[39%]"
+          >
+          <div class="absolute left-4 top-4 z-10 rounded-lg bg-black/36 px-2.5 py-1 text-[11px] font-medium text-white/84">
+            多发型推荐
+          </div>
+          <div class="absolute right-4 top-4 z-10 rounded-lg bg-[#9AE6C4]/16 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">
+            可判断方向
+          </div>
+          <div class="absolute bottom-4 left-4 right-4 z-10 rounded-lg border border-white/10 bg-black/42 px-3 py-2 backdrop-blur">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-xs font-medium text-white/84">第 1 个方向</span>
+              <span id="image-result-active-label" class="text-[11px] text-white/50">主推荐：中发层次</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-3 px-4 py-3">
+          <div class="flex gap-1.5" aria-label="结果分页">
+            <span class="h-1.5 w-5 rounded-full bg-[#9D7AFF]"></span>
+            <span class="h-1.5 w-1.5 rounded-full bg-white/18"></span>
+            <span class="h-1.5 w-1.5 rounded-full bg-white/18"></span>
+          </div>
+          <button
+            id="image-result-viewer-save-shortcut"
+            type="button"
+            class="tap-highlight rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white/70"
+          >
+            保存到历史
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="image-result-style-options"
+        data-object-id="image-result-style-options"
+        class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+        aria-label="多发型推荐"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">优先推荐与先避开</p>
+            <p class="mt-1 text-xs leading-5 text-white/48">同一次结果里同时给出可尝试和不建议首选的方向。</p>
+          </div>
+          <span class="shrink-0 rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">一次生成</span>
+        </div>
+        <div id="image-result-style-option-list" class="mt-3 grid grid-cols-3 gap-2"></div>
+        <div class="mt-4 rounded-lg border border-[#F2C86B]/16 bg-[#F2C86B]/8 p-3">
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-xs font-semibold text-[#F8DF9A]">先不建议作为首选</p>
+            <span class="rounded-md bg-black/18 px-2 py-0.5 text-[10px] font-medium text-[#F8DF9A]/68">对照</span>
+          </div>
+          <div id="image-result-avoid-option-list" class="mt-2 grid grid-cols-3 gap-2"></div>
+        </div>
+      </section>
+
+      <section
+        id="image-result-judgment-strip"
+        data-object-id="image-result-judgment-strip"
+        class="mt-4 rounded-lg border border-[#9D7AFF]/20 bg-[#9D7AFF]/10 p-4"
+        aria-label="结果判断"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">先帮自己判断一下</p>
+            <p class="mt-1 text-xs leading-5 text-[#D8CEFF]/72">这两个答案会帮我们知道结果有没有真的可用。</p>
+          </div>
+          <span class="shrink-0 rounded-lg bg-black/20 px-2.5 py-1 text-[11px] font-medium text-[#D8CEFF]">可跳过</span>
+        </div>
+        <fieldset class="mt-3">
+          <legend class="text-xs font-medium text-[#D8CEFF]/74">像不像你自己？</legend>
+          <div class="mt-2 grid grid-cols-3 gap-2">
+            <button type="button" class="feedback-choice tap-highlight min-h-[38px] rounded-lg border border-[#9D7AFF]/20 px-2 text-xs font-medium text-[#D8CEFF]/76" data-field="looks_like_me" data-value="yes">像</button>
+            <button type="button" class="feedback-choice tap-highlight min-h-[38px] rounded-lg border border-[#9D7AFF]/20 px-2 text-xs font-medium text-[#D8CEFF]/76" data-field="looks_like_me" data-value="partly">有点像</button>
+            <button type="button" class="feedback-choice tap-highlight min-h-[38px] rounded-lg border border-[#9D7AFF]/20 px-2 text-xs font-medium text-[#D8CEFF]/76" data-field="looks_like_me" data-value="no">不像</button>
+          </div>
+        </fieldset>
+        <fieldset class="mt-3">
+          <legend class="text-xs font-medium text-[#D8CEFF]/74">能不能帮你判断现实里要不要尝试？</legend>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <button type="button" class="feedback-choice tap-highlight min-h-[38px] rounded-lg border border-[#9D7AFF]/20 px-2 text-xs font-medium text-[#D8CEFF]/76" data-field="useful_for_judgment" data-value="yes">能判断</button>
+            <button type="button" class="feedback-choice tap-highlight min-h-[38px] rounded-lg border border-[#9D7AFF]/20 px-2 text-xs font-medium text-[#D8CEFF]/76" data-field="useful_for_judgment" data-value="unsure">还不确定</button>
+          </div>
+        </fieldset>
+      </section>
+
+      <section
+        id="image-result-fit-summary"
+        data-object-id="image-result-fit-summary"
+        class="soft-panel mt-4 rounded-lg p-4"
+        aria-label="结果推荐解释"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-[#C9BAFF]">本次推荐</p>
+            <h2 id="image-result-recommended-direction" data-object-id="image-result-recommended-direction" class="mt-1 text-base font-semibold leading-6 text-[#FAFAF7]">
+              中发层次，变化明显但不突兀。
+            </h2>
+          </div>
+          <span id="image-result-analysis-chip" class="shrink-0 rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">分析完成</span>
+        </div>
+
+        <div id="image-result-analysis-ready" class="mt-4">
+          <div class="grid gap-2">
+            <div class="rounded-lg border border-white/10 bg-black/18 p-3">
+              <p class="text-[11px] font-medium text-white/44">为什么可以先试</p>
+              <ul id="image-result-reason-list" class="mt-2 grid gap-1.5 text-sm leading-5 text-white/76">
+                <li>保留你的五官重心，只把发型层次往更轻盈的方向推进。</li>
+                <li>中发长度比短发更稳，日常变化明显但不用一次改太大。</li>
+              </ul>
+            </div>
+            <div id="image-result-caution-note" data-object-id="image-result-caution-note" class="rounded-lg border border-[#F2C86B]/18 bg-[#F2C86B]/10 p-3">
+              <p class="text-[11px] font-medium text-[#F8DF9A]/72">谨慎点</p>
+              <p id="image-result-caution-copy" class="mt-1 text-sm leading-5 text-[#F8DF9A]">可以先避开过短长度和厚重齐刘海，容易让整体显得更闷。</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="image-result-analysis-pending" class="mt-4 hidden rounded-lg border border-[#F2C86B]/20 bg-[#F2C86B]/10 p-3">
+          <p class="text-sm font-semibold leading-5 text-[#F8DF9A]">结果图已经好了，推荐解释还在补全</p>
+          <p class="mt-1.5 text-xs leading-5 text-[#F8DF9A]/70">
+            你可以先保存图片，稍后刷新分析。失败不会影响这张结果。
+          </p>
+          <button
+            id="image-result-refresh-analysis-button"
+            type="button"
+            class="tap-highlight mt-3 min-h-[38px] w-full rounded-lg border border-[#F2C86B]/24 px-3 text-xs font-semibold text-[#F8DF9A]"
+          >
+            刷新分析
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="image-result-next-actions"
+        data-object-id="image-result-next-actions"
+        class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+        aria-label="结果下一步动作"
+      >
+        <div class="grid gap-2">
+          <a
+            id="image-result-explore-another-style-button"
+            data-object-id="image-result-explore-another-style-button"
+            href="/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html"
+            class="tap-highlight flex min-h-[48px] items-center justify-center rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] no-underline"
+          >
+            换个风格看看
+          </a>
+          <button
+            id="image-result-save-result-button"
+            data-object-id="image-result-save-result-button"
+            type="button"
+            class="tap-highlight min-h-[48px] rounded-lg border border-white/10 bg-white/[0.045] px-4 py-3 text-sm font-semibold text-white/78"
+          >
+            保存这个结果
+          </button>
+          <a
+            href="01.2-home-dual-entry.html"
+            class="tap-highlight flex min-h-[44px] items-center justify-center rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-white/62 no-underline"
+          >
+            先回首页
+          </a>
+        </div>
+      </section>
+
+      <details
+        id="image-result-analysis-detail"
+        data-object-id="image-result-analysis-detail"
+        class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      >
+        <summary class="tap-highlight flex cursor-pointer items-center justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">查看更完整的发型分析</p>
+            <p class="mt-1 text-xs leading-5 text-white/48">展开后看长度、刘海分缝和发色细节。</p>
+          </div>
+          <span id="image-result-detail-toggle-label" class="shrink-0 rounded-lg border border-white/10 px-2.5 py-1 text-[11px] font-medium text-white/62">展开</span>
+        </summary>
+
+        <div class="mt-4 grid gap-3">
+          <figure class="overflow-hidden rounded-lg border border-white/10 bg-[#F7F4ED]">
+            <img src="assets/image-result-atlas-core.png" alt="推荐和避开方向对比" class="detail-crop block w-full">
+          </figure>
+          <div class="grid grid-cols-2 gap-3">
+            <figure class="overflow-hidden rounded-lg border border-white/10 bg-[#F7F4ED]">
+              <img src="assets/image-result-atlas-length.png" alt="发长建议" class="detail-crop h-full w-full">
+            </figure>
+            <figure class="overflow-hidden rounded-lg border border-white/10 bg-[#F7F4ED]">
+              <img src="assets/image-result-atlas-color.png" alt="发色建议" class="detail-crop h-full w-full">
+            </figure>
+          </div>
+          <figure class="overflow-hidden rounded-lg border border-white/10 bg-[#F7F4ED]">
+            <img src="assets/image-result-atlas-bangs.png" alt="刘海和分缝建议" class="detail-crop block w-full">
+          </figure>
+        </div>
+      </details>
+
+      <section
+        id="image-result-common-profile-prompt"
+        data-object-id="image-result-common-profile-prompt"
+        class="mt-4 rounded-lg border border-[#9AE6C4]/20 bg-[#9AE6C4]/10 p-4"
+        aria-label="常用形象保存提示"
+      >
+        <p id="image-result-profile-title" class="text-sm font-semibold leading-5 text-[#C7F5DF]">保存这张作为常用形象？</p>
+        <p id="image-result-profile-copy" class="mt-1.5 text-xs leading-5 text-[#C7F5DF]/72">
+          下次生成可以少传一次照片。不保存也可以继续使用，这和“保存到历史”是两个不同动作。
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <button
+            id="image-result-save-profile-button"
+            type="button"
+            class="tap-highlight min-h-[40px] rounded-lg bg-[#C7F5DF] px-3 text-xs font-semibold text-[#111111]"
+          >
+            保存为常用形象
+          </button>
+          <button
+            id="image-result-skip-profile-button"
+            type="button"
+            class="tap-highlight min-h-[40px] rounded-lg border border-[#9AE6C4]/24 px-3 text-xs font-semibold text-[#C7F5DF]"
+          >
+            暂不保存
+          </button>
+        </div>
+        <button
+          id="image-result-profile-difference-button"
+          type="button"
+          class="tap-highlight mt-2 min-h-[34px] w-full rounded-lg border border-[#9AE6C4]/16 px-3 text-xs font-medium text-[#C7F5DF]/74"
+        >
+          了解历史结果和常用形象的区别
+        </button>
+      </section>
+
+      <section
+        id="image-result-seed-feedback-panel"
+        data-object-id="image-result-seed-feedback-panel"
+        class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+        aria-label="种子用户轻量反馈"
+      >
+        <div id="image-result-feedback-form">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">哪里还不太对？</p>
+              <p class="mt-1 text-xs leading-5 text-white/52">前面的判断已经记录了。这里可补充具体问题。</p>
+            </div>
+            <span class="shrink-0 rounded-lg bg-[#9D7AFF]/14 px-2.5 py-1 text-[11px] font-medium text-[#D8CEFF]">可跳过</span>
+          </div>
+
+          <fieldset class="mt-4">
+            <legend class="text-xs font-medium text-white/58">可以多选</legend>
+            <div class="mt-2 grid grid-cols-2 gap-2">
+              <button type="button" class="feedback-tag tap-highlight min-h-[36px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/60" data-tag="face_shape">脸型</button>
+              <button type="button" class="feedback-tag tap-highlight min-h-[36px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/60" data-tag="hair">发型</button>
+              <button type="button" class="feedback-tag tap-highlight min-h-[36px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/60" data-tag="makeup">妆感</button>
+              <button type="button" class="feedback-tag tap-highlight min-h-[36px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/60" data-tag="overall_style">整体气质</button>
+            </div>
+          </fieldset>
+
+          <label for="image-result-feedback-text" class="mt-4 block text-xs font-medium text-white/58">补充一句，可不填</label>
+          <textarea
+            id="image-result-feedback-text"
+            rows="2"
+            maxlength="100"
+            class="mt-2 min-h-[70px] w-full resize-none rounded-lg border border-white/10 bg-black/20 px-3 py-3 text-sm leading-5 text-[#FAFAF7] outline-none placeholder:text-white/32 focus:border-[#9D7AFF]/58"
+            placeholder="例如：发型可以，但妆感有点不像我"
+          ></textarea>
+
+          <button
+            id="image-result-submit-feedback-button"
+            type="button"
+            class="tap-highlight mt-3 min-h-[44px] w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white/78"
+          >
+            提交反馈
+          </button>
+        </div>
+
+        <div id="image-result-feedback-thanks" class="hidden">
+          <p class="text-sm font-semibold leading-5 text-[#C7F5DF]">谢谢，已经记录这次判断</p>
+          <p class="mt-1.5 text-xs leading-5 text-[#C7F5DF]/70">
+            你可以继续换风格，或者先保存这张结果。反馈不会打断后续探索。
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <section class="mt-4 rounded-lg border border-white/10 bg-white/[0.025] p-3" aria-label="原型状态控制">
+      <p class="text-[11px] font-medium text-white/38">Prototype states</p>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <button type="button" class="image-result-state-button tap-highlight min-h-[34px] rounded-lg border border-white/10 px-2 text-[11px] font-medium text-white/58" data-result-state="default">Default</button>
+        <button type="button" class="image-result-state-button tap-highlight min-h-[34px] rounded-lg border border-white/10 px-2 text-[11px] font-medium text-white/58" data-result-state="partial-result">Partial</button>
+        <button type="button" class="image-result-state-button tap-highlight min-h-[34px] rounded-lg border border-white/10 px-2 text-[11px] font-medium text-white/58" data-result-state="load-error">Load error</button>
+        <button type="button" class="image-result-state-button tap-highlight min-h-[34px] rounded-lg border border-white/10 px-2 text-[11px] font-medium text-white/58" data-result-state="feedback-submitted">Feedback sent</button>
+      </div>
+    </section>
+
+    <div
+      id="image-result-toast"
+      class="pointer-events-none fixed bottom-[max(20px,env(safe-area-inset-bottom))] left-1/2 z-50 hidden w-[calc(100%-40px)] max-w-[388px] -translate-x-1/2 rounded-lg border border-white/10 bg-[#232323] px-4 py-3 text-center text-sm font-medium text-[#FAFAF7] shadow-2xl"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.7-image-result',
+      scenario: '01-xiaoyu-first-preview',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      generation: {
+        id: 'demo-generation-001',
+        selectedStyleDirection: 'natural_clean',
+        result: {
+          previewImageUrl: 'assets/image-result-atlas-preview.png',
+          analysisAtlasUrl: 'assets/image-result-ai-hair-analysis-long.png',
+          detailTileUrls: [
+            'assets/image-result-atlas-core.png',
+            'assets/image-result-atlas-length.png',
+            'assets/image-result-atlas-color.png',
+            'assets/image-result-atlas-bangs.png'
+          ],
+          recommendedDirection: '中发层次，变化明显但不突兀。',
+          styleOptions: [
+            {
+              id: 'mid_layers',
+              rank: 1,
+              label: '中发层次',
+              subtitle: '推荐',
+              badge: '最稳',
+              previewImageUrl: 'assets/image-result-atlas-preview.png',
+              reason: '保留脸型重心，增加轻盈层次，变化明显但不突兀。',
+              caution: '长度不要一下剪太短，先从锁骨附近开始更稳。'
+            },
+            {
+              id: 'french_curtain',
+              rank: 2,
+              label: '法式八字',
+              subtitle: '推荐',
+              badge: '修饰',
+              previewImageUrl: 'assets/image-result-atlas-preview.png',
+              reason: '能柔和额头和太阳穴区域，日常感比厚刘海更轻。',
+              caution: '需要保留空气感，避免剪成厚重齐刘海。'
+            },
+            {
+              id: 'soft_texture',
+              rank: 3,
+              label: '轻纹理',
+              subtitle: '可尝试',
+              badge: '自然',
+              previewImageUrl: 'assets/image-result-atlas-preview.png',
+              reason: '让发量和轮廓更有变化，但不改变整体气质。',
+              caution: '卷度不要太密，太强会显得不够清爽。'
+            }
+          ],
+          avoidOptions: [
+            {
+              id: 'very_short',
+              label: '过短',
+              reason: '变化幅度太大，容易让五官重心显得更硬，不适合作为第一次尝试。'
+            },
+            {
+              id: 'heavy_bangs',
+              label: '厚重齐刘海',
+              reason: '会压住额头和上半脸，整体更闷，也不利于判断真实轻盈感。'
+            },
+            {
+              id: 'flat_long',
+              label: '贴头长发',
+              reason: '容易贴住脸侧，让整体轮廓不够精神，和本次清爽方向相反。'
+            }
+          ],
+          reasonBullets: [
+            '保留你的五官重心，只把发型层次往更轻盈的方向推进。',
+            '中发长度比短发更稳，日常变化明显但不用一次改太大。'
+          ],
+          cautionNote: '可以先避开过短长度和厚重齐刘海，容易让整体显得更闷。',
+          likenessConfidenceLabel: '可用于判断'
+        }
+      }
+    };
+
+    const stateConfig = {
+      default: {
+        contentVisible: true,
+        errorVisible: false,
+        analysisReady: true,
+        feedbackSubmitted: false,
+        chip: '分析完成',
+        intro: '先看主结果，再判断像不像你、能不能帮你决定现实里要不要尝试。'
+      },
+      'partial-result': {
+        contentVisible: true,
+        errorVisible: false,
+        analysisReady: false,
+        feedbackSubmitted: false,
+        chip: '稍后补全',
+        intro: '结果图已经可以先看，推荐解释还在整理。你可以先保存图片，稍后刷新分析。'
+      },
+      'load-error': {
+        contentVisible: false,
+        errorVisible: true,
+        analysisReady: false,
+        feedbackSubmitted: false,
+        chip: '打开失败',
+        intro: ''
+      },
+      'feedback-submitted': {
+        contentVisible: true,
+        errorVisible: false,
+        analysisReady: true,
+        feedbackSubmitted: true,
+        chip: '已反馈',
+        intro: '谢谢你的判断。你可以继续换风格，也可以保存这张结果作为之后比较的参考。'
+      }
+    };
+
+    let demoData = fallbackData;
+    let currentState = 'default';
+    let activeStyleId = 'mid_layers';
+    let toastTimer = 0;
+    let feedback = {
+      looks_like_me: '',
+      useful_for_judgment: '',
+      issue_tags: [],
+      free_text: ''
+    };
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showImageResultToast(message) {
+      const toast = document.getElementById('image-result-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2400);
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.image-result-state-button')) {
+        const active = button.dataset.resultState === stateName;
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        button.classList.toggle('bg-white/10', active);
+        button.classList.toggle('text-white', active);
+        button.classList.toggle('text-white/58', !active);
+      }
+    }
+
+    function setSavedResult(saved) {
+      const app = document.getElementById('app');
+      const saveButton = document.getElementById('image-result-save-result-button');
+      const shortcut = document.getElementById('image-result-viewer-save-shortcut');
+      const label = saved ? '已保存到历史' : '未保存';
+      if (app) {
+        app.dataset.resultSaved = saved ? 'true' : 'false';
+      }
+      setText('image-result-save-chip', label);
+      setText('image-result-save-result-button', saved ? '已保存这个结果' : '保存这个结果');
+      setText('image-result-viewer-save-shortcut', saved ? '已保存' : '保存到历史');
+      if (saveButton) {
+        saveButton.classList.toggle('border-[#9AE6C4]/24', saved);
+        saveButton.classList.toggle('text-[#C7F5DF]', saved);
+      }
+      if (shortcut) {
+        shortcut.classList.toggle('text-[#C7F5DF]', saved);
+      }
+      console.info('[Style AI Prototype] result save changed', { saved });
+    }
+
+    function setProfilePromptState(mode) {
+      const app = document.getElementById('app');
+      if (mode === 'saved') {
+        if (app) {
+          app.dataset.profileSaved = 'true';
+        }
+        setText('image-result-profile-title', '已保存为常用形象');
+        setText('image-result-profile-copy', '之后生成可以默认使用这张形象。你仍然可以在需要时重新上传照片。');
+        showImageResultToast('已保存为常用形象。');
+        console.info('[Style AI Prototype] common profile saved');
+        return;
+      }
+
+      if (mode === 'skipped') {
+        if (app) {
+          app.dataset.profileSaved = 'false';
+        }
+        setText('image-result-profile-title', '这次先不保存常用形象');
+        setText('image-result-profile-copy', '结果仍然可以保存到历史。下次如果想减少上传步骤，可以再选择保存常用形象。');
+        showImageResultToast('已保留为本次结果，不保存常用形象。');
+        console.info('[Style AI Prototype] common profile skipped');
+      }
+    }
+
+    function applyImageResultState(stateName) {
+      const config = stateConfig[stateName] || stateConfig.default;
+      const app = document.getElementById('app');
+      const content = document.getElementById('image-result-content');
+      const error = document.getElementById('image-result-error-state');
+      const ready = document.getElementById('image-result-analysis-ready');
+      const pending = document.getElementById('image-result-analysis-pending');
+      const detail = document.getElementById('image-result-analysis-detail');
+      const feedbackForm = document.getElementById('image-result-feedback-form');
+      const feedbackThanks = document.getElementById('image-result-feedback-thanks');
+
+      currentState = stateName in stateConfig ? stateName : 'default';
+
+      if (app) {
+        app.dataset.state = currentState;
+      }
+
+      content?.classList.toggle('hidden', !config.contentVisible);
+      error?.classList.toggle('hidden', !config.errorVisible);
+      ready?.classList.toggle('hidden', !config.analysisReady);
+      pending?.classList.toggle('hidden', config.analysisReady);
+      detail?.classList.toggle('hidden', !config.analysisReady || !config.contentVisible);
+      feedbackForm?.classList.toggle('hidden', config.feedbackSubmitted);
+      feedbackThanks?.classList.toggle('hidden', !config.feedbackSubmitted);
+
+      setText('image-result-analysis-chip', config.chip);
+      setText('image-result-intro-copy', config.intro);
+      updateStateButtons(currentState);
+      console.info('[Style AI Prototype] image result state changed', { stateName: currentState });
+    }
+
+    function updateChoiceButton(button, selected) {
+      button.classList.toggle('bg-[#9D7AFF]/22', selected);
+      button.classList.toggle('border-[#9D7AFF]/50', selected);
+      button.classList.toggle('text-[#FAFAF7]', selected);
+      button.classList.toggle('text-[#D8CEFF]/76', !selected);
+      button.classList.toggle('text-white/60', !selected && button.classList.contains('feedback-tag'));
+      button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    }
+
+    function currentStyleOptions() {
+      const result = demoData.generation?.result || fallbackData.generation.result;
+      return Array.isArray(result.styleOptions) && result.styleOptions.length > 0
+        ? result.styleOptions
+        : fallbackData.generation.result.styleOptions;
+    }
+
+    function currentAvoidOptions() {
+      const result = demoData.generation?.result || fallbackData.generation.result;
+      return Array.isArray(result.avoidOptions) && result.avoidOptions.length > 0
+        ? result.avoidOptions
+        : fallbackData.generation.result.avoidOptions;
+    }
+
+    function createStyleOptionButton(option, active) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = [
+        'style-option-button tap-highlight min-h-[150px] rounded-lg border p-2 text-left transition',
+        active ? 'border-[#9AE6C4]/48 bg-[#9AE6C4]/10' : 'border-white/10 bg-black/18'
+      ].join(' ');
+      button.dataset.styleId = option.id;
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+
+      const badgeClass = active ? 'bg-[#C7F5DF] text-[#111111]' : 'bg-white/8 text-white/46';
+      const metaClass = active ? 'text-[#C7F5DF]' : 'text-white/46';
+      const labelClass = active ? 'text-[#FAFAF7]' : 'text-white/72';
+
+      button.innerHTML = `
+        <div class="mini-style-portrait relative h-[68px] overflow-hidden rounded-md"></div>
+        <div class="mt-2 flex items-center justify-between gap-1">
+          <span class="text-[10px] font-medium ${metaClass}">#${option.rank} ${option.subtitle}</span>
+          <span class="rounded-md ${badgeClass} px-1.5 py-0.5 text-[9px] font-semibold">${option.badge}</span>
+        </div>
+        <p class="mt-1 text-xs font-semibold leading-4 ${labelClass}">${option.label}</p>
+      `;
+      button.addEventListener('click', () => {
+        setActiveStyle(option.id);
+      });
+      return button;
+    }
+
+    function renderStyleOptions(options = currentStyleOptions()) {
+      const list = document.getElementById('image-result-style-option-list');
+      if (!list) {
+        return;
+      }
+      list.innerHTML = '';
+      for (const option of options) {
+        list.appendChild(createStyleOptionButton(option, option.id === activeStyleId));
+      }
+    }
+
+    function renderAvoidOptions(options = currentAvoidOptions()) {
+      const list = document.getElementById('image-result-avoid-option-list');
+      if (!list) {
+        return;
+      }
+      list.innerHTML = '';
+      for (const option of options) {
+        const item = document.createElement('div');
+        item.className = 'rounded-lg border border-[#F2C86B]/16 bg-black/16 p-2';
+        item.innerHTML = `
+          <span class="rounded-md bg-[#F2C86B]/14 px-1.5 py-0.5 text-[9px] font-semibold text-[#F8DF9A]">避开</span>
+          <p class="mt-1.5 text-xs font-semibold leading-4 text-[#F8DF9A]">${option.label}</p>
+          <p class="mt-1 line-clamp-3 text-[10px] leading-4 text-[#F8DF9A]/66">${option.reason}</p>
+        `;
+        list.appendChild(item);
+      }
+    }
+
+    function setActiveStyle(styleId, announce = true) {
+      const options = currentStyleOptions();
+      const option = options.find((item) => item.id === styleId) || options[0];
+      if (!option) {
+        return;
+      }
+
+      activeStyleId = option.id;
+      setText('image-result-active-label', `${option.subtitle}：${option.label}`);
+      setText('image-result-recommended-direction', `${option.label}，${option.reason}`);
+      setText('image-result-caution-copy', option.caution);
+
+      const preview = document.getElementById('image-result-preview-image');
+      if (preview && option.previewImageUrl) {
+        preview.src = option.previewImageUrl;
+        preview.alt = `小雨本次生成后的${option.label}预览`;
+      }
+
+      const reasonList = document.getElementById('image-result-reason-list');
+      if (reasonList) {
+        reasonList.innerHTML = '';
+        for (const reason of [option.reason, option.caution]) {
+          const item = document.createElement('li');
+          item.textContent = reason;
+          reasonList.appendChild(item);
+        }
+      }
+
+      renderStyleOptions(options);
+      if (announce) {
+        showImageResultToast(`已切换到${option.label}方向。`);
+      }
+    }
+
+    function initFeedbackControls() {
+      for (const button of document.querySelectorAll('.feedback-choice')) {
+        button.addEventListener('click', () => {
+          const field = button.dataset.field;
+          const value = button.dataset.value || '';
+          if (!field) {
+            return;
+          }
+          feedback[field] = value;
+          for (const peer of document.querySelectorAll(`.feedback-choice[data-field="${field}"]`)) {
+            updateChoiceButton(peer, peer === button);
+          }
+          showImageResultToast('已记录这次判断。');
+        });
+      }
+
+      for (const button of document.querySelectorAll('.feedback-tag')) {
+        button.addEventListener('click', () => {
+          const tag = button.dataset.tag || '';
+          const selected = feedback.issue_tags.includes(tag);
+          feedback.issue_tags = selected
+            ? feedback.issue_tags.filter((item) => item !== tag)
+            : [...feedback.issue_tags, tag];
+          updateChoiceButton(button, !selected);
+        });
+      }
+
+      document.getElementById('image-result-submit-feedback-button')?.addEventListener('click', () => {
+        const text = document.getElementById('image-result-feedback-text');
+        feedback.free_text = text ? text.value.trim() : '';
+        console.info('[Style AI Prototype] feedback submitted', {
+          generationId: demoData.generation?.id || fallbackData.generation.id,
+          ...feedback
+        });
+        applyImageResultState('feedback-submitted');
+        showImageResultToast('已提交反馈，谢谢。');
+      });
+    }
+
+    function renderResultData(data) {
+      const userName = data.currentUser?.displayName || fallbackData.currentUser.displayName;
+      const result = {
+        ...fallbackData.generation.result,
+        ...(data.generation?.result || {})
+      };
+      const preview = document.getElementById('image-result-preview-image');
+      const options = Array.isArray(result.styleOptions) && result.styleOptions.length > 0
+        ? result.styleOptions
+        : fallbackData.generation.result.styleOptions;
+
+      setText('image-result-user-line', `${userName}的首次预览`);
+
+      if (preview && result.previewImageUrl) {
+        preview.src = result.previewImageUrl;
+      }
+
+      activeStyleId = options[0]?.id || activeStyleId;
+      renderStyleOptions(options);
+      renderAvoidOptions();
+      setActiveStyle(activeStyleId, false);
+    }
+
+    async function loadImageResultDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        const loadedData = await response.json();
+        demoData = {
+          ...fallbackData,
+          ...loadedData,
+          currentUser: {
+            ...fallbackData.currentUser,
+            ...(loadedData.currentUser || {})
+          },
+          generation: {
+            ...fallbackData.generation,
+            ...(loadedData.generation || {}),
+            result: {
+              ...fallbackData.generation.result,
+              ...(loadedData.generation?.result || {})
+            }
+          }
+        };
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback demo data', error);
+      }
+
+      renderResultData(demoData);
+      console.info('[Style AI Prototype] image result demo data loaded', {
+        userName: demoData.currentUser?.displayName || fallbackData.currentUser.displayName,
+        generationId: demoData.generation?.id || fallbackData.generation.id
+      });
+    }
+
+    function initImageResultActions() {
+      document.getElementById('image-result-save-result-button')?.addEventListener('click', () => {
+        setSavedResult(true);
+        showImageResultToast('已保存到历史结果。');
+      });
+
+      document.getElementById('image-result-viewer-save-shortcut')?.addEventListener('click', () => {
+        setSavedResult(true);
+        showImageResultToast('已保存到历史结果。');
+      });
+
+      document.getElementById('image-result-save-profile-button')?.addEventListener('click', () => {
+        setProfilePromptState('saved');
+      });
+
+      document.getElementById('image-result-skip-profile-button')?.addEventListener('click', () => {
+        setProfilePromptState('skipped');
+      });
+
+      document.getElementById('image-result-profile-difference-button')?.addEventListener('click', () => {
+        showImageResultToast('历史结果是单次记录；常用形象会作为下次生成的默认本人参考。');
+      });
+
+      document.getElementById('image-result-refresh-analysis-button')?.addEventListener('click', () => {
+        applyImageResultState('default');
+        showImageResultToast('分析已刷新。');
+      });
+
+      document.getElementById('image-result-retry-button')?.addEventListener('click', () => {
+        applyImageResultState('default');
+        showImageResultToast('已重新打开结果。');
+      });
+
+      document.getElementById('image-result-analysis-detail')?.addEventListener('toggle', (event) => {
+        const open = event.currentTarget.open;
+        const app = document.getElementById('app');
+        if (app) {
+          app.dataset.detailOpen = open ? 'true' : 'false';
+        }
+        setText('image-result-detail-toggle-label', open ? '收起' : '展开');
+      });
+
+      for (const button of document.querySelectorAll('.image-result-state-button')) {
+        button.addEventListener('click', () => {
+          applyImageResultState(button.dataset.resultState || 'default');
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadImageResultDemoData();
+      initImageResultActions();
+      initFeedbackControls();
+      applyImageResultState('default');
+      console.info('[Style AI Prototype] 01.7 image result ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

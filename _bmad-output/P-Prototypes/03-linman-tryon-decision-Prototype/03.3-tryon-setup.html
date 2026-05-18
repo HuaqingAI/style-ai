@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03.3 试穿设置 - Style AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              styleai: {
+                surface: '#111111',
+                mark: '#FAFAF7',
+                spark: '#7B52FA',
+                sparkLight: '#9D7AFF',
+                sparkCore: '#6D3DF7',
+                mint: '#9AE6C4',
+                amber: '#F2C86B',
+                rose: '#F2A7A0'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+        overflow-x: hidden;
+        background: #111111;
+        letter-spacing: 0;
+      }
+
+      .tap-highlight {
+        -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+      }
+
+      .reference-thumb {
+        background:
+          linear-gradient(90deg, transparent 0 18%, rgb(250 250 247 / 0.92) 18% 43%, transparent 43% 57%, rgb(250 250 247 / 0.92) 57% 82%, transparent 82%),
+          linear-gradient(180deg, #EDE2D0 0%, #BFAF9A 100%);
+      }
+
+      .profile-thumb {
+        background:
+          radial-gradient(circle at 38% 39%, rgb(250 250 247 / 0.72) 0 2px, transparent 3px),
+          radial-gradient(circle at 62% 39%, rgb(250 250 247 / 0.72) 0 2px, transparent 3px),
+          radial-gradient(ellipse at 50% 68%, rgb(250 250 247 / 0.28) 0 7px, transparent 8px),
+          linear-gradient(180deg, #D8C0AA 0%, #B89078 100%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+    <main
+      id="app"
+      data-page="03.3-tryon-setup"
+      data-state="default"
+      data-intent="clothing"
+      class="mx-auto min-h-screen w-full max-w-[428px] overflow-x-hidden bg-[#111111] px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))] font-sans"
+    >
+      <header
+        data-object-id="obj-setup-header"
+        class="flex h-12 items-center justify-between gap-3"
+        aria-label="试穿设置页面顶部"
+      >
+        <a
+          href="03.2-import-reference.html"
+          aria-label="返回导入参考图"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-2xl leading-none text-[#FAFAF7] no-underline active:bg-white/10"
+        >
+          <span aria-hidden="true" class="-mt-0.5">‹</span>
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <img
+            src="../../E-Assets/brand-logo/style-ai-reversible-s-app-icon.svg"
+            alt=""
+            class="h-8 w-8 shrink-0 rounded-lg"
+            aria-hidden="true"
+          />
+          <div class="min-w-0 text-center">
+            <p class="truncate text-[15px] font-semibold leading-5 text-[#FAFAF7]">试穿设置</p>
+            <p class="truncate text-[11px] font-medium leading-4 text-white/45">03.3 生成前确认</p>
+          </div>
+        </div>
+
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
+          <span class="rounded-full border border-white/12 px-2 py-1 text-[11px] font-semibold text-white/56">1/1</span>
+        </div>
+      </header>
+
+      <section id="setup-hero" data-object-id="obj-setup-hero" class="pt-6">
+        <p class="text-[13px] font-semibold text-[#9D7AFF]">开始生成前最后确认</p>
+        <h1 class="mt-3 text-[29px] font-semibold leading-[1.14] text-[#FAFAF7]">
+          确认用这张参考图试到你身上
+        </h1>
+        <p class="mt-3 text-[14px] leading-[23px] text-white/66">
+          只检查三件事：参考对象、本人形象、本次额度。没问题就进入生成等待页。
+        </p>
+      </section>
+
+      <section
+        id="setup-reference-summary"
+        data-object-id="obj-setup-reference-summary"
+        class="pt-5"
+        aria-label="参考图摘要"
+      >
+        <article class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+          <div class="flex gap-3">
+            <div class="relative h-[86px] w-[78px] shrink-0 overflow-hidden rounded-lg border border-white/10 bg-[#211E1B]">
+              <div class="reference-thumb absolute left-1/2 top-[15%] h-[68%] w-[52%] -translate-x-1/2 rounded-t-[44%]"></div>
+              <span class="absolute bottom-2 left-2 rounded-full bg-black/42 px-2 py-0.5 text-[10px] font-semibold text-white/72">衣服</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <p class="text-xs font-semibold text-white/46">已导入参考图</p>
+                <a href="03.2-import-reference.html" class="tap-highlight flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-md px-2 text-xs font-semibold text-[#9D7AFF] no-underline active:bg-white/[0.06]">更换</a>
+              </div>
+              <h2 class="mt-2 text-base font-semibold leading-6 text-[#FAFAF7]">奶油白短外套</h2>
+              <p class="mt-1 text-xs leading-5 text-white/58">电商截图 · 今晚下单前想确认</p>
+            </div>
+          </div>
+          <p class="mt-3 rounded-md border border-white/10 bg-black/18 px-3 py-2 text-xs leading-5 text-white/62">
+            这件外套会不会显得肩宽，适不适合通勤约会两用？
+          </p>
+        </article>
+      </section>
+
+      <section
+        id="setup-profile-card"
+        data-object-id="obj-setup-profile-card"
+        class="pt-4"
+        aria-label="本人形象确认"
+      >
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+          <div class="flex items-start gap-3">
+            <div class="relative h-[72px] w-[58px] shrink-0 overflow-hidden rounded-lg border border-white/10 bg-[#25211F]">
+              <div class="absolute left-1/2 top-[13%] h-[34px] w-[34px] -translate-x-1/2 rounded-full bg-[#2B211F]"></div>
+              <div class="profile-thumb absolute left-1/2 top-[20%] h-[28px] w-[24px] -translate-x-1/2 rounded-[48%_48%_44%_44%]"></div>
+              <div class="absolute bottom-[-12px] left-1/2 h-[38px] w-[52px] -translate-x-1/2 rounded-t-full bg-[#FAFAF7]/82"></div>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <p class="text-xs font-semibold text-white/46">本人形象</p>
+                <span id="profile-state-chip" class="shrink-0 rounded-full bg-[#9AE6C4]/14 px-2.5 py-1 text-xs font-semibold text-[#C7F5DF]">可用</span>
+              </div>
+              <h2 id="profile-title" class="mt-2 text-base font-semibold leading-6 text-[#FAFAF7]">常用本人形象</h2>
+              <p id="profile-copy" class="mt-1 text-xs leading-5 text-white/56">
+                正面半身照，光线清晰，适合快速试穿。
+              </p>
+              <button
+                id="profile-reselect-button"
+                type="button"
+                class="tap-highlight mt-3 min-h-11 rounded-md border border-white/10 px-3 text-xs font-semibold text-white/66 active:bg-white/[0.06]"
+              >
+                重新选择本人照片
+              </button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="setup-intent-control"
+        data-object-id="obj-setup-intent-control"
+        class="pt-4"
+        aria-label="试穿意图"
+      >
+        <p class="mb-2 text-xs font-semibold text-white/46">本次要判断什么</p>
+        <div class="grid grid-cols-3 gap-2 rounded-lg border border-white/10 bg-white/[0.035] p-2">
+          <button type="button" class="intent-option tap-highlight min-h-11 rounded-md px-2 text-xs font-semibold" data-intent="clothing">衣服上身</button>
+          <button type="button" class="intent-option tap-highlight min-h-11 rounded-md px-2 text-xs font-semibold" data-intent="hairstyle">发型效果</button>
+          <button type="button" class="intent-option tap-highlight min-h-11 rounded-md px-2 text-xs font-semibold" data-intent="makeup">妆容参考</button>
+        </div>
+        <p id="intent-copy" class="mt-2 text-xs leading-5 text-white/46">会重点保留外套轮廓、肩线和整体通勤感。</p>
+      </section>
+
+      <section
+        id="setup-credit-confirmation"
+        data-object-id="obj-setup-credit-confirmation"
+        class="pt-4"
+        aria-label="额度确认"
+      >
+        <article class="rounded-lg border border-[#9D7AFF]/20 bg-[#9D7AFF]/8 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <p class="text-xs font-semibold text-[#D8CEFF]">本次生成消耗</p>
+              <p class="mt-1 text-lg font-semibold text-[#FAFAF7]">1 个生成额度</p>
+            </div>
+            <div class="shrink-0 text-right">
+              <p class="text-xs text-white/42">当前余额</p>
+              <p id="credit-balance" class="mt-1 text-lg font-semibold text-[#9D7AFF]">6</p>
+            </div>
+          </div>
+          <p id="credit-copy" class="mt-3 border-t border-white/10 pt-3 text-xs leading-5 text-white/58">
+            点击开始生成后才进入扣减流程；如果生成失败，会在等待页说明处理方式。
+          </p>
+        </article>
+      </section>
+
+      <section
+        id="setup-feedback"
+        class="pt-3"
+        aria-live="polite"
+      >
+        <p id="setup-state-message" class="min-h-5 text-center text-xs leading-5 text-[#9D7AFF]"></p>
+      </section>
+
+      <section class="sticky bottom-0 -mx-5 mt-4 border-t border-white/10 bg-[#111111]/95 px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-3 backdrop-blur">
+        <a
+          id="start-generation-action"
+          data-object-id="obj-start-generation-action"
+          href="03.4-tryon-waiting.html"
+          aria-disabled="false"
+          class="tap-highlight flex h-12 w-full items-center justify-center rounded-lg bg-[#FAFAF7] px-4 text-sm font-semibold text-[#111111] no-underline active:bg-white/82"
+        >
+          开始生成试穿预览
+        </a>
+      </section>
+
+      <section
+        id="setup-state-controls"
+        data-object-id="obj-setup-state-controls"
+        class="pt-4"
+        aria-label="原型状态控制"
+      >
+        <p class="mb-2 text-xs font-semibold text-white/44">原型状态</p>
+        <div class="grid grid-cols-5 gap-2">
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="default">默认</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="missing-profile">缺照片</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="low-credit">余额低</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="submitting">提交中</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="submit-error">失败</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const app = document.getElementById('app');
+      const profileStateChip = document.getElementById('profile-state-chip');
+      const profileTitle = document.getElementById('profile-title');
+      const profileCopy = document.getElementById('profile-copy');
+      const creditBalance = document.getElementById('credit-balance');
+      const creditCopy = document.getElementById('credit-copy');
+      const stateMessage = document.getElementById('setup-state-message');
+      const startAction = document.getElementById('start-generation-action');
+      const intentCopy = document.getElementById('intent-copy');
+
+      const intentMessages = {
+        clothing: '会重点保留外套轮廓、肩线和整体通勤感。',
+        hairstyle: '会重点判断发型长度、层次和脸型适配感。',
+        makeup: '会重点判断妆容色调、气色和日常可用程度。'
+      };
+
+      function setStartAction({ enabled, label, href }) {
+        startAction.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+        startAction.href = enabled ? href : '#';
+        startAction.textContent = label;
+        startAction.className = enabled
+          ? 'tap-highlight flex h-12 w-full items-center justify-center rounded-lg bg-[#FAFAF7] px-4 text-sm font-semibold text-[#111111] no-underline active:bg-white/82'
+          : 'tap-highlight flex h-12 w-full items-center justify-center rounded-lg bg-white/10 px-4 text-sm font-semibold text-white/40 no-underline';
+      }
+
+      function setSetupState(state) {
+        app.dataset.state = state;
+
+        profileStateChip.textContent = '可用';
+        profileStateChip.className = 'shrink-0 rounded-full bg-[#9AE6C4]/14 px-2.5 py-1 text-xs font-semibold text-[#C7F5DF]';
+        profileTitle.textContent = '常用本人形象';
+        profileCopy.textContent = '正面半身照，光线清晰，适合快速试穿。';
+        creditBalance.textContent = '6';
+        creditCopy.textContent = '点击开始生成后才进入扣减流程；如果生成失败，会在等待页说明处理方式。';
+        stateMessage.textContent = '';
+        setStartAction({ enabled: true, label: '开始生成试穿预览', href: '03.4-tryon-waiting.html' });
+
+        if (state === 'missing-profile') {
+          profileStateChip.textContent = '需要确认';
+          profileStateChip.className = 'shrink-0 rounded-full bg-[#F2C86B]/14 px-2.5 py-1 text-xs font-semibold text-[#F2C86B]';
+          profileTitle.textContent = '本人形象需要重新选择';
+          profileCopy.textContent = '当前形象不适合本次试穿。先补一张正面半身照，再开始生成。';
+          stateMessage.textContent = '请先重新选择本人照片。';
+          setStartAction({ enabled: false, label: '先选择本人照片', href: '#' });
+        }
+
+        if (state === 'low-credit') {
+          creditBalance.textContent = '0';
+          creditCopy.textContent = '本次需要 1 个生成额度。余额不足时不会开始生成，也不会进入扣减流程。';
+          stateMessage.textContent = '余额不足，先补充额度或返回。';
+          setStartAction({ enabled: false, label: '额度不足，暂不能生成', href: '#' });
+        }
+
+        if (state === 'submitting') {
+          stateMessage.textContent = '正在提交生成任务，请稍等。';
+          setStartAction({ enabled: false, label: '正在提交...', href: '#' });
+        }
+
+        if (state === 'submit-error') {
+          stateMessage.textContent = '提交失败，未消耗额度。可以直接重试。';
+          setStartAction({ enabled: true, label: '重试开始生成', href: '03.4-tryon-waiting.html' });
+        }
+
+        document.querySelectorAll('.state-control').forEach((button) => {
+          const isActive = button.dataset.state === state;
+          button.classList.toggle('border-[#9D7AFF]/50', isActive);
+          button.classList.toggle('bg-[#9D7AFF]/12', isActive);
+          button.classList.toggle('text-[#D8CEFF]', isActive);
+        });
+      }
+
+      function setIntent(intent) {
+        app.dataset.intent = intent;
+        intentCopy.textContent = intentMessages[intent] || intentMessages.clothing;
+        document.querySelectorAll('.intent-option').forEach((button) => {
+          const isActive = button.dataset.intent === intent;
+          button.className = isActive
+            ? 'intent-option tap-highlight min-h-11 rounded-md bg-[#FAFAF7] px-2 text-xs font-semibold text-[#111111]'
+            : 'intent-option tap-highlight min-h-11 rounded-md px-2 text-xs font-semibold text-white/58 active:bg-white/[0.06]';
+        });
+      }
+
+      document.querySelectorAll('.intent-option').forEach((button) => {
+        button.addEventListener('click', () => setIntent(button.dataset.intent));
+      });
+
+      document.querySelectorAll('.state-control').forEach((button) => {
+        button.addEventListener('click', () => setSetupState(button.dataset.state));
+      });
+
+      document.getElementById('profile-reselect-button').addEventListener('click', () => setSetupState('missing-profile'));
+
+      startAction.addEventListener('click', (event) => {
+        if (startAction.getAttribute('aria-disabled') === 'true') {
+          event.preventDefault();
+        }
+      });
+
+      window.__STYLE_AI_PROTOTYPE__ = {
+        scenario: '03-linman-tryon-decision',
+        page: '03.3-tryon-setup',
+        states: ['default', 'missing-profile', 'low-credit', 'submitting', 'submit-error'],
+        intents: ['clothing', 'hairstyle', 'makeup'],
+        setSetupState,
+        setIntent
+      };
+
+      setIntent('clothing');
+      setSetupState('default');
+    </script>
+  </body>
+</html>

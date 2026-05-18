@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03.1 试穿决策入口 - Style AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              styleai: {
+                surface: '#111111',
+                mark: '#FAFAF7',
+                spark: '#7B52FA',
+                sparkLight: '#9D7AFF',
+                sparkCore: '#6D3DF7'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-neutral-950 text-neutral-50 antialiased">
+    <main class="mx-auto min-h-screen w-full max-w-[428px] overflow-x-hidden bg-[#111111] font-sans">
+      <header
+        data-object-id="obj-header"
+        class="flex h-16 items-center justify-between px-5"
+        aria-label="Style AI 试穿决策页面顶部"
+      >
+        <button
+          type="button"
+          aria-label="返回"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-2xl leading-none text-[#FAFAF7] transition-colors active:bg-white/10"
+        >
+          <span aria-hidden="true" class="-mt-0.5">‹</span>
+        </button>
+
+        <div class="flex min-w-0 items-center gap-3">
+          <img
+            src="../../E-Assets/brand-logo/style-ai-reversible-s-app-icon.svg"
+            alt="Style AI"
+            class="h-8 w-8 shrink-0 rounded-lg"
+          />
+          <div class="min-w-0">
+            <p class="truncate text-sm font-semibold leading-5 text-[#FAFAF7]">Style AI</p>
+            <p class="truncate text-xs font-medium leading-4 text-white/54">试穿决策</p>
+          </div>
+        </div>
+
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
+          <span class="h-2 w-2 rounded-full bg-[#7B52FA] shadow-[0_0_14px_rgba(123,82,250,0.65)]"></span>
+        </div>
+      </header>
+
+      <section id="entry-hero" data-object-id="obj-entry-hero" class="px-5 pt-5">
+        <p class="mb-3 text-[13px] font-semibold tracking-normal text-[#9D7AFF]">即时试穿预览</p>
+        <h1 class="text-[30px] font-semibold leading-[1.14] text-[#FAFAF7]">
+          把心动参考图先试到自己身上
+        </h1>
+        <p class="mt-3 text-[14px] leading-[23px] text-white/68">
+          导入衣服、发型或妆容参考，Style AI 会用你的常用形象生成一次快速预览，帮你判断值不值得买或改。
+        </p>
+      </section>
+
+      <section id="decision-context" class="px-5 pt-6">
+        <article data-object-id="obj-context-card" class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+          <p class="text-xs font-medium text-white/48">当前状态</p>
+          <h2 class="mt-2 text-lg font-semibold leading-6 text-[#FAFAF7]">你已经有一个想试的对象</h2>
+          <p class="mt-2 text-sm leading-6 text-white/66">
+            不管是电商截图、小红书收藏图，还是线下看到的衣服或发型，先把它放到自己的常用形象上看一眼。
+          </p>
+          <div data-object-id="obj-risk-reassurance" class="mt-4 border-t border-white/10 pt-3">
+            <p class="text-sm font-semibold text-[#9D7AFF]">生成前再确认</p>
+            <p class="mt-1 text-xs leading-5 text-white/54">
+              本页会先说明流程和消耗，再进入导入。你可以在生成前确认参考图和本人形象。
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section id="import-readiness" class="px-5 pt-5">
+        <div data-object-id="obj-reference-options" class="space-y-3">
+          <h2 class="text-base font-semibold text-[#FAFAF7]">可以先导入这些参考</h2>
+          <div class="grid grid-cols-3 gap-2">
+            <span class="rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-center text-sm text-white/78">衣服</span>
+            <span class="rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-center text-sm text-white/78">发型</span>
+            <span class="rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-center text-sm text-white/78">妆容</span>
+          </div>
+          <p class="text-xs leading-5 text-white/52">支持电商截图、小红书收藏图，也可以是线下看到的款式。</p>
+        </div>
+
+        <div data-object-id="obj-profile-ready" class="mt-4 flex items-start gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3">
+          <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#7B52FA]/18 text-xs font-semibold text-[#9D7AFF]">✓</span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold text-[#FAFAF7]">常用本人形象已准备好</p>
+            <p class="mt-1 text-xs leading-5 text-white/52">正面半身照，光线清晰，适合快速试穿。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="credits-actions" class="px-5 pt-5">
+        <div data-object-id="obj-credit-notice" class="mb-3 flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
+          <p class="text-xs leading-5 text-white/58">本次预计消耗 <span class="font-semibold text-[#FAFAF7]">1 个生成额度</span></p>
+          <p class="shrink-0 text-xs font-semibold text-[#9D7AFF]">当前余额 6</p>
+        </div>
+        <button
+          data-object-id="obj-primary-action"
+          type="button"
+          onclick="handleImportReferenceClick()"
+          class="flex h-12 w-full items-center justify-center rounded-lg bg-[#FAFAF7] text-sm font-semibold text-[#111111] transition-colors active:bg-white/82"
+        >
+          导入参考图
+        </button>
+        <button
+          data-object-id="obj-secondary-action"
+          type="button"
+          onclick="handleHistoryClick()"
+          class="mt-2 flex h-11 w-full items-center justify-center rounded-lg border border-white/10 text-sm font-semibold text-white/72 transition-colors active:bg-white/[0.06]"
+        >
+          查看历史结果
+        </button>
+        <p id="prototype-action-status" class="mt-3 min-h-5 text-center text-xs text-[#9D7AFF]" aria-live="polite"></p>
+      </section>
+
+      <section id="recent-results" data-object-id="obj-recent-results" class="px-5 pt-4 pb-6">
+        <div class="mb-3">
+          <p class="text-xs font-semibold text-white/70">最近结果</p>
+          <p class="mt-1 text-xs leading-5 text-white/42">看过的判断会留在这里，方便你回头比较。</p>
+        </div>
+
+        <div class="grid gap-2">
+          <article class="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3">
+            <div class="min-w-0">
+              <p class="truncate text-sm font-semibold text-[#FAFAF7]">浅灰针织开衫</p>
+              <p class="mt-1 text-xs text-white/42">已收藏</p>
+            </div>
+            <span class="shrink-0 rounded-full bg-[#9D7AFF]/14 px-2.5 py-1 text-xs font-semibold text-[#9D7AFF]">适合</span>
+          </article>
+
+          <article class="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
+            <div class="min-w-0">
+              <p class="truncate text-sm font-semibold text-[#FAFAF7]">齐肩内扣发型</p>
+              <p class="mt-1 text-xs text-white/42">最近试过</p>
+            </div>
+            <span class="shrink-0 rounded-full border border-[#7B52FA]/30 px-2.5 py-1 text-xs font-semibold text-white/72">谨慎</span>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.__STYLE_AI_PROTOTYPE__ = {
+        scenario: '03-linman-tryon-decision',
+        page: '03.1-tryon-entry',
+        section: '01-mobile-shell-header'
+      };
+
+      function setPrototypeActionStatus(message) {
+        const status = document.getElementById('prototype-action-status');
+        if (status) {
+          status.textContent = message;
+        }
+      }
+
+      function handleImportReferenceClick() {
+        window.location.href = '03.2-import-reference.html';
+      }
+
+      function handleHistoryClick() {
+        setPrototypeActionStatus('历史结果会在下方展示');
+      }
+    </script>
+  </body>
+</html>

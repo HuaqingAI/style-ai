@@ -1,0 +1,148 @@
+metadata:
+  project: style-ai
+  scenario: 02-xiaoyu-second-style-exploration
+  logical_view: Second Style Exploration View
+  page_number: "02.1"
+  page_name: second-style-exploration
+  prototype_file: 02.1-second-style-exploration.html
+  source_spec: _bmad-output/C-UX-Scenarios/02-xiaoyu-second-style-exploration/02.1-second-style-exploration/02.1-second-style-exploration.md
+  prototype_folder: _bmad-output/P-Prototypes/02-xiaoyu-second-style-exploration-Prototype
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: built
+  created: 2026-05-18
+  completed: 2026-05-18
+
+requirements:
+  purpose: 小雨从首次结果进入，看到可继续尝试的风格方向和本次额度消耗。
+  entry_context: 她从首次个人形象结果页进入，看完推荐理由和谨慎点后，对结果产生了基本信任。
+  exit_action: 选择一个新的风格方向并开始生成。
+  on_page_interactions:
+    - 浏览不同的风格方向，理解每个方向和首次结果的差异。
+    - 查看本次继续生成会消耗的额度。
+    - 选择一个更日常或更明显不同的风格方向。
+  user_concerns:
+    - 继续生成会不会浪费额度。
+    - 新结果和第一次结果之间是否有足够差异。
+    - 是否能帮助她比较哪个方向更适合自己。
+
+object_registry:
+  - id: second-style-header
+    type: Mobile header
+    purpose: 标识二次探索页面，并提供返回首次结果入口。
+    required: true
+  - id: second-style-first-result-context
+    type: Context summary
+    purpose: 让用户记住第一次结果是什么、为什么值得继续比较。
+    required: true
+  - id: second-style-options
+    type: Style option group
+    purpose: 展示可继续尝试的风格方向。
+    required: true
+  - id: second-style-option-list
+    type: Option list
+    purpose: 承载三个可选方向，并支持 active state。
+    required: true
+  - id: second-style-difference-summary
+    type: Selected option summary
+    purpose: 解释当前选择和首次结果的差异。
+    required: true
+  - id: second-style-credit-notice
+    type: Credit notice
+    purpose: 说明剩余额度、本次消耗和不会隐藏扣费。
+    required: true
+  - id: second-style-primary-action
+    type: Primary button
+    purpose: 开始第二次生成。
+    required: true
+  - id: second-style-back-to-result
+    type: Secondary link
+    purpose: 返回首次结果。
+    required: true
+  - id: second-style-state-controls
+    type: Prototype controls
+    purpose: 切换 default、low-credit、submitting、submit-error 状态。
+    required: true
+
+states:
+  - name: Default
+    data_state: default
+    requirements:
+      - 展示首次结果上下文、三个风格方向、额度提示和主行动。
+      - 默认选中最稳妥的日常轻层次。
+  - name: Low credit
+    data_state: low-credit
+    requirements:
+      - 保留方向浏览能力。
+      - 主按钮不可提交，并提示需要补充额度。
+  - name: Submitting
+    data_state: submitting
+    requirements:
+      - 主按钮显示正在开始生成。
+      - 不重复触发多次提交。
+  - name: Submit error
+    data_state: submit-error
+    requirements:
+      - 显示可恢复错误提示。
+      - 用户可以重新尝试或返回首次结果。
+
+sections:
+  - number: 1
+    name: Full Page Second Style Exploration
+    status: complete
+    estimate_minutes: 120
+    completed: 2026-05-18
+    actual_minutes: 120
+    object_ids:
+      - second-style-header
+      - second-style-first-result-context
+      - second-style-options
+      - second-style-option-list
+      - second-style-difference-summary
+      - second-style-credit-notice
+      - second-style-primary-action
+      - second-style-back-to-result
+      - second-style-state-controls
+    scope:
+      - 建立移动端页面壳、顶部导航和品牌标识。
+      - 展示首次结果上下文和轻量信任信号。
+      - 渲染三个二次探索风格方向。
+      - 选择方向时更新差异说明、适用场景和谨慎点。
+      - 展示剩余额度、本次消耗和安心说明。
+      - 实现 default、low-credit、submitting、submit-error 本地状态控制。
+    acceptance:
+      - 必需 Object ID 全部存在。
+      - 三个方向卡可见并可切换 active state。
+      - 切换方向会更新差异说明。
+      - default 状态下主按钮可用。
+      - low-credit 状态下主按钮禁用并显示额度不足说明。
+      - submit-error 状态显示错误说明和恢复入口。
+      - 页面在 375px、393px、428px 宽度无横向滚动。
+    story_file: stories/02.1.1-second-style-exploration-full-page.md
+
+verification_results:
+  verified_url: http://127.0.0.1:17865/02.1-second-style-exploration.html
+  verified_date: 2026-05-18
+  method: Playwright local browser automation
+  passed:
+    - Required object IDs exist.
+    - Three style options render from demo data.
+    - Selecting 明显短一点 updates the difference summary and active card.
+    - default, low-credit, submitting, and submit-error states are switchable.
+    - 375px, 393px, and 428px widths have no horizontal overflow.
+    - Console has no errors.
+
+next_step:
+  workflow_step: create page-level specs for 02.2 and 02.3

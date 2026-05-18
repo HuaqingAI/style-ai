@@ -6,9 +6,9 @@ delivery:
   priority: "high"
   created_by: "Freya / WDS Designer"
   created_at: "2026-05-13T14:04:48+08:00"
-  updated_at: "2026-05-13T14:04:48+08:00"
+  updated_at: "2026-05-18T10:31:00+08:00"
   version: "1.0"
-  handoff_status: "prepared_pending_bmad_architect_walkthrough"
+  handoff_status: "local_prototype_accepted_pending_bmad_architect_walkthrough"
 
 description: |
   DD-001 packages the first complete MVP value flow for Style AI:
@@ -164,6 +164,28 @@ testing_guidance:
     - "Confirm `icn-001` is used only as product identity, not as a generic magic/AI action icon."
     - "Confirm product UI component candidates are either local implementation or promoted to design system after reuse."
 
+local_prototype_acceptance:
+  status: "passed"
+  tested_at: "2026-05-18T10:31:00+08:00"
+  report: "_bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/reviews/DD-001-local-prototype-acceptance-2026-05-18.md"
+  environment:
+    server: "http://127.0.0.1:17864/"
+    viewports:
+      - "375x667"
+      - "393x852"
+      - "428x926"
+  verified:
+    - "Invite-code happy path from 01.1 through 01.7."
+    - "01.7 result viewer, quick judgment strip, recommendation options, avoid comparison, expandable analysis detail, profile prompt, and feedback panel."
+    - "01.7 recommendation switching updates active state and recommendation copy."
+    - "Looks-like-me and useful-for-judgment selections can be captured."
+    - "Seed feedback tags and free text can be submitted."
+    - "No browser console errors, broken images, or horizontal overflow were found in the tested local prototype paths."
+  limitations:
+    - "This was local HTML prototype acceptance, not native Expo app QA."
+    - "Real camera/photo permissions, backend login, quota, image storage, async generation, and feedback APIs still require implementation validation."
+    - "The prototype reuses one preview atlas for all recommended hairstyle options; production should provide crop metadata or assets per option."
+
 estimated_complexity:
   size: "large"
   effort: "Prototype with mocks: 1-2 weeks; production MVP with backend/image2/credits: 3-5 weeks"
@@ -186,8 +208,8 @@ assumptions:
   - "No public landing page is required for this delivery."
 
 notes: |
-  Official BMad handoff has not been conducted yet. This file is ready for
-  WDS-05 prototyping or for a BMad Architect walkthrough. During implementation,
-  preserve the strategic distinction between current photo, saved history result,
-  and reusable personal profile; this is a trust requirement, not just copy.
-
+  Official BMad handoff has not been conducted yet. The local HTML prototype has
+  passed DD-001 acceptance and this file is ready for a BMad Architect walkthrough
+  or development planning. During implementation, preserve the strategic
+  distinction between current photo, saved history result, and reusable personal
+  profile; this is a trust requirement, not just copy.

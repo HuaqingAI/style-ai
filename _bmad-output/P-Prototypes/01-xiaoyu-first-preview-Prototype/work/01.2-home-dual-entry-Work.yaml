@@ -1,0 +1,188 @@
+metadata:
+  project: style-ai
+  scenario: 01-xiaoyu-first-preview
+  logical_view: Home Dual Entry View
+  page_number: "01.2"
+  page_name: home-dual-entry
+  prototype_file: 01.2-home-dual-entry.html
+  source_spec: _bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.2-home-dual-entry/01.2-home-dual-entry.md
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+    touch_optimized: true
+    hover_interactions: false
+  design_fidelity: Design System Components
+  primary_language: zh-CN
+  language_switcher: false
+  status: built
+  created: 2026-05-14
+  approved_by: Sue
+
+requirements:
+  purpose: "让小雨在登录后看到两个并列入口，并默认被引导到“生成我的形象方案”，同时能看见剩余额度和空历史边界。"
+  success_criteria:
+    - 用户选择“生成我的形象方案”进入照片上传目标。
+    - 用户理解“试穿/试造型”是另一个入口，但不是首次推荐路径。
+    - 用户能看到今日可用额度和失败不扣除的说明入口。
+  entry_points:
+    - 01.1-start-login 登录成功。
+    - 已登录用户启动 App 后进入首页。
+  exit_points:
+    - 点击主入口目标为 01.3-photo-upload.html。
+    - 点击试穿/试造型入口时显示种子测试下一批开放提示。
+
+object_registry:
+  - id: home-dual-entry-header
+    type: Header
+    purpose: 品牌、额度、历史和账号入口
+    required: true
+  - id: home-dual-entry-primary-card
+    type: Action card
+    purpose: 个人形象生成主入口
+    required: true
+  - id: home-dual-entry-primary-button
+    type: Button
+    purpose: 开始主流程
+    required: true
+  - id: home-dual-entry-secondary-card
+    type: Action card
+    purpose: 试穿/试造型入口
+    required: true
+  - id: home-dual-entry-credit-snapshot
+    type: Status chip
+    purpose: 显示额度摘要
+    required: true
+  - id: home-dual-entry-empty-history-prompt
+    type: Empty state
+    purpose: 解释历史与常用形象边界
+    required: true
+
+states:
+  - name: First-time
+    trigger: 无历史、无常用形象
+    requirements:
+      - 主入口突出，历史区为空状态。
+      - 点击主入口目标为 01.3-photo-upload.html。
+  - name: Returning
+    trigger: 有历史或常用形象
+    requirements:
+      - 历史区显示最近结果或复用提示。
+      - 主入口仍允许新生成。
+  - name: Low credit
+    trigger: 剩余额度不足
+    requirements:
+      - 首页仍可浏览。
+      - 主入口提示额度不足并引导查看额度规则。
+  - name: Feature unavailable
+    trigger: 试穿未开放
+    requirements:
+      - 二级入口可见。
+      - 点击后显示“种子测试下一批开放”。
+
+sections:
+  - number: 1
+    name: Page Shell and Authenticated Header
+    status: complete
+    estimate_minutes: 25
+    completed: 2026-05-14
+    actual_minutes: 25
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - home-dual-entry-header
+      - home-dual-entry-credit-snapshot
+    scope:
+      - 建立移动端首页容器、顶部品牌区、历史入口、账号入口和额度摘要。
+      - 使用 `icn-001` symbol-only 资产。
+      - 额度点击显示原型内的额度规则说明。
+    acceptance:
+      - 375px、393px、428px 宽度无横向滚动。
+      - 顶部能同时承载品牌、额度、历史和账号入口。
+      - 额度显示来自 demo data 或本地 fallback。
+  - number: 2
+    name: Dual Entry Cards
+    status: complete
+    estimate_minutes: 35
+    completed: 2026-05-14
+    actual_minutes: 40
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - home-dual-entry-primary-card
+      - home-dual-entry-primary-button
+      - home-dual-entry-secondary-card
+    scope:
+      - 构建个人形象生成主入口。
+      - 构建试穿/试造型二级入口并保持可见但不抢主路径。
+      - 支持低额度和功能未开放提示状态。
+    acceptance:
+      - 主入口视觉优先级高于二级入口。
+      - 主入口目标为 `01.3-photo-upload.html`。
+      - 二级入口点击不跳出 DD-001 主流程。
+  - number: 3
+    name: History Boundary Area
+    status: complete
+    estimate_minutes: 20
+    completed: 2026-05-14
+    actual_minutes: 20
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - home-dual-entry-empty-history-prompt
+    scope:
+      - 首次用户展示空历史说明。
+      - 返回用户状态展示最近结果提示。
+      - 解释结果会进入历史，是否保存为常用形象由生成后决定。
+    acceptance:
+      - 首次状态不显得空。
+      - 空历史说明不创建强制动作。
+      - 返回状态和首次状态可切换。
+  - number: 4
+    name: Prototype State Handling
+    status: complete
+    estimate_minutes: 25
+    completed: 2026-05-14
+    actual_minutes: 30
+    approved_by: Sue
+    issues: []
+    improvements:
+      - Added compact prototype state controls so all documented states can be verified without backend data.
+    object_ids: []
+    scope:
+      - 加载 `data/demo-data.json`。
+      - 实现 First-time、Returning、Low credit、Feature unavailable 本地状态。
+      - 提供非阻塞 toast 反馈。
+    acceptance:
+      - 所有状态切换无控制台错误。
+      - 低额度状态不会误导用户进入生成。
+      - 功能未开放状态给出明确但轻量的反馈。
+
+dependencies:
+  design_system:
+    - _bmad-output/D-Design-System/design-tokens.md
+    - _bmad-output/D-Design-System/components/style-ai-app-icon-system.md
+  demo_data:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
+  prior_page:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.1-start-login.html
+
+implementation_notes:
+  - Keep `hdr-001`, `act-001`, and `crd-001` prototype-local candidate patterns; do not promote them into the design system yet.
+  - Secondary try-on entry is visible but treated as outside DD-001 core delivery.
+  - Primary action can target `01.3-photo-upload.html` even before that page is built.
+
+next_step:
+  workflow_step: 3-logical-view-breakdown
+  next_logical_view: Photo Upload View

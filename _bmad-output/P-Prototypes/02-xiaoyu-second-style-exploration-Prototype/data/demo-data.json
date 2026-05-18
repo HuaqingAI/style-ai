@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "project": "style-ai",
+    "scenario": "02-xiaoyu-second-style-exploration",
+    "language": "zh-CN",
+    "createdAt": "2026-05-18T00:00:00.000+08:00",
+    "comment": "Demo data for the second style exploration prototype."
+  },
+  "currentUser": {
+    "id": "demo-user-xiaoyu-001",
+    "displayName": "小雨",
+    "persona": "daily-beauty-beginner"
+  },
+  "firstResult": {
+    "generationId": "demo-generation-001",
+    "label": "中发层次",
+    "summary": "有点像自己，也能帮助判断。变化明显，但没有一下改太大。",
+    "caution": "先避开过短长度和厚重齐刘海。",
+    "previewImageUrl": "assets/first-result-preview.png",
+    "feedback": {
+      "looksLikeMe": "有点像",
+      "usefulForJudgment": "能判断"
+    }
+  },
+  "quota": {
+    "personalImageGenerationsTotal": 2,
+    "personalImageGenerationsUsed": 1,
+    "personalImageGenerationsRemaining": 1,
+    "secondGenerationCost": 1,
+    "note": "第二次探索会消耗 1 次个人形象生成额度。"
+  },
+  "styleExploration": {
+    "defaultOptionId": "daily_light_layers",
+    "options": [
+      {
+        "id": "daily_light_layers",
+        "label": "日常轻层次",
+        "tag": "更稳",
+        "difference": "比第一次更日常，保留中发长度，只把层次和蓬松感调轻。",
+        "bestFor": "想看一个不用大改、明天就能拿去和发型师沟通的版本。",
+        "riskNote": "差异不会特别夸张，适合用来确认稳妥方向。"
+      },
+      {
+        "id": "shorter_clear_change",
+        "label": "明显短一点",
+        "tag": "差异大",
+        "difference": "在保留脸型重心的前提下，把长度推进到肩上附近，变化更明显。",
+        "bestFor": "想知道自己能不能接受更利落、更有精神的风格。",
+        "riskNote": "变化幅度更大，如果只是想小调整，可以先选日常轻层次。"
+      },
+      {
+        "id": "french_curtain_bangs",
+        "label": "法式八字刘海",
+        "tag": "修饰",
+        "difference": "重点看刘海和脸侧修饰，整体长度变化不大。",
+        "bestFor": "想确认额头、太阳穴和脸侧是否更适合柔和一点的修饰。",
+        "riskNote": "需要保持空气感，不建议做成厚重齐刘海。"
+      }
+    ]
+  },
+  "saveResult": {
+    "generationId": "demo-generation-002",
+    "selectedOptionId": "daily_light_layers",
+    "defaultSaveTarget": "second_result",
+    "secondResult": {
+      "label": "日常轻层次",
+      "subtitle": "第二次结果",
+      "previewImageUrl": "assets/first-result-preview.png",
+      "confidenceSignal": "更日常 · 能沟通",
+      "summary": "保留中发长度，把层次和蓬松感调轻，比第一次更接近日常可执行版本。",
+      "differenceFromFirst": "第一次更像“看到变化”，第二次更像“明天可以拿去沟通”。",
+      "usefulFor": "适合保存下来，之后和发型师讨论一个稳妥、不用大改的方向。",
+      "caution": "差异不会特别夸张，如果想验证更明显变化，可以之后再试短一点。"
+    },
+    "firstResultComparison": {
+      "label": "中发层次",
+      "subtitle": "第一次结果",
+      "previewImageUrl": "assets/first-result-preview.png",
+      "confidenceSignal": "有点像 · 能判断",
+      "summary": "变化明显但不突兀，适合确认自己能不能接受整体层次感。",
+      "differenceFromSecond": "第一次更适合看风格边界，第二次更适合看日常落地。",
+      "usefulFor": "如果想保留一个变化更明显的参考，可以保存第一次结果。",
+      "caution": "后续实际沟通时仍要避开过短长度和厚重齐刘海。"
+    },
+    "choices": [
+      {
+        "id": "second_result",
+        "label": "保存第二次结果",
+        "tag": "默认",
+        "title": "日常轻层次",
+        "reason": "更像现实里可以马上沟通的版本，适合当作本次探索的主要参考。",
+        "buttonLabel": "保存第二次结果"
+      },
+      {
+        "id": "first_result",
+        "label": "改保存第一次结果",
+        "tag": "对照",
+        "title": "中发层次",
+        "reason": "第一次变化更明显，如果你想保留风格边界，也可以把它作为主要历史结果。",
+        "buttonLabel": "保存第一次结果"
+      }
+    ],
+    "historyNote": "保存到历史结果后，你可以之后回看两次探索的差异。常用形象会在下一步单独询问，不会在这里自动保存。"
+  },
+  "commonProfilePrompt": {
+    "sourceResultId": "demo-generation-002",
+    "sourceResultLabel": "日常轻层次",
+    "sourceResultSubtitle": "刚保存到历史的第二次结果",
+    "previewImageUrl": "assets/first-result-preview.png",
+    "promptTitle": "保存这张作为常用形象？",
+    "promptCopy": "下次生成可以少传一次照片。不保存也可以继续使用，刚才的历史结果仍然会保留。",
+    "primaryLabel": "保存为常用形象",
+    "skipLabel": "暂不保存，结束",
+    "homeHref": "/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html",
+    "benefits": [
+      {
+        "title": "下次少传一次",
+        "copy": "继续换发型、试穿或看妆容时，可以默认使用这张形象。"
+      },
+      {
+        "title": "判断更连贯",
+        "copy": "后续结果会围绕同一个本人形象，比较起来更省心。"
+      },
+      {
+        "title": "之后可以更换",
+        "copy": "如果照片不合适，之后仍然可以重新上传或替换常用形象。"
+      }
+    ],
+    "boundaries": [
+      "保存到历史结果不等于保存常用形象。",
+      "暂不保存也可以继续查看历史、继续生成或之后再保存。",
+      "常用形象只用于减少重复上传，不会替你自动发布或分享。"
+    ],
+    "savedFeedbackTitle": "已保存为常用形象",
+    "savedFeedbackCopy": "之后生成可以默认使用这张形象；你仍然可以在需要时重新上传照片。",
+    "skippedFeedbackTitle": "这次先不保存常用形象",
+    "skippedFeedbackCopy": "历史结果已经保留。下次如果想减少上传步骤，可以再选择保存常用形象。",
+    "errorTitle": "常用形象没有保存成功",
+    "errorCopy": "可能是网络暂时不可用。历史结果已保存，你可以重试，也可以先跳过。"
+  }
+}

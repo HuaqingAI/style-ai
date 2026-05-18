@@ -1,0 +1,129 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: Tryon Waiting View
+  source_step: 03.4-tryon-waiting
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.4-tryon-waiting/03.4-tryon-waiting.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.4-tryon-waiting.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  spec_status: prototype-draft
+
+view_summary:
+  purpose: 林曼在提交试穿生成后查看进度、额度处理和失败恢复方式。
+  entry_context: 她已经确认参考图、本人形象和本次消耗，并开始生成。
+  exit_action: 生成完成后进入 03.5 tryon-result。
+  user_state:
+    hope: 等待短、可预期，并知道任务确实在处理她刚才选择的对象。
+    worry: 卡住、重复扣额度、失败后不知道如何恢复。
+
+object_inventory:
+  - id: obj-waiting-header
+    name: 页面顶部导航
+    role: 标识生成等待页并提供返回 03.3 的路径。
+  - id: obj-waiting-hero
+    name: 等待说明区
+    role: 说明正在生成本次试穿预览。
+  - id: obj-waiting-status
+    name: 生成状态面板
+    role: 展示状态标签、进度、预计时间和任务编号。
+  - id: obj-waiting-context-summary
+    name: 本次任务摘要
+    role: 展示参考对象、本人形象、意图和决策问题。
+  - id: obj-waiting-credit-policy
+    name: 额度处理说明
+    role: 明确成功后扣 1 个额度，失败不扣或退回。
+  - id: obj-waiting-processing-steps
+    name: 处理步骤列表
+    role: 展示四个生成处理步骤的状态。
+  - id: obj-waiting-recovery-actions
+    name: 等待/失败恢复动作
+    role: 根据状态展示继续等待、查看结果、重试和返回设置。
+  - id: obj-waiting-state-controls
+    name: 原型状态控制
+    role: 支持评审 queued、generating、finalizing、success、timeout、failed。
+
+functional_requirements:
+  - 默认 queued 状态展示任务已创建、10% 进度和成功后扣费说明。
+  - generating 状态展示正在生成试穿预览、48% 进度和仍未扣费说明。
+  - finalizing 状态展示正在整理判断提示、82% 进度。
+  - success 状态展示结果已准备好，主行动指向 03.5-tryon-result.html。
+  - timeout 状态说明等待较久但未失败，并提供继续等待与返回路径。
+  - failed 状态说明失败未消耗额度，并提供重试/返回设置。
+  - 移动端 375/393/428px 宽度无水平滚动。
+
+sections:
+  - id: 1
+    name: Waiting Shell & Progress
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-waiting-header
+      - obj-waiting-hero
+      - obj-waiting-status
+    acceptance_criteria:
+      - 页面清楚标识为试穿生成等待。
+      - 进度、预计时间、任务编号可见。
+    story_file: stories/03.4.1-tryon-waiting-full-page.md
+
+  - id: 2
+    name: Context & Credit Policy
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-waiting-context-summary
+      - obj-waiting-credit-policy
+    acceptance_criteria:
+      - 展示参考图、本人形象、试穿意图和决策问题。
+      - 明确展示成功后扣费、失败不扣或退回。
+    story_file: stories/03.4.1-tryon-waiting-full-page.md
+
+  - id: 3
+    name: Processing Steps & Recovery
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 35
+    objects:
+      - obj-waiting-processing-steps
+      - obj-waiting-recovery-actions
+      - obj-waiting-state-controls
+    acceptance_criteria:
+      - 六种状态均可通过原型控制切换。
+      - success 可进入 03.5 结果页。
+      - failed/timeout 有明确恢复路径。
+    story_file: stories/03.4.1-tryon-waiting-full-page.md
+
+verification:
+  static_checks: passed
+  browser_automation: passed-at-375-393-428
+  file_scroll_fix: accepted-by-user
+  user_review: accepted-local-prototype
+
+implementation_rules:
+  - This page is a prototype draft because 03.4 did not previously have a full approved page spec.
+  - Do not mark as final-approved until Sue reviews the draft spec and prototype behavior.
+  - Keep 03.5 route explicit and pointed at 03.5-tryon-result.html.
+  - File-open scrolling is handled by #app as the explicit vertical scroll container.
+
+progress:
+  current_section: 3
+  completed_sections: 3
+  total_sections: 3
+  total_estimate_minutes: 85

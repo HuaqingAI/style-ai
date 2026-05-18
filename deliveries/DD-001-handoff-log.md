@@ -2,12 +2,14 @@
 
 **Delivery:** DD-001 First Real Preview Flow  
 **Prepared:** 2026-05-13  
-**Status:** Prepared, pending BMad Architect walkthrough  
+**Status:** Local prototype accepted, pending BMad Architect walkthrough  
 **Designer:** Freya / WDS Designer  
 
 ## Handoff Status
 
-The design package is ready for WDS-05 prototyping or a BMad Architect handoff conversation. The official 10-phase handoff dialog has not been conducted yet, so the delivery remains `ready` rather than `in_development`.
+The design package and local HTML prototype have passed DD-001 local prototype acceptance. The official 10-phase handoff dialog has not been conducted yet, so the delivery remains `ready` rather than `in_development`.
+
+Acceptance record: `_bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/reviews/DD-001-local-prototype-acceptance-2026-05-18.md`
 
 ## Package Contents
 
@@ -30,6 +32,12 @@ The design package is ready for WDS-05 prototyping or a BMad Architect handoff c
 4. **Credit semantics:** The user must perceive failed generation as not charged.
 5. **Learning loop:** Result feedback must capture looks-like-me, useful-for-judgment, issue tags, and optional free text.
 6. **Design system:** Only `icn-001` is approved; DD-001 UI components should be implemented first, then extracted after reuse is visible.
+
+## Local Prototype Acceptance
+
+| Date | Result | Scope | Notes |
+|------|--------|-------|-------|
+| 2026-05-18 | Pass | `01.1` through `01.7` local HTML prototype | Invite-code happy path reaches result page; `01.7` passes 375/393/428 mobile checks, recommendation switching, analysis detail expansion, looks-like-me/useful-for-judgment capture, and feedback submission. |
 
 ## Suggested Epic Breakdown
 
@@ -54,8 +62,7 @@ The design package is ready for WDS-05 prototyping or a BMad Architect handoff c
 
 ## Next Action
 
-Run WDS-05 with either:
+Proceed with either:
 
-- `[P] Prototyping` if the goal is an interactive mock with local/mock services.
+- BMad Architect walkthrough if backend, quota, storage, and image2 contracts need alignment before implementation.
 - `[D] Development` if backend contracts and image2 generation path are ready to implement.
-

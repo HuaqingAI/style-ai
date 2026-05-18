@@ -1,0 +1,233 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: Tryon Entry View
+  source_step: 03.1-tryon-entry
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.1-tryon-entry/03.1-tryon-entry.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.1-tryon-entry.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-14
+  confirmed_by: Sue
+  final_approved: 2026-05-15
+  final_approved_by: Sue
+
+view_summary:
+  purpose: 林曼进入即时决策入口，开始处理具体参考对象。
+  entry_context: 她在小红书或电商页面看到心动参考图，已经想买或想改造，却还在犹豫。
+  exit_action: 选择导入外部参考图。
+  user_state:
+    hope: 她希望尽快把外部参考图变成自己身上的效果，马上判断值不值得买或改。
+    worry: 她担心花了额度还是没有明确结论，或者流程太慢赶不上当下的决策窗口。
+
+object_inventory:
+  - id: obj-header
+    name: 页面顶部导航/品牌区
+    role: 说明这是 Style AI 的试穿入口。
+    source: inferred-from-page-purpose
+  - id: obj-entry-hero
+    name: 入口主说明区
+    role: 呈现核心承诺“把心动参考图先试到自己身上”。
+    source: demo-data.entryPageCopy
+  - id: obj-context-card
+    name: 用户决策场景卡片
+    role: 表达“看到心动参考图但还在犹豫”的即时决策情境。
+    source: spec.entry_context
+  - id: obj-reference-options
+    name: 可导入内容说明
+    role: 说明支持衣服、发型、妆容等参考对象。
+    source: scenario.user_situation
+  - id: obj-credit-notice
+    name: 额度消耗提示
+    role: 提前说明本次试穿消耗 1 个生成额度，余额 6。
+    source: demo-data.credits
+  - id: obj-profile-ready
+    name: 常用本人形象状态
+    role: 告诉用户已有可用本人形象，降低启动阻力。
+    source: demo-data.profileImage
+  - id: obj-primary-action
+    name: 主按钮：导入参考图
+    role: 触发退出动作，进入 03.2 import-reference。
+    source: spec.exit_action
+  - id: obj-secondary-action
+    name: 次按钮：查看历史结果
+    role: 提供已有结果/收藏上下文入口。
+    source: demo-data.recentResults
+  - id: obj-recent-results
+    name: 最近结果摘要
+    role: 展示已有生成历史，增强信任和连续性。
+    source: demo-data.recentResults
+  - id: obj-risk-reassurance
+    name: 谨慎点/失败预期说明
+    role: 缓解“花了额度但没结论、流程太慢”的担心。
+    source: spec.mental_state.worry
+
+functional_requirements:
+  - 页面必须让用户快速理解：可以把外部参考图试到自己身上。
+  - 页面必须展示本次流程的简短说明。
+  - 页面必须展示额度消耗提示。
+  - 主路径必须指向“导入外部参考图”。
+  - 次路径可以提供查看历史结果的上下文。
+  - 原型语言使用中文。
+  - 只做 Mobile-Only，不做桌面断点。
+
+sections:
+  - id: 1
+    name: Mobile Shell & Header
+    status: complete
+    completed: 2026-05-14
+    actual_minutes: 10
+    verification:
+      static_checks: passed
+      browser_automation: blocked-by-file-url-policy
+      user_review: approved-by-sue
+    issues:
+      - In-app browser automation could not complete file:// viewport checks because Browser Use blocked local file URL automation by security policy.
+    improvements: []
+    estimate_minutes: 10
+    objects:
+      - obj-header
+    acceptance_criteria:
+      - 页面在 375px 到 428px 宽度内保持单列移动端框架。
+      - 顶部区域清楚标识 Style AI 与当前试穿入口。
+      - 不出现水平滚动。
+    story_file: stories/01-mobile-shell-header.md
+
+  - id: 2
+    name: Entry Hero
+    status: complete
+    completed: 2026-05-14
+    actual_minutes: 15
+    verification:
+      static_checks: passed
+      browser_automation: passed-via-localhost-server
+      user_review: approved-by-sue
+    issues:
+      - Initial title scale felt too poster-like during visual review.
+      - Visible dashed Section 3 placeholder distracted from Section 2 review.
+      - Subhead created a single-word orphan at 375px before adjustment.
+    improvements:
+      - Reduced hero title to 30px with 1.14 line-height.
+      - Reduced subhead to 14px with 23px line-height.
+      - Replaced visible Section 3 placeholder with a hidden spacer.
+    estimate_minutes: 15
+    objects:
+      - obj-entry-hero
+    acceptance_criteria:
+      - 首屏能看到核心承诺：把心动参考图先试到自己身上。
+      - 副说明说明导入参考图后会生成快速预览，帮助判断值不值得买或改。
+      - 文案为中文，语气直接，不写使用教程式长说明。
+    story_file: stories/02-entry-hero.md
+
+  - id: 3
+    name: Decision Context
+    status: complete
+    completed: 2026-05-14
+    actual_minutes: 15
+    verification:
+      static_checks: passed
+      browser_automation: dom-checks-passed-screenshot-timeout
+      user_review: approved-by-sue
+    issues:
+      - Browser screenshot capture timed out during Section 3 localhost verification, although DOM checks passed at all target widths.
+    improvements: []
+    estimate_minutes: 15
+    objects:
+      - obj-context-card
+      - obj-risk-reassurance
+    acceptance_criteria:
+      - 页面表达林曼处在“已经心动但还在犹豫”的购买/改造前决策场景。
+      - 展示对额度浪费和流程过慢的担心有被处理。
+      - 内容不压过主行动入口。
+    story_file: stories/03-decision-context.md
+
+  - id: 4
+    name: Import Scope & Profile Readiness
+    status: complete
+    completed: 2026-05-14
+    actual_minutes: 20
+    verification:
+      static_checks: passed
+      browser_automation: dom-checks-passed-screenshot-timeout
+      user_review: approved-by-sue
+    issues:
+      - Browser screenshot capture timed out during Section 4 localhost verification, although DOM checks passed at all target widths.
+    improvements: []
+    estimate_minutes: 20
+    objects:
+      - obj-reference-options
+      - obj-profile-ready
+    acceptance_criteria:
+      - 明确可导入衣服、发型、妆容参考。
+      - 展示常用本人形象已准备好。
+      - 用户能理解下一步不需要重新创建完整档案。
+    story_file: stories/04-import-scope-profile-readiness.md
+
+  - id: 5
+    name: Credits & Primary Actions
+    status: complete
+    completed: 2026-05-14
+    actual_minutes: 20
+    verification:
+      static_checks: passed
+      browser_automation: passed-via-visible-dom-clicks
+      user_review: approved-by-sue
+    issues:
+      - Direct Playwright selector click timed out on the in-app browser CDP channel; verification continued through visible DOM clicks.
+    improvements: []
+    estimate_minutes: 20
+    objects:
+      - obj-credit-notice
+      - obj-primary-action
+      - obj-secondary-action
+    acceptance_criteria:
+      - 明确展示余额 6 和本次消耗 1 个生成额度。
+      - 主按钮“导入参考图”是页面最明显的行动。
+      - 次按钮“查看历史结果”可见但不抢主按钮层级。
+    story_file: stories/05-credits-primary-actions.md
+
+  - id: 6
+    name: Recent Results Strip
+    status: complete
+    completed: 2026-05-15
+    actual_minutes: 15
+    verification:
+      static_checks: passed
+      browser_automation: passed-at-375-393-428
+      user_review: approved-by-sue
+    issues: []
+    improvements: []
+    estimate_minutes: 15
+    objects:
+      - obj-recent-results
+    acceptance_criteria:
+      - 展示至少两个最近结果摘要。
+      - 结果信息帮助建立“系统能给出适合/谨慎判断”的预期。
+      - 在小屏中不挤压主行动区。
+    story_file: stories/06-recent-results-strip.md
+
+implementation_rules:
+  - Story files are created just in time during Step 4, not upfront.
+  - Do not implement 03.2-03.7 until full page specs exist.
+  - If sketches are added later, review them before implementing any remaining section.
+  - Verify mobile viewports before presenting completed sections.
+
+progress:
+  current_section: 6
+  completed_sections: 6
+  total_sections: 6
+  total_estimate_minutes: 95

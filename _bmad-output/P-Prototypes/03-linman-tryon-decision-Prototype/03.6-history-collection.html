@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03.6 历史/收藏 - Style AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              styleai: {
+                surface: '#111111',
+                mark: '#FAFAF7',
+                spark: '#7B52FA',
+                sparkLight: '#9D7AFF',
+                sparkCore: '#6D3DF7',
+                mint: '#9AE6C4',
+                amber: '#F2C86B',
+                rose: '#F2A7A0'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #111111;
+        letter-spacing: 0;
+      }
+
+      #app {
+        height: 100dvh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      button,
+      a {
+        font: inherit;
+        letter-spacing: 0;
+      }
+
+      .tap-highlight {
+        -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+      }
+
+      .soft-panel {
+        background: linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.032));
+        border: 1px solid rgb(255 255 255 / 0.1);
+      }
+
+      .result-thumb-frame {
+        background:
+          radial-gradient(circle at 22% 12%, rgb(157 122 255 / 0.18), transparent 34%),
+          linear-gradient(180deg, rgb(250 250 247 / 0.07), rgb(250 250 247 / 0.025)),
+          #171717;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+    <main
+      id="app"
+      data-page="03.6-history-collection"
+      data-state="default"
+      data-compared="false"
+      data-favorited="false"
+      class="mx-auto w-full max-w-[428px] bg-[#111111] px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))] font-sans"
+    >
+      <header
+        data-object-id="obj-history-header"
+        class="flex h-12 items-center justify-between gap-3"
+        aria-label="历史收藏页面顶部"
+      >
+        <a
+          href="03.5-tryon-result.html"
+          aria-label="返回试穿结果页"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-2xl leading-none text-[#FAFAF7] no-underline active:bg-white/10"
+        >
+          <span aria-hidden="true" class="-mt-0.5">‹</span>
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <img
+            src="../../E-Assets/brand-logo/style-ai-reversible-s-app-icon.svg"
+            alt=""
+            class="h-8 w-8 shrink-0 rounded-lg"
+            aria-hidden="true"
+          />
+          <div class="min-w-0 text-center">
+            <p class="truncate text-[15px] font-semibold leading-5 text-[#FAFAF7]">历史/收藏</p>
+            <p class="truncate text-[11px] font-medium leading-4 text-white/45">03.6 对比与继续判断</p>
+          </div>
+        </div>
+
+        <a
+          href="03.1-tryon-entry.html"
+          aria-label="返回试穿入口"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-[11px] font-semibold text-white/68 no-underline active:bg-white/10"
+        >
+          入口
+        </a>
+      </header>
+
+      <section id="history-empty-state" class="mt-5 hidden rounded-lg border border-white/10 bg-white/[0.04] p-4">
+        <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">还没有可用的试穿历史</p>
+        <p class="mt-1.5 text-xs leading-5 text-white/58">
+          先回到结果页保存当前试穿，或者导入另一个参考对象。空历史不会消耗新的生成额度。
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <a
+            href="03.5-tryon-result.html"
+            class="tap-highlight flex min-h-11 items-center justify-center rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111] no-underline active:bg-white/82"
+          >
+            回到结果
+          </a>
+          <a
+            href="03.2-import-reference.html"
+            class="tap-highlight flex min-h-11 items-center justify-center rounded-lg border border-white/10 px-3 text-sm font-semibold text-white/76 no-underline active:bg-white/10"
+          >
+            再试参考
+          </a>
+        </div>
+      </section>
+
+      <section id="history-error-state" class="mt-5 hidden rounded-lg border border-[#F2A7A0]/26 bg-[#F2A7A0]/10 p-4" role="alert">
+        <p class="text-sm font-semibold leading-5 text-[#F6C4BF]">这次保存没有完成</p>
+        <p class="mt-1.5 text-xs leading-5 text-[#F6C4BF]/72">
+          结果仍然在当前会话里，本次失败不会重复扣额度。可以重试保存，或回到结果页继续查看。
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <button
+            id="history-error-retry-button"
+            type="button"
+            class="tap-highlight min-h-11 rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111] active:bg-white/82"
+          >
+            重试保存
+          </button>
+          <a
+            href="03.5-tryon-result.html"
+            class="tap-highlight flex min-h-11 items-center justify-center rounded-lg border border-white/10 px-3 text-sm font-semibold text-white/76 no-underline active:bg-white/10"
+          >
+            回到结果
+          </a>
+        </div>
+      </section>
+
+      <div id="history-saved-content">
+        <section id="history-hero" data-object-id="obj-history-hero" class="pt-6">
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-[13px] font-semibold text-[#9D7AFF]">已放入历史</p>
+            <span id="history-status-chip" class="shrink-0 rounded-full border border-[#9AE6C4]/22 bg-[#9AE6C4]/10 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF]">已保存到历史</span>
+          </div>
+          <h1 class="mt-3 text-[27px] font-semibold leading-[1.14] text-[#FAFAF7]">
+            先把这次结果收好，再继续判断。
+          </h1>
+          <p id="history-hero-copy" class="mt-3 text-[14px] leading-[23px] text-white/66">
+            这里用于回看、收藏和对比。它不会自动变成常用本人形象，也不会再次扣额度。
+          </p>
+        </section>
+
+        <section
+          id="current-saved-result"
+          data-object-id="obj-current-saved-result"
+          class="pt-5"
+          aria-label="当前保存结果"
+        >
+          <article class="soft-panel rounded-lg p-4">
+            <div class="grid grid-cols-[112px_minmax(0,1fr)] gap-3">
+              <div class="result-thumb-frame overflow-hidden rounded-lg border border-white/10">
+                <div class="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    id="history-preview-image"
+                    src="assets/tryon-result-cream-jacket-preview.svg"
+                    alt="林曼奶油白短外套试穿结果缩略图"
+                    class="h-full w-full object-cover"
+                  />
+                  <div class="absolute bottom-2 left-2 right-2 rounded-md bg-black/48 px-2 py-1 text-[10px] font-semibold leading-4 text-white/80 backdrop-blur">
+                    本次结果
+                  </div>
+                </div>
+              </div>
+
+              <div class="min-w-0">
+                <p id="history-saved-time" class="text-xs font-semibold text-[#D8CEFF]">刚刚保存</p>
+                <h2 id="history-result-title" class="mt-1.5 text-lg font-semibold leading-6 text-[#FAFAF7]">奶油白短外套</h2>
+                <p id="history-result-summary" class="mt-1.5 text-xs leading-5 text-white/58">
+                  可以考虑，下单前确认肩宽和内搭厚度
+                </p>
+                <div id="history-tag-list" class="mt-3 flex flex-wrap gap-1.5">
+                  <span class="rounded-full bg-white/[0.06] px-2 py-1 text-[10px] font-semibold text-white/58">通勤/约会</span>
+                  <span class="rounded-full bg-white/[0.06] px-2 py-1 text-[10px] font-semibold text-white/58">偏适合</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-lg border border-white/10 bg-black/18 p-3">
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-xs font-semibold text-white/72">本次判断问题</p>
+                <span id="history-credit-chip" class="shrink-0 rounded-full bg-[#9AE6C4]/10 px-2 py-1 text-[10px] font-semibold text-[#C7F5DF]">已扣 1 个额度</span>
+              </div>
+              <p id="history-decision-question" class="mt-2 text-xs leading-5 text-white/58">
+                这件外套会不会显得肩宽，适不适合通勤约会两用？
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <section
+          id="history-collection-actions"
+          data-object-id="obj-history-collection-actions"
+          class="pt-4"
+          aria-label="收藏与对比操作"
+        >
+          <article class="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">整理这次结果</p>
+                <p id="history-state-note" class="mt-1 text-xs leading-5 text-white/50">
+                  已保存到历史。可以加入对比或收藏为重点候选。
+                </p>
+              </div>
+              <span id="history-mode-chip" class="shrink-0 rounded-full bg-white/[0.06] px-2.5 py-1 text-[11px] font-semibold text-white/46">历史</span>
+            </div>
+
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <button
+                id="history-compare-button"
+                type="button"
+                class="tap-highlight min-h-[44px] rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111] active:bg-white/82"
+              >
+                加入对比
+              </button>
+              <button
+                id="history-favorite-button"
+                type="button"
+                class="tap-highlight min-h-[44px] rounded-lg border border-[#9D7AFF]/22 bg-[#9D7AFF]/10 px-3 text-sm font-semibold text-[#D8CEFF] active:bg-[#9D7AFF]/16"
+              >
+                收藏结果
+              </button>
+            </div>
+          </article>
+        </section>
+
+        <section
+          id="compare-list"
+          data-object-id="obj-compare-list"
+          class="pt-4"
+          aria-label="对比候选列表"
+        >
+          <article class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">下单前对比</p>
+                <p id="history-compare-copy" class="mt-1 text-xs leading-5 text-white/48">
+                  把这次结果和最近尝试放在一起，先判断是否值得继续下单或购买额度。
+                </p>
+              </div>
+              <span id="history-compare-count" class="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/54">3 项</span>
+            </div>
+
+            <ul id="history-compare-list" class="mt-3 space-y-2"></ul>
+          </article>
+        </section>
+      </div>
+
+      <section
+        id="history-decision-actions"
+        data-object-id="obj-history-decision-actions"
+        class="sticky bottom-0 -mx-5 mt-5 border-t border-white/10 bg-[#111111]/95 px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-3 backdrop-blur"
+        aria-label="历史页后续决策动作"
+      >
+        <p id="history-decision-copy" class="mb-2 text-xs leading-5 text-white/48">
+          如果这件外套仍然是候选，可以回到结果页看细节；如果还想继续试更多参考，再进入额度方案。
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <a
+            id="history-return-result-button"
+            href="03.5-tryon-result.html"
+            class="tap-highlight flex min-h-12 items-center justify-center rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111] no-underline active:bg-white/82"
+          >
+            回到结果页
+          </a>
+          <a
+            id="history-new-reference-button"
+            href="03.2-import-reference.html"
+            class="tap-highlight flex min-h-12 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm font-semibold text-white/72 no-underline active:bg-white/10"
+          >
+            再试参考
+          </a>
+          <a
+            id="history-credit-button"
+            href="03.7-credit-purchase.html"
+            class="tap-highlight col-span-2 flex min-h-11 items-center justify-center rounded-lg border border-[#9D7AFF]/22 bg-[#9D7AFF]/10 px-3 text-xs font-semibold text-[#D8CEFF] active:bg-[#9D7AFF]/16"
+          >
+            查看额度方案
+          </a>
+        </div>
+      </section>
+
+      <section
+        id="history-state-controls"
+        data-object-id="obj-history-state-controls"
+        class="pt-4"
+        aria-label="原型状态控制"
+      >
+        <p class="mb-2 text-xs font-semibold text-white/44">原型状态</p>
+        <div class="grid grid-cols-5 gap-2">
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="default">默认</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="compare">对比</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="favorite">收藏</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="empty">空</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="save-error">错误</button>
+        </div>
+      </section>
+
+      <div
+        id="history-toast"
+        class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-50 hidden w-[calc(100%-40px)] max-w-[388px] -translate-x-1/2 rounded-lg border border-white/10 bg-[#FAFAF7] px-4 py-3 text-center text-xs font-semibold leading-5 text-[#111111] shadow-2xl"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </main>
+
+    <script>
+      const app = document.getElementById('app');
+      let toastTimer = 0;
+      let compared = false;
+      let favorited = false;
+
+      const fallbackData = {
+        tryOnResult: {
+          id: 'tryon-result-linman-cream-jacket-001',
+          previewImageUrl: 'assets/tryon-result-cream-jacket-preview.svg',
+          referenceTitle: '奶油白短外套',
+          referenceSource: '电商截图',
+          decisionQuestion: '这件外套会不会显得肩宽，适不适合通勤约会两用？',
+          urgency: '今晚下单前想确认',
+          creditCharged: 1,
+          recommendationTone: '偏适合',
+          recommendationLabel: '可以考虑，下单前确认肩宽和内搭厚度'
+        },
+        historyCollection: {
+          savedAtLabel: '刚刚保存',
+          defaultStatus: '已保存到历史',
+          boundaryNote: '历史结果用于回看和对比，不会自动变成常用本人形象。',
+          compareInstruction: '把这次结果和最近尝试放在一起，先判断是否值得继续下单或购买额度。',
+          decisionPrompt: '如果这件外套仍然是候选，可以回到结果页看细节；如果还想继续试更多参考，再进入额度方案。',
+          currentTags: ['通勤/约会', '奶油白短外套', '偏适合'],
+          compareCandidates: [
+            {
+              id: 'tryon-result-linman-cream-jacket-001',
+              title: '奶油白短外套',
+              recommendation: '偏适合',
+              source: '本次结果',
+              saved: true,
+              active: true
+            },
+            {
+              id: 'result-001',
+              title: '浅灰针织开衫',
+              recommendation: '适合',
+              source: '历史结果',
+              saved: true,
+              active: false
+            },
+            {
+              id: 'result-002',
+              title: '齐肩内扣发型',
+              recommendation: '谨慎',
+              source: '历史结果',
+              saved: false,
+              active: false
+            }
+          ]
+        }
+      };
+
+      function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+        }
+      }
+
+      function showHistoryToast(message) {
+        const toast = document.getElementById('history-toast');
+        if (!toast) {
+          return;
+        }
+
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.remove('hidden');
+        toastTimer = window.setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2600);
+      }
+
+      function renderTags(tags) {
+        const list = document.getElementById('history-tag-list');
+        if (!list) {
+          return;
+        }
+
+        list.innerHTML = '';
+        tags.forEach((tag) => {
+          const span = document.createElement('span');
+          span.className = 'rounded-full bg-white/[0.06] px-2 py-1 text-[10px] font-semibold text-white/58';
+          span.textContent = tag;
+          list.appendChild(span);
+        });
+      }
+
+      function renderCompareList(items) {
+        const list = document.getElementById('history-compare-list');
+        if (!list) {
+          return;
+        }
+
+        list.innerHTML = '';
+        items.forEach((item) => {
+          const row = document.createElement('li');
+          const isCurrent = item.id === fallbackData.tryOnResult.id || item.active;
+          row.dataset.compareItemId = item.id;
+          row.className = [
+            'rounded-lg border p-3 transition',
+            isCurrent && compared
+              ? 'border-[#9AE6C4]/34 bg-[#9AE6C4]/10'
+              : isCurrent
+                ? 'border-[#9D7AFF]/24 bg-[#9D7AFF]/8'
+                : 'border-white/10 bg-black/14'
+          ].join(' ');
+
+          const status = isCurrent && compared ? '已加入对比' : item.saved ? '已保存' : '未保存';
+          row.innerHTML = `
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="truncate text-sm font-semibold leading-5 text-[#FAFAF7]">${item.title}</p>
+                <p class="mt-1 text-xs leading-5 text-white/48">${item.source} · ${item.recommendation}</p>
+              </div>
+              <span class="shrink-0 rounded-full bg-white/[0.06] px-2 py-1 text-[10px] font-semibold text-white/54">${status}</span>
+            </div>
+          `;
+          list.appendChild(row);
+        });
+
+        setText('history-compare-count', `${items.length} 项`);
+      }
+
+      function renderHistoryData(data) {
+        const result = {
+          ...fallbackData.tryOnResult,
+          ...(data.tryOnResult || {})
+        };
+        const collection = {
+          ...fallbackData.historyCollection,
+          ...(data.historyCollection || {})
+        };
+        const preview = document.getElementById('history-preview-image');
+
+        fallbackData.tryOnResult = result;
+        fallbackData.historyCollection = collection;
+
+        if (preview) {
+          preview.src = result.previewImageUrl || fallbackData.tryOnResult.previewImageUrl;
+          preview.alt = `林曼${result.referenceTitle}试穿结果缩略图`;
+        }
+
+        setText('history-hero-copy', `${collection.boundaryNote} 本页只管理历史、收藏和对比，不会再次扣额度。`);
+        setText('history-saved-time', collection.savedAtLabel);
+        setText('history-result-title', result.referenceTitle);
+        setText('history-result-summary', result.recommendationLabel);
+        setText('history-credit-chip', `已扣 ${result.creditCharged} 个额度`);
+        setText('history-decision-question', result.decisionQuestion);
+        setText('history-compare-copy', collection.compareInstruction);
+        setText('history-decision-copy', collection.decisionPrompt);
+        renderTags(collection.currentTags || fallbackData.historyCollection.currentTags);
+        renderCompareList(collection.compareCandidates || fallbackData.historyCollection.compareCandidates);
+      }
+
+      async function loadHistoryData() {
+        try {
+          const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error(`demo data request failed: ${response.status}`);
+          }
+          const loaded = await response.json();
+          renderHistoryData({
+            ...fallbackData,
+            ...loaded,
+            tryOnResult: {
+              ...fallbackData.tryOnResult,
+              ...(loaded.tryOnResult || {})
+            },
+            historyCollection: {
+              ...fallbackData.historyCollection,
+              ...(loaded.historyCollection || {})
+            }
+          });
+        } catch (error) {
+          renderHistoryData(fallbackData);
+          console.warn('[Style AI Prototype] using fallback history data', error);
+        }
+      }
+
+      function updateVisualState(state) {
+        app.dataset.compared = compared ? 'true' : 'false';
+        app.dataset.favorited = favorited ? 'true' : 'false';
+
+        const unavailable = state === 'empty' || state === 'save-error';
+        document.getElementById('history-empty-state').classList.toggle('hidden', state !== 'empty');
+        document.getElementById('history-error-state').classList.toggle('hidden', state !== 'save-error');
+        document.getElementById('history-saved-content').classList.toggle('hidden', unavailable);
+        document.getElementById('history-decision-actions').classList.toggle('hidden', unavailable);
+
+        const chip = document.getElementById('history-status-chip');
+        const modeChip = document.getElementById('history-mode-chip');
+        const compareButton = document.getElementById('history-compare-button');
+        const favoriteButton = document.getElementById('history-favorite-button');
+
+        if (chip && modeChip && compareButton && favoriteButton) {
+          if (favorited) {
+            chip.textContent = '已收藏';
+            modeChip.textContent = '收藏';
+            setText('history-state-note', '已收藏为重点候选。之后可以从历史页快速回到这次判断。');
+          } else if (compared) {
+            chip.textContent = '已加入对比';
+            modeChip.textContent = '对比';
+            setText('history-state-note', '已加入对比。可以和最近结果一起判断是否继续下单。');
+          } else {
+            chip.textContent = '已保存到历史';
+            modeChip.textContent = '历史';
+            setText('history-state-note', '已保存到历史。可以加入对比或收藏为重点候选。');
+          }
+
+          chip.className = compared || favorited
+            ? 'shrink-0 rounded-full border border-[#9AE6C4]/22 bg-[#9AE6C4]/10 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF]'
+            : 'shrink-0 rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] font-semibold text-white/54';
+          modeChip.className = compared || favorited
+            ? 'shrink-0 rounded-full bg-[#9AE6C4]/10 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF]'
+            : 'shrink-0 rounded-full bg-white/[0.06] px-2.5 py-1 text-[11px] font-semibold text-white/46';
+          compareButton.textContent = compared ? '移出对比' : '加入对比';
+          favoriteButton.textContent = favorited ? '取消收藏' : '收藏结果';
+        }
+
+        renderCompareList(fallbackData.historyCollection.compareCandidates || []);
+
+        document.querySelectorAll('.state-control').forEach((button) => {
+          const active = button.dataset.state === state;
+          button.classList.toggle('border-[#9D7AFF]/50', active);
+          button.classList.toggle('bg-[#9D7AFF]/12', active);
+          button.classList.toggle('text-[#D8CEFF]', active);
+        });
+
+        console.info('[Style AI Prototype] 03.6 history state changed', {
+          state,
+          compared,
+          favorited
+        });
+      }
+
+      function setHistoryState(state) {
+        const allowed = ['default', 'compare', 'favorite', 'empty', 'save-error'];
+        const normalized = allowed.includes(state) ? state : 'default';
+        app.dataset.state = normalized;
+
+        compared = normalized === 'compare';
+        favorited = normalized === 'favorite';
+
+        updateVisualState(normalized);
+      }
+
+      function toggleCompare() {
+        if (app.dataset.state === 'empty' || app.dataset.state === 'save-error') {
+          setHistoryState('default');
+        }
+
+        if (compared) {
+          setHistoryState('default');
+          showHistoryToast('已从对比中移出。');
+        } else {
+          setHistoryState('compare');
+          showHistoryToast('已加入对比列表。');
+        }
+      }
+
+      function toggleFavorite() {
+        if (app.dataset.state === 'empty' || app.dataset.state === 'save-error') {
+          setHistoryState('default');
+        }
+
+        if (favorited) {
+          setHistoryState('default');
+          showHistoryToast('已取消收藏。');
+        } else {
+          setHistoryState('favorite');
+          showHistoryToast('已收藏为重点候选。');
+        }
+      }
+
+      function retrySave() {
+        setHistoryState('default');
+        showHistoryToast('已重新保存到历史。');
+      }
+
+      document.getElementById('history-compare-button').addEventListener('click', toggleCompare);
+      document.getElementById('history-favorite-button').addEventListener('click', toggleFavorite);
+      document.getElementById('history-error-retry-button').addEventListener('click', retrySave);
+      document.querySelectorAll('.state-control').forEach((button) => {
+        button.addEventListener('click', () => setHistoryState(button.dataset.state));
+      });
+
+      window.__STYLE_AI_PROTOTYPE__ = {
+        scenario: '03-linman-tryon-decision',
+        page: '03.6-history-collection',
+        states: ['default', 'compare', 'favorite', 'empty', 'save-error'],
+        setHistoryState,
+        toggleCompare,
+        toggleFavorite,
+        retrySave
+      };
+
+      loadHistoryData().then(() => {
+        const mode = new URLSearchParams(window.location.search).get('mode');
+        setHistoryState(mode === 'compare' ? 'compare' : 'default');
+      });
+    </script>
+  </body>
+</html>

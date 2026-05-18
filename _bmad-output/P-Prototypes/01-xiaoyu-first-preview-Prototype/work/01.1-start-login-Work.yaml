@@ -1,0 +1,228 @@
+metadata:
+  project: style-ai
+  scenario: 01-xiaoyu-first-preview
+  logical_view: Start / Login View
+  page_number: "01.1"
+  page_name: start-login
+  prototype_file: 01.1-start-login.html
+  source_spec: _bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.1-start-login/01.1-start-login.md
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+    touch_optimized: true
+    hover_interactions: false
+  design_fidelity: Design System Components
+  primary_language: zh-CN
+  language_switcher: false
+  status: planned
+  created: 2026-05-13
+  approved_by: Sue
+
+requirements:
+  purpose: "让小雨用邀请码、手机号或 Google 登录进入 Style AI，并在登录前理解登录只是为了额度、历史和账号管理，不等于强制保存长期个人形象档案。"
+  success_criteria:
+    - 用户完成登录并进入首页。
+    - 用户不会把登录误解为默认建立长期形象档案。
+    - 用户知道首次体验有额度边界。
+  entry_points:
+    - 定向邀请链接打开 App。
+    - 已安装用户从系统桌面启动 App。
+  exit_points:
+    - 登录成功后进入 01.2-home-dual-entry。
+    - 权限或网络失败时停留本页并给出恢复方式。
+
+object_registry:
+  - id: start-login-brand-trust-header
+    type: Section
+    purpose: 品牌与信任开场
+    required: true
+  - id: start-login-method-panel
+    type: Section
+    purpose: 登录方式容器
+    required: true
+  - id: start-login-invite-code-field
+    type: Input
+    purpose: 邀请码输入
+    required: true
+  - id: start-login-phone-login-group
+    type: Form group
+    purpose: 手机号验证码登录
+    required: true
+  - id: start-login-google-login-group
+    type: Form group
+    purpose: Google 登录
+    required: true
+  - id: start-login-primary-button
+    type: Button
+    purpose: 提交登录
+    required: true
+  - id: start-login-boundary-note
+    type: Info note
+    purpose: 说明登录与建档边界
+    required: true
+
+states:
+  - name: Default
+    trigger: 首次打开
+    requirements:
+      - 显示品牌、登录方式和边界说明。
+      - 允许输入邀请码、手机号或选择 Google 登录。
+  - name: Loading
+    trigger: 正在校验邀请码、验证码或三方登录
+    requirements:
+      - 登录按钮显示处理中。
+      - 禁止重复提交。
+  - name: Error
+    trigger: 邀请码无效、验证码错误、三方登录未授权或网络失败
+    requirements:
+      - 显示温和具体错误。
+      - 允许重新输入、重新发送或稍后再试。
+  - name: Success
+    trigger: 登录成功
+    requirements:
+      - 显示短暂成功状态。
+      - 导航到 01.2-home-dual-entry.html。
+
+sections:
+  - number: 1
+    name: Page Shell & Mobile Layout
+    status: complete
+    estimate_minutes: 15
+    completed: 2026-05-13
+    actual_minutes: 15
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids: []
+    scope:
+      - 建立移动端页面容器、背景、最大宽度和安全区。
+      - 设置首屏纵向节奏和底部条款区域位置。
+      - 准备后续 sections 的语义结构和 object-id 挂载方式。
+    acceptance:
+      - 页面在 375px、393px、428px 宽度无横向滚动。
+      - 页面可以容纳品牌、登录面板、边界说明和条款链接。
+      - 布局不依赖 hover。
+
+  - number: 2
+    name: Brand Trust Header
+    status: complete
+    estimate_minutes: 20
+    completed: 2026-05-13
+    actual_minutes: 25
+    approved_by: Sue
+    issues:
+      - Brand symbol blended into dark header background; fixed with warm-off-white badge wrapper.
+    improvements: []
+    object_ids:
+      - start-login-brand-trust-header
+    scope:
+      - 使用 Style AI 品牌资产或等价原型标识。
+      - 展示产品名和辅助文案“先看看自己适不适合，再决定要不要继续探索。”
+      - 保持低压、可信、移动端首屏友好。
+    acceptance:
+      - 品牌识别清楚。
+      - 辅助文案不遮挡后续登录动作。
+      - 视觉风格引用当前设计系统，而不是灰模。
+
+  - number: 3
+    name: Login Method Panel
+    status: complete
+    estimate_minutes: 35
+    completed: 2026-05-14
+    actual_minutes: 55
+    approved_by: Sue
+    issues:
+      - Prefilled invite code input lost contrast due to browser autofill styling; fixed with scoped dark input/autofill styles.
+    improvements:
+      - Normalized login panel copy so the page reads as a standard Style AI login/start page.
+      - Separated invite code from account login; account login is handled by phone verification and Google authorization.
+    object_ids:
+      - start-login-method-panel
+      - start-login-invite-code-field
+      - start-login-phone-login-group
+      - start-login-google-login-group
+    scope:
+      - 构建邀请码优先的登录区域。
+      - 提供手机号验证码作为账号登录入口。
+      - 提供 Google 登录作为三方账号入口。
+      - 使用默认 demo invite code: SEED-XIAOYU-001。
+      - 准备基本输入校验提示。
+    acceptance:
+      - 邀请码输入明显优先。
+      - 手机号和 Google 入口存在但不抢主路径。
+      - 输入控件触控尺寸足够。
+
+  - number: 4
+    name: Login Actions & States
+    status: complete
+    estimate_minutes: 30
+    completed: 2026-05-14
+    actual_minutes: 45
+    approved_by: Sue
+    issues:
+      - Next page file is not built yet; success uses history.pushState to verify the required target URL without loading a 404.
+    improvements:
+      - Phone/code input wins over the prefilled invite code when users start phone login.
+      - Google mock login path added for the approved third-party account model.
+    object_ids:
+      - start-login-primary-button
+      - start-login-action-status
+    scope:
+      - 实现主按钮默认、loading、error、success 状态。
+      - 模拟有效邀请码、手机号验证码、Google 登录与错误状态。
+      - 成功后导航到 01.2-home-dual-entry.html。
+    acceptance:
+      - 未输入时有明确反馈。
+      - 有效邀请码、手机号验证码或 Google 登录可以进入成功状态。
+      - 错误和 loading 状态不会造成重复提交。
+
+  - number: 5
+    name: Boundary Note & Legal Links
+    status: complete
+    estimate_minutes: 20
+    completed: 2026-05-14
+    actual_minutes: 20
+    approved_by: Sue
+    issues: []
+    improvements:
+      - Replaced placeholder skeletons with a lightweight boundary note and compact legal links.
+      - Legal links use inert prototype behavior so they do not block login or imply a mandatory gate.
+    object_ids:
+      - start-login-boundary-note
+    scope:
+      - 展示登录与建档边界说明。
+      - 放置隐私政策和用户协议链接。
+      - 保持说明轻量，不阻断登录。
+    acceptance:
+      - 文案明确表达“是否保存为常用形象，会在生成后由你单独决定”。
+      - 条款链接存在且不误导为必须阅读才能登录。
+      - 小屏下说明不挤压主登录动作。
+
+dependencies:
+  design_system:
+    - _bmad-output/D-Design-System/design-tokens.md
+    - _bmad-output/D-Design-System/components/style-ai-app-icon-system.md
+  demo_data:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
+
+open_questions:
+  - question: 访问控制采用固定邀请码、手机号白名单、Google 账号白名单，还是后台生成授权？
+    handling: Prototype uses fixed local invite code SEED-XIAOYU-001; production access control remains open. Page copy should stay like a normal login page.
+
+implementation_notes:
+  - Story files must be created just in time, one section at a time.
+  - Do not implement future standalone welcome/onboarding page in DD-001.
+  - Login must not trigger photo upload, profile save, or history creation.
+
+next_step:
+  workflow_step: 5-finalization
+  next_section: Finalization

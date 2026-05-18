@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02.1 Second Style Exploration - Style AI</title>
+  <link rel="icon" href="assets/style-ai-reversible-s-symbol.svg" type="image/svg+xml">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .soft-panel {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.032));
+      border: 1px solid rgb(255 255 255 / 0.10);
+    }
+
+    .first-result-visual {
+      background:
+        radial-gradient(circle at 24% 16%, rgb(154 230 196 / 0.14), transparent 26%),
+        radial-gradient(circle at 76% 18%, rgb(157 122 255 / 0.18), transparent 28%),
+        linear-gradient(145deg, #262521 0%, #171717 58%, #0D0D0D 100%);
+    }
+
+    .option-card {
+      min-height: 174px;
+    }
+
+    .mobile-scroll-page {
+      height: 100vh;
+      height: 100svh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .option-card[aria-pressed="true"] {
+      border-color: rgb(154 230 196 / 0.48);
+      background: rgb(154 230 196 / 0.10);
+    }
+
+    .option-card[aria-pressed="true"] .option-check {
+      background: #C7F5DF;
+      color: #111111;
+    }
+
+    .option-card[aria-pressed="true"] .option-label {
+      color: #FAFAF7;
+    }
+
+    .option-card[aria-pressed="true"] .option-tag {
+      color: #C7F5DF;
+    }
+  </style>
+</head>
+<body>
+  <main
+    id="app"
+    class="mobile-scroll-page mx-auto flex w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="02.1-second-style-exploration"
+    data-state="default"
+    data-selected-option="daily_light_layers"
+  >
+    <header
+      id="second-style-header"
+      data-object-id="second-style-header"
+      class="shrink-0"
+      aria-label="二次探索顶部"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="/01-xiaoyu-first-preview-Prototype/01.7-image-result.html"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回首次结果"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img src="assets/style-ai-reversible-s-symbol.svg" alt="" class="h-full w-full" aria-hidden="true">
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">继续探索</p>
+            <p id="second-style-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的第二次风格</p>
+          </div>
+        </div>
+
+        <a
+          href="/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-xs font-semibold text-white/70 no-underline"
+          aria-label="返回首页"
+        >
+          首页
+        </a>
+      </div>
+    </header>
+
+    <section class="mt-5" aria-label="页面说明">
+      <div class="flex items-center justify-between gap-3">
+        <p class="text-xs font-medium text-[#C9BAFF]">从首次结果继续</p>
+        <span id="second-style-cost-chip" class="rounded-lg bg-[#F2C86B]/12 px-2.5 py-1 text-[11px] font-medium text-[#F8DF9A]">本次消耗 1 次</span>
+      </div>
+      <h1 class="mt-2 text-[25px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        再看一个不同方向，再决定哪个更适合你。
+      </h1>
+      <p id="second-style-intro-copy" class="mt-3 text-sm leading-6 text-white/58">
+        第一次结果已经有参考价值，这次只做一个清楚的对照，不让你盲目多试。
+      </p>
+    </section>
+
+    <section
+      id="second-style-alert"
+      class="mt-4 hidden rounded-lg border border-[#F2A7A0]/28 bg-[#F2A7A0]/10 p-4"
+      role="alert"
+      aria-live="polite"
+    >
+      <p id="second-style-alert-title" class="text-sm font-semibold leading-5 text-[#F6C4BF]">暂时不能开始第二次生成</p>
+      <p id="second-style-alert-copy" class="mt-1.5 text-xs leading-5 text-[#F6C4BF]/74">
+        当前额度不足。你仍然可以先比较方向，等补充额度后再生成。
+      </p>
+    </section>
+
+    <section
+      id="second-style-first-result-context"
+      data-object-id="second-style-first-result-context"
+      class="soft-panel mt-4 overflow-hidden rounded-lg"
+      aria-label="首次结果上下文"
+    >
+      <div class="first-result-visual relative aspect-[16/9] w-full overflow-hidden">
+        <img
+          id="second-style-first-preview-image"
+          src="assets/first-result-preview.png"
+          alt="小雨第一次生成的中发层次结果预览"
+          class="absolute left-1/2 top-1/2 h-[124%] w-auto max-w-none -translate-x-1/2 -translate-y-[43%] opacity-95"
+        >
+        <div class="absolute left-3 top-3 rounded-lg bg-black/38 px-2.5 py-1 text-[11px] font-medium text-white/82">
+          第一次结果
+        </div>
+        <div class="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-black/46 px-3 py-2 backdrop-blur">
+          <div class="flex items-center justify-between gap-3">
+            <span id="second-style-first-label" class="text-xs font-semibold text-white/86">中发层次</span>
+            <span id="second-style-first-feedback" class="text-[11px] font-medium text-[#C7F5DF]">有点像 · 能判断</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-4">
+        <p id="second-style-first-summary" class="text-sm leading-6 text-white/72">
+          有点像自己，也能帮助判断。变化明显，但没有一下改太大。
+        </p>
+        <div class="mt-3 rounded-lg border border-[#F2C86B]/18 bg-[#F2C86B]/10 p-3">
+          <p class="text-[11px] font-medium text-[#F8DF9A]/72">这次继续探索的重点</p>
+          <p id="second-style-comparison-intent" class="mt-1 text-sm leading-5 text-[#F8DF9A]">
+            不重复第一次的结论，而是选择一个差异明确的方向，帮你比较哪个更稳。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="second-style-options"
+      data-object-id="second-style-options"
+      class="mt-4"
+      aria-label="二次探索风格方向"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">这次想换成哪种对照？</p>
+          <p class="mt-1 text-xs leading-5 text-white/48">每个方向都说明和第一次结果的差异。</p>
+        </div>
+        <span class="shrink-0 rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">选 1 个</span>
+      </div>
+
+      <div
+        id="second-style-option-list"
+        data-object-id="second-style-option-list"
+        class="mt-3 grid grid-cols-1 gap-2"
+      ></div>
+    </section>
+
+    <section
+      id="second-style-difference-summary"
+      data-object-id="second-style-difference-summary"
+      class="soft-panel mt-4 rounded-lg p-4"
+      aria-label="当前选择差异说明"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-[#C9BAFF]">当前选择</p>
+          <h2 id="second-style-active-title" class="mt-1 text-base font-semibold leading-6 text-[#FAFAF7]">日常轻层次</h2>
+        </div>
+        <span id="second-style-active-tag" class="shrink-0 rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">更稳</span>
+      </div>
+
+      <div class="mt-4 grid gap-2">
+        <div class="rounded-lg border border-white/10 bg-black/18 p-3">
+          <p class="text-[11px] font-medium text-white/44">和第一次结果的差异</p>
+          <p id="second-style-active-difference" class="mt-1.5 text-sm leading-5 text-white/76">
+            比第一次更日常，保留中发长度，只把层次和蓬松感调轻。
+          </p>
+        </div>
+        <div class="rounded-lg border border-white/10 bg-black/18 p-3">
+          <p class="text-[11px] font-medium text-white/44">适合用来判断</p>
+          <p id="second-style-active-best-for" class="mt-1.5 text-sm leading-5 text-white/76">
+            想看一个不用大改、明天就能拿去和发型师沟通的版本。
+          </p>
+        </div>
+        <div class="rounded-lg border border-[#F2C86B]/18 bg-[#F2C86B]/10 p-3">
+          <p class="text-[11px] font-medium text-[#F8DF9A]/72">先想清楚</p>
+          <p id="second-style-active-risk" class="mt-1.5 text-sm leading-5 text-[#F8DF9A]">
+            差异不会特别夸张，适合用来确认稳妥方向。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="second-style-credit-notice"
+      data-object-id="second-style-credit-notice"
+      class="mt-4 rounded-lg border border-[#9D7AFF]/20 bg-[#9D7AFF]/10 p-4"
+      aria-label="额度消耗提示"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">开始前确认额度</p>
+          <p id="second-style-credit-copy" class="mt-1 text-xs leading-5 text-[#D8CEFF]/74">
+            你还剩 1 次个人形象生成额度。本次确认后会消耗 1 次。
+          </p>
+        </div>
+        <div class="shrink-0 rounded-lg bg-black/20 px-3 py-2 text-center">
+          <p id="second-style-credit-remaining" class="text-base font-semibold leading-none text-[#FAFAF7]">1</p>
+          <p class="mt-1 text-[10px] leading-none text-[#D8CEFF]/58">剩余</p>
+        </div>
+      </div>
+      <div class="mt-3 flex items-center gap-2 rounded-lg border border-[#9D7AFF]/18 bg-black/16 px-3 py-2">
+        <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[#C9BAFF] text-[11px] font-bold text-[#111111]">i</span>
+        <p id="second-style-credit-reassurance" class="text-xs leading-5 text-[#D8CEFF]/76">
+          只有点击开始后才进入生成；预览和切换方向不会扣额度。
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-4 grid gap-2" aria-label="二次探索动作">
+      <button
+        id="second-style-primary-action"
+        data-object-id="second-style-primary-action"
+        type="button"
+        class="min-h-[50px] rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] disabled:cursor-not-allowed disabled:bg-white/14 disabled:text-white/36"
+      >
+        开始第二次生成
+      </button>
+      <a
+        id="second-style-back-to-result"
+        data-object-id="second-style-back-to-result"
+        href="/01-xiaoyu-first-preview-Prototype/01.7-image-result.html"
+        class="flex min-h-[44px] items-center justify-center rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-white/62 no-underline"
+      >
+        回到第一次结果
+      </a>
+    </section>
+
+    <section
+      id="second-style-state-controls"
+      data-object-id="second-style-state-controls"
+      class="mt-5 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="原型状态控制"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold text-white/70">原型状态</p>
+          <p class="mt-1 text-[11px] leading-4 text-white/42">用于验证额度不足、提交中和错误状态。</p>
+        </div>
+        <span id="second-style-state-label" class="shrink-0 rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/54">default</span>
+      </div>
+      <div class="mt-3 grid grid-cols-2 gap-2">
+        <button type="button" class="second-style-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-style-state="default">默认</button>
+        <button type="button" class="second-style-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-style-state="low-credit">额度不足</button>
+        <button type="button" class="second-style-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-style-state="submitting">提交中</button>
+        <button type="button" class="second-style-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-style-state="submit-error">提交失败</button>
+      </div>
+    </section>
+
+    <div
+      id="second-style-toast"
+      class="pointer-events-none fixed bottom-5 left-1/2 z-20 hidden w-[calc(100%-40px)] max-w-[388px] -translate-x-1/2 rounded-lg border border-white/10 bg-[#FAFAF7] px-4 py-3 text-center text-sm font-semibold text-[#111111] shadow-2xl"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      project: 'style-ai',
+      scenario: '02-xiaoyu-second-style-exploration',
+      page: '02.1-second-style-exploration'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      firstResult: {
+        label: '中发层次',
+        summary: '有点像自己，也能帮助判断。变化明显，但没有一下改太大。',
+        caution: '先避开过短长度和厚重齐刘海。',
+        previewImageUrl: 'assets/first-result-preview.png',
+        feedback: {
+          looksLikeMe: '有点像',
+          usefulForJudgment: '能判断'
+        }
+      },
+      quota: {
+        personalImageGenerationsRemaining: 1,
+        secondGenerationCost: 1
+      },
+      styleExploration: {
+        defaultOptionId: 'daily_light_layers',
+        options: [
+          {
+            id: 'daily_light_layers',
+            label: '日常轻层次',
+            tag: '更稳',
+            difference: '比第一次更日常，保留中发长度，只把层次和蓬松感调轻。',
+            bestFor: '想看一个不用大改、明天就能拿去和发型师沟通的版本。',
+            riskNote: '差异不会特别夸张，适合用来确认稳妥方向。'
+          },
+          {
+            id: 'shorter_clear_change',
+            label: '明显短一点',
+            tag: '差异大',
+            difference: '在保留脸型重心的前提下，把长度推进到肩上附近，变化更明显。',
+            bestFor: '想知道自己能不能接受更利落、更有精神的风格。',
+            riskNote: '变化幅度更大，如果只是想小调整，可以先选日常轻层次。'
+          },
+          {
+            id: 'french_curtain_bangs',
+            label: '法式八字刘海',
+            tag: '修饰',
+            difference: '重点看刘海和脸侧修饰，整体长度变化不大。',
+            bestFor: '想确认额头、太阳穴和脸侧是否更适合柔和一点的修饰。',
+            riskNote: '需要保持空气感，不建议做成厚重齐刘海。'
+          }
+        ]
+      }
+    };
+
+    const stateConfig = {
+      default: {
+        alertVisible: false,
+        alertTitle: '',
+        alertCopy: '',
+        primaryLabel: '开始第二次生成',
+        primaryDisabled: false,
+        intro: '第一次结果已经有参考价值，这次只做一个清楚的对照，不让你盲目多试。',
+        creditCopy: '你还剩 1 次个人形象生成额度。本次确认后会消耗 1 次。'
+      },
+      'low-credit': {
+        alertVisible: true,
+        alertTitle: '当前额度不足',
+        alertCopy: '你仍然可以先比较方向。补充额度后再开始第二次生成，不会在这里隐藏扣费。',
+        primaryLabel: '额度不足，暂不能生成',
+        primaryDisabled: true,
+        intro: '可以先比较方向，但当前额度不足，不能开始新的生成。',
+        creditCopy: '你还剩 0 次个人形象生成额度。本次需要 1 次。'
+      },
+      submitting: {
+        alertVisible: false,
+        alertTitle: '',
+        alertCopy: '',
+        primaryLabel: '正在开始生成...',
+        primaryDisabled: true,
+        intro: '已确认方向，正在准备第二次生成。',
+        creditCopy: '确认后会消耗 1 次额度；如果启动失败不会扣除。'
+      },
+      'submit-error': {
+        alertVisible: true,
+        alertTitle: '刚刚没有开始成功',
+        alertCopy: '可能是网络或生成服务暂时不可用。你可以保留当前选择后再试一次。',
+        primaryLabel: '重新开始第二次生成',
+        primaryDisabled: false,
+        intro: '刚刚没有提交成功，当前选择已经保留。',
+        creditCopy: '启动失败不会扣除额度。重新开始前仍会再次确认。'
+      }
+    };
+
+    let demoData = fallbackData;
+    let activeOptionId = fallbackData.styleExploration.defaultOptionId;
+    let currentState = 'default';
+    let toastTimer = 0;
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showSecondStyleToast(message) {
+      const toast = document.getElementById('second-style-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2200);
+    }
+
+    function getOptions() {
+      const options = demoData.styleExploration?.options;
+      return Array.isArray(options) && options.length > 0
+        ? options
+        : fallbackData.styleExploration.options;
+    }
+
+    function createOptionButton(option, active) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'option-card rounded-lg border border-white/10 bg-white/[0.035] p-4 text-left transition';
+      button.dataset.optionId = option.id;
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+
+      button.innerHTML = `
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="option-tag text-[11px] font-medium text-white/46">${option.tag}</p>
+            <p class="option-label mt-1 text-base font-semibold leading-6 text-white/76">${option.label}</p>
+          </div>
+          <span class="option-check flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/8 text-[12px] font-bold text-white/48">${active ? '✓' : ''}</span>
+        </div>
+        <p class="mt-3 text-sm leading-5 text-white/64">${option.difference}</p>
+        <p class="mt-2 text-xs leading-5 text-white/42">${option.bestFor}</p>
+      `;
+      button.addEventListener('click', () => {
+        setActiveOption(option.id);
+      });
+      return button;
+    }
+
+    function renderOptions() {
+      const list = document.getElementById('second-style-option-list');
+      if (!list) {
+        return;
+      }
+
+      list.innerHTML = '';
+      for (const option of getOptions()) {
+        list.appendChild(createOptionButton(option, option.id === activeOptionId));
+      }
+    }
+
+    function setActiveOption(optionId, announce = true) {
+      const options = getOptions();
+      const option = options.find((item) => item.id === optionId) || options[0];
+      const app = document.getElementById('app');
+      if (!option) {
+        return;
+      }
+
+      activeOptionId = option.id;
+      if (app) {
+        app.dataset.selectedOption = option.id;
+      }
+
+      setText('second-style-active-title', option.label);
+      setText('second-style-active-tag', option.tag);
+      setText('second-style-active-difference', option.difference);
+      setText('second-style-active-best-for', option.bestFor);
+      setText('second-style-active-risk', option.riskNote);
+      renderOptions();
+
+      if (announce) {
+        showSecondStyleToast(`已选择${option.label}。`);
+      }
+      console.info('[Style AI Prototype] second style option selected', { optionId: option.id });
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.second-style-state-button')) {
+        const active = button.dataset.styleState === stateName;
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        button.classList.toggle('bg-white/10', active);
+        button.classList.toggle('text-white', active);
+        button.classList.toggle('text-white/58', !active);
+      }
+    }
+
+    function applySecondStyleState(stateName) {
+      const config = stateConfig[stateName] || stateConfig.default;
+      const app = document.getElementById('app');
+      const alert = document.getElementById('second-style-alert');
+      const primary = document.getElementById('second-style-primary-action');
+      const remaining = stateName === 'low-credit' ? 0 : demoData.quota?.personalImageGenerationsRemaining ?? 1;
+
+      currentState = stateName in stateConfig ? stateName : 'default';
+      if (app) {
+        app.dataset.state = currentState;
+      }
+
+      alert?.classList.toggle('hidden', !config.alertVisible);
+      setText('second-style-alert-title', config.alertTitle);
+      setText('second-style-alert-copy', config.alertCopy);
+      setText('second-style-intro-copy', config.intro);
+      setText('second-style-credit-copy', config.creditCopy);
+      setText('second-style-primary-action', config.primaryLabel);
+      setText('second-style-credit-remaining', String(remaining));
+      setText('second-style-state-label', currentState);
+
+      if (primary) {
+        primary.disabled = config.primaryDisabled;
+      }
+
+      updateStateButtons(currentState);
+      console.info('[Style AI Prototype] second style state changed', { stateName: currentState });
+    }
+
+    function renderDemoData(data) {
+      const userName = data.currentUser?.displayName || fallbackData.currentUser.displayName;
+      const first = {
+        ...fallbackData.firstResult,
+        ...(data.firstResult || {})
+      };
+      const remaining = data.quota?.personalImageGenerationsRemaining ?? fallbackData.quota.personalImageGenerationsRemaining;
+      const cost = data.quota?.secondGenerationCost ?? fallbackData.quota.secondGenerationCost;
+      const preview = document.getElementById('second-style-first-preview-image');
+
+      setText('second-style-user-line', `${userName}的第二次风格`);
+      setText('second-style-cost-chip', `本次消耗 ${cost} 次`);
+      setText('second-style-first-label', first.label);
+      setText('second-style-first-feedback', `${first.feedback?.looksLikeMe || '有点像'} · ${first.feedback?.usefulForJudgment || '能判断'}`);
+      setText('second-style-first-summary', first.summary);
+      setText('second-style-credit-remaining', String(remaining));
+      setText('second-style-credit-copy', `你还剩 ${remaining} 次个人形象生成额度。本次确认后会消耗 ${cost} 次。`);
+
+      if (preview && first.previewImageUrl) {
+        preview.src = first.previewImageUrl;
+        preview.alt = `${userName}第一次生成的${first.label}结果预览`;
+      }
+
+      activeOptionId = data.styleExploration?.defaultOptionId || fallbackData.styleExploration.defaultOptionId;
+      renderOptions();
+      setActiveOption(activeOptionId, false);
+    }
+
+    async function loadSecondStyleDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        const loaded = await response.json();
+        demoData = {
+          ...fallbackData,
+          ...loaded,
+          currentUser: {
+            ...fallbackData.currentUser,
+            ...(loaded.currentUser || {})
+          },
+          firstResult: {
+            ...fallbackData.firstResult,
+            ...(loaded.firstResult || {}),
+            feedback: {
+              ...fallbackData.firstResult.feedback,
+              ...(loaded.firstResult?.feedback || {})
+            }
+          },
+          quota: {
+            ...fallbackData.quota,
+            ...(loaded.quota || {})
+          },
+          styleExploration: {
+            ...fallbackData.styleExploration,
+            ...(loaded.styleExploration || {})
+          }
+        };
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback second style data', error);
+      }
+
+      renderDemoData(demoData);
+      console.info('[Style AI Prototype] second style demo data loaded', {
+        userName: demoData.currentUser?.displayName || fallbackData.currentUser.displayName
+      });
+    }
+
+    function initActions() {
+      document.getElementById('second-style-primary-action')?.addEventListener('click', () => {
+        if (currentState === 'low-credit') {
+          showSecondStyleToast('当前额度不足。');
+          return;
+        }
+
+        if (currentState === 'submitting') {
+          return;
+        }
+
+        applySecondStyleState('submitting');
+        const option = getOptions().find((item) => item.id === activeOptionId);
+        showSecondStyleToast(`已准备生成：${option?.label || '当前方向'}。`);
+        window.setTimeout(() => {
+          window.location.href = '02.2-save-result.html';
+        }, 650);
+      });
+
+      for (const button of document.querySelectorAll('.second-style-state-button')) {
+        button.addEventListener('click', () => {
+          applySecondStyleState(button.dataset.styleState || 'default');
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadSecondStyleDemoData();
+      initActions();
+      applySecondStyleState('default');
+      console.info('[Style AI Prototype] 02.1 second style exploration ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

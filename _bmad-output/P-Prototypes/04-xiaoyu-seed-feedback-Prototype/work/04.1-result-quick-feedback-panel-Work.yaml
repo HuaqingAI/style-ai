@@ -1,0 +1,174 @@
+metadata:
+  page_number: "04.1"
+  page_name: "result-quick-feedback-panel"
+  scenario: "04-xiaoyu-seed-feedback"
+  complexity: "medium"
+  estimated_sections: 6
+  estimated_time: "90 minutes"
+  created: "2026-05-18"
+  page_spec: "../../C-UX-Scenarios/04-xiaoyu-seed-feedback/04.1-result-quick-feedback-panel/04.1-result-quick-feedback-panel.md"
+
+device_compatibility:
+  type: "mobile-only"
+  primary_viewport: "393px"
+  test_viewports:
+    - width: 375
+      height: 667
+      device: "iPhone SE"
+    - width: 393
+      height: 852
+      device: "iPhone 14 Pro"
+    - width: 428
+      height: 926
+      device: "iPhone 14 Pro Max"
+  touch_optimized: true
+  hover_interactions: false
+
+page_purpose: |
+  Let Xiaoyu quickly submit structured feedback from an existing generated result page without being interrupted by a forced modal.
+
+user_context:
+  - "Xiaoyu has just reviewed a generated personal image or try-on result."
+  - "She sees lightweight feedback attached to the result judgment area."
+  - "She wants the next generation to become more accurate but does not want a long survey."
+
+success_criteria:
+  - "User can express likeness and judgment usefulness with one tap each."
+  - "Issue tags change according to current result type."
+  - "User can submit feedback with no long-form text required."
+  - "Submitted state returns her to exploration or retry actions."
+
+object_ids:
+  structure:
+    - "obj-feedback-header"
+    - "obj-result-context"
+    - "obj-feedback-entry"
+    - "obj-feedback-panel"
+  feedback_controls:
+    - "obj-likeness-choice-group"
+    - "obj-judgment-choice-group"
+    - "obj-issue-tags"
+    - "obj-issue-category-group"
+    - "obj-feedback-note"
+    - "obj-submit-feedback-action"
+  feedback_states:
+    - "obj-feedback-validation"
+    - "obj-feedback-success"
+    - "obj-feedback-next-actions"
+    - "obj-feedback-state-controls"
+
+sections:
+  - id: "section-1"
+    name: "Mobile Shell and Result Context"
+    status: "complete"
+    completed_date: "2026-05-18"
+    object_ids:
+      - "obj-feedback-header"
+      - "obj-result-context"
+    acceptance_criteria:
+      - "Header and result visual load at mobile width."
+      - "Result type can switch between personal and try-on."
+  - id: "section-2"
+    name: "Inline Feedback Entry"
+    status: "complete"
+    completed_date: "2026-05-18"
+    object_ids:
+      - "obj-feedback-entry"
+    acceptance_criteria:
+      - "Entry is visible without a forced modal."
+      - "Tap expands the feedback panel."
+  - id: "section-3"
+    name: "Likeness and Judgment Choices"
+    status: "complete"
+    completed_date: "2026-05-18"
+    object_ids:
+      - "obj-likeness-choice-group"
+      - "obj-judgment-choice-group"
+    acceptance_criteria:
+      - "Single-select buttons capture likeness."
+      - "Single-select buttons capture judgment usefulness."
+  - id: "section-4"
+    name: "Dynamic Issue Tags and Category"
+    status: "complete"
+    completed_date: "2026-05-18"
+    object_ids:
+      - "obj-issue-tags"
+      - "obj-issue-category-group"
+    acceptance_criteria:
+      - "Personal result tags include face, hair, makeup, style, photo, and hard-to-judge signals."
+      - "Try-on result tags include reference, proportion, material, shoulder line, photo, and hard-to-judge signals."
+  - id: "section-5"
+    name: "Submission, Validation, and Thanks"
+    status: "complete"
+    completed_date: "2026-05-18"
+    object_ids:
+      - "obj-feedback-note"
+      - "obj-submit-feedback-action"
+      - "obj-feedback-validation"
+      - "obj-feedback-success"
+    acceptance_criteria:
+      - "Empty submission shows validation."
+      - "Valid submission logs structured feedback and shows thanks."
+  - id: "section-6"
+    name: "Next Actions and Prototype Controls"
+    status: "complete"
+    completed_date: "2026-05-18"
+    object_ids:
+      - "obj-feedback-next-actions"
+      - "obj-feedback-state-controls"
+    acceptance_criteria:
+      - "Submitted state offers continue and retry actions."
+      - "Prototype controls cover default, open, validation-error, submitting, submitted, and tryon-context states."
+
+javascript_functions:
+  initialization:
+    - "initDemoData()"
+    - "renderContext()"
+    - "renderFeedbackOptions()"
+  interactions:
+    - "openPanel()"
+    - "selectSingle(field, value)"
+    - "toggleTag(value)"
+    - "selectCategory(value)"
+    - "submitFeedback()"
+    - "applyPrototypeState(stateName)"
+  verification:
+    - "window.StyleAIFeedbackPrototype.getState()"
+    - "window.StyleAIFeedbackPrototype.applyPrototypeState(stateName)"
+
+navigation:
+  previous_page: "../01-xiaoyu-first-preview-Prototype/01.7-image-result.html"
+  next_page_success_personal: "../02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html"
+  retry_page_personal: "../01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html"
+  next_page_success_tryon: "../03-linman-tryon-decision-Prototype/03.6-history-collection.html"
+  retry_page_tryon: "../03-linman-tryon-decision-Prototype/03.3-tryon-setup.html"
+
+testing_checklist:
+  functionality:
+    - "[x] Feedback panel opens from inline entry"
+    - "[x] Likeness and judgment selections work"
+    - "[x] Issue tags toggle and remain selected"
+    - "[x] Context-specific tags render"
+    - "[x] Validation and submitted states work"
+    - "[x] No console errors"
+  mobile_testing:
+    - "[x] 375px no horizontal overflow"
+    - "[x] 393px no horizontal overflow"
+    - "[x] 428px no horizontal overflow"
+    - "[x] Tap targets 44px or larger"
+  code_quality:
+    - "[x] Required object IDs present"
+    - "[x] State controls available"
+    - "[x] Structured feedback payload logs to console"
+
+migration_todos:
+  - "Replace console submission with feedback API."
+  - "Attach source result ID from production result page route/state."
+  - "Use backend result type to choose quick issue tags."
+  - "Decide whether feedback submission updates next generation prompt or only analytics."
+
+definition_of_done:
+  - "Standalone local HTML prototype exists."
+  - "Work file and story file document scope."
+  - "Acceptance script passes."
+  - "393px screenshot captured."

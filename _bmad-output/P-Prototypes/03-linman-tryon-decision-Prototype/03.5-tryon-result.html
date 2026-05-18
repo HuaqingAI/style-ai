@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03.5 试穿结果 - Style AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              styleai: {
+                surface: '#111111',
+                mark: '#FAFAF7',
+                spark: '#7B52FA',
+                sparkLight: '#9D7AFF',
+                sparkCore: '#6D3DF7',
+                mint: '#9AE6C4',
+                amber: '#F2C86B',
+                rose: '#F2A7A0'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #111111;
+        letter-spacing: 0;
+      }
+
+      #app {
+        height: 100dvh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      button,
+      a,
+      textarea {
+        font: inherit;
+        letter-spacing: 0;
+      }
+
+      .tap-highlight {
+        -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+      }
+
+      .result-visual-frame {
+        background:
+          linear-gradient(180deg, rgb(250 250 247 / 0.07), rgb(250 250 247 / 0.025)),
+          #171717;
+      }
+
+      .result-image {
+        filter: saturate(1.02) contrast(1.04);
+      }
+
+      .soft-panel {
+        background: linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.032));
+        border: 1px solid rgb(255 255 255 / 0.1);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+    <main
+      id="app"
+      data-page="03.5-tryon-result"
+      data-state="default"
+      data-saved="false"
+      data-compared="false"
+      data-detail-open="false"
+      class="mx-auto w-full max-w-[428px] bg-[#111111] px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))] font-sans"
+    >
+      <header
+        data-object-id="obj-result-header"
+        class="flex h-12 items-center justify-between gap-3"
+        aria-label="试穿结果页面顶部"
+      >
+        <a
+          href="03.4-tryon-waiting.html"
+          aria-label="返回生成等待页"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-2xl leading-none text-[#FAFAF7] no-underline active:bg-white/10"
+        >
+          <span aria-hidden="true" class="-mt-0.5">‹</span>
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <img
+            src="../../E-Assets/brand-logo/style-ai-reversible-s-app-icon.svg"
+            alt=""
+            class="h-8 w-8 shrink-0 rounded-lg"
+            aria-hidden="true"
+          />
+          <div class="min-w-0 text-center">
+            <p class="truncate text-[15px] font-semibold leading-5 text-[#FAFAF7]">试穿结果</p>
+            <p class="truncate text-[11px] font-medium leading-4 text-white/45">03.5 推荐与谨慎点</p>
+          </div>
+        </div>
+
+        <a
+          href="03.1-tryon-entry.html"
+          aria-label="返回试穿入口"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-[11px] font-semibold text-white/68 no-underline active:bg-white/10"
+        >
+          入口
+        </a>
+      </header>
+
+      <section id="result-error-state" class="mt-5 hidden rounded-lg border border-[#F2A7A0]/26 bg-[#F2A7A0]/10 p-4" role="alert">
+        <p class="text-sm font-semibold leading-5 text-[#F6C4BF]">这次试穿结果暂时没有打开成功</p>
+        <p class="mt-1.5 text-xs leading-5 text-[#F6C4BF]/72">
+          可能是本地缓存或生成记录加载问题。本次失败不会重复扣额度，你可以重试打开或返回等待页。
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <button
+            id="result-error-retry-button"
+            type="button"
+            class="tap-highlight min-h-11 rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111] active:bg-white/82"
+          >
+            重试打开
+          </button>
+          <a
+            href="03.4-tryon-waiting.html"
+            class="tap-highlight flex min-h-11 items-center justify-center rounded-lg border border-white/10 px-3 text-sm font-semibold text-white/76 no-underline active:bg-white/10"
+          >
+            返回等待页
+          </a>
+        </div>
+      </section>
+
+      <div id="result-content">
+        <section id="result-hero" data-object-id="obj-result-hero" class="pt-6">
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-[13px] font-semibold text-[#9D7AFF]">结果已准备好</p>
+            <span id="result-save-chip" class="shrink-0 rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] font-semibold text-white/50">未保存</span>
+          </div>
+          <h1 class="mt-3 text-[28px] font-semibold leading-[1.14] text-[#FAFAF7]">
+            这件外套可以考虑。
+          </h1>
+          <p id="result-hero-copy" class="mt-3 text-[14px] leading-[23px] text-white/66">
+            整体比想象中更轻，肩线没有明显放宽。先看效果，再确认购买前的关键风险。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span id="result-credit-chip" class="rounded-full border border-[#9AE6C4]/22 bg-[#9AE6C4]/10 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF]">已扣 1 个额度</span>
+            <span id="result-tone-chip" class="rounded-full border border-[#9D7AFF]/28 bg-[#9D7AFF]/12 px-2.5 py-1 text-[11px] font-semibold text-[#D8CEFF]">偏适合</span>
+          </div>
+        </section>
+
+        <section
+          id="result-viewer"
+          data-object-id="obj-result-viewer"
+          class="pt-5"
+          aria-label="本人试穿效果"
+        >
+          <article class="result-visual-frame overflow-hidden rounded-lg border border-white/10">
+            <div class="relative aspect-[4/5] overflow-hidden bg-[#171717]">
+              <img
+                id="result-preview-image"
+                src="assets/tryon-result-cream-jacket-preview.svg"
+                alt="林曼穿上奶油白短外套后的试穿预览"
+                class="result-image h-full w-full object-cover"
+              />
+              <div class="absolute left-3 top-3 rounded-full bg-black/42 px-2.5 py-1 text-[11px] font-semibold text-white/78 backdrop-blur">
+                本人形象预览
+              </div>
+              <div class="absolute right-3 top-3 rounded-full bg-[#9AE6C4]/16 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF] backdrop-blur">
+                可用于判断
+              </div>
+              <div class="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-black/46 px-3 py-2 backdrop-blur">
+                <div class="flex items-center justify-between gap-3">
+                  <span class="min-w-0 text-xs font-semibold leading-5 text-white/86">奶油白短外套</span>
+                  <span class="shrink-0 text-[11px] font-medium text-white/48">通勤/约会</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section
+          id="result-reference-summary"
+          data-object-id="obj-result-reference-summary"
+          class="pt-4"
+          aria-label="参考对象摘要"
+        >
+          <article class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-white/44">本次参考对象</p>
+                <h2 id="result-reference-title" class="mt-2 text-base font-semibold leading-6 text-[#FAFAF7]">奶油白短外套</h2>
+                <p id="result-reference-source" class="mt-1 text-xs leading-5 text-white/52">电商截图 · 今晚下单前想确认</p>
+              </div>
+              <a href="03.2-import-reference.html" class="tap-highlight flex min-h-11 shrink-0 items-center rounded-full border border-white/10 px-3 text-xs font-semibold text-white/66 no-underline active:bg-white/10">换图</a>
+            </div>
+            <p id="result-decision-question" class="mt-3 rounded-md border border-white/10 bg-black/18 px-3 py-2 text-xs leading-5 text-white/62">
+              这件外套会不会显得肩宽，适不适合通勤约会两用？
+            </p>
+          </article>
+        </section>
+
+        <section
+          id="result-fit-summary"
+          data-object-id="obj-result-fit-summary"
+          class="pt-4"
+          aria-label="推荐与谨慎总结"
+        >
+          <article class="soft-panel rounded-lg p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-[#D8CEFF]">推荐结论</p>
+                <h2 id="result-recommendation-label" class="mt-2 text-lg font-semibold leading-6 text-[#FAFAF7]">可以考虑，下单前确认肩宽和内搭厚度</h2>
+              </div>
+              <span class="shrink-0 rounded-full bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF]">偏适合</span>
+            </div>
+
+            <div class="mt-4 rounded-lg border border-[#9AE6C4]/18 bg-[#9AE6C4]/8 p-3">
+              <p class="text-xs font-semibold text-[#C7F5DF]">为什么适合</p>
+              <ul id="result-reason-list" class="mt-2 space-y-2 text-xs leading-5 text-[#C7F5DF]/78">
+                <li>奶油白能提亮上半身，和林曼常用通勤妆感比较协调。</li>
+                <li>短外套长度停在高腰附近，能保留利落感，不会把比例压低。</li>
+              </ul>
+            </div>
+
+            <div class="mt-3 rounded-lg border border-[#F2C86B]/20 bg-[#F2C86B]/9 p-3">
+              <p class="text-xs font-semibold text-[#F8DF9A]">谨慎点</p>
+              <p id="result-caution-note" class="mt-2 text-xs leading-5 text-[#F8DF9A]/78">
+                肩部垫感如果比参考图更厚，实物可能会显得更硬；下单前优先看肩宽和面料挺度。
+              </p>
+            </div>
+
+            <div class="mt-3 rounded-lg border border-white/10 bg-black/16 p-3">
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-xs font-semibold text-white/72">购买前检查</p>
+                <button
+                  id="result-detail-toggle"
+                  type="button"
+                  class="tap-highlight min-h-11 rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/62 active:bg-white/10"
+                >
+                  展开
+                </button>
+              </div>
+              <ul id="result-check-list" class="mt-2 space-y-2 text-xs leading-5 text-white/58">
+                <li>确认肩宽不要比常穿外套多出 2cm 以上。</li>
+                <li>选择薄内搭或垂顺衬衫，避免领口和肩部同时堆量。</li>
+              </ul>
+              <div id="result-detail-panel" class="mt-3 hidden border-t border-white/10 pt-3">
+                <p class="text-xs font-semibold text-white/72">更多判断说明</p>
+                <ul id="result-detail-list" class="mt-2 space-y-2 text-xs leading-5 text-white/52">
+                  <li>通勤场景：适合搭配直筒裤或半裙，整体干净但不会太正式。</li>
+                  <li>约会场景：建议用小面积亮色配饰，不需要再叠很重的项链。</li>
+                  <li>风险点：如果实物颜色偏黄或面料太厚，可能削弱这次预览里的轻盈感。</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section
+          id="result-judgment-feedback"
+          data-object-id="obj-result-judgment-feedback"
+          class="pt-4"
+          aria-label="轻量判断反馈"
+        >
+          <article class="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">这张结果能帮你判断吗？</p>
+                <p class="mt-1 text-xs leading-5 text-white/48">轻点记录，不会打断后续操作。</p>
+              </div>
+              <span id="result-feedback-chip" class="shrink-0 rounded-full bg-white/[0.06] px-2.5 py-1 text-[11px] font-semibold text-white/46">未记录</span>
+            </div>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <button type="button" class="judgment-choice tap-highlight min-h-11 rounded-lg border border-white/10 px-3 text-xs font-semibold text-white/68 active:bg-white/10" data-field="likeness" data-value="looks-like-me">像我</button>
+              <button type="button" class="judgment-choice tap-highlight min-h-11 rounded-lg border border-white/10 px-3 text-xs font-semibold text-white/68 active:bg-white/10" data-field="likeness" data-value="not-quite">不太像</button>
+              <button type="button" class="judgment-choice tap-highlight min-h-11 rounded-lg border border-white/10 px-3 text-xs font-semibold text-white/68 active:bg-white/10" data-field="useful" data-value="useful">能判断</button>
+              <button type="button" class="judgment-choice tap-highlight min-h-11 rounded-lg border border-white/10 px-3 text-xs font-semibold text-white/68 active:bg-white/10" data-field="useful" data-value="need-more">还要更多图</button>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <section
+        id="result-next-actions"
+        data-object-id="obj-result-next-actions"
+        class="sticky bottom-0 -mx-5 mt-5 border-t border-white/10 bg-[#111111]/95 px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-3 backdrop-blur"
+        aria-label="下一步动作"
+      >
+        <p id="result-compare-note" class="mb-2 hidden rounded-lg border border-[#9AE6C4]/20 bg-[#9AE6C4]/10 px-3 py-2 text-xs leading-5 text-[#C7F5DF]/78">
+          已加入对比。再次点击“查看对比”可进入 03.6 历史/收藏页。
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <button
+            id="result-save-button"
+            type="button"
+            class="tap-highlight flex min-h-12 items-center justify-center rounded-lg bg-[#FAFAF7] px-3 text-sm font-semibold text-[#111111] active:bg-white/82"
+          >
+            保存结果
+          </button>
+          <button
+            id="result-compare-button"
+            type="button"
+            class="tap-highlight flex min-h-12 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm font-semibold text-white/72 active:bg-white/10"
+          >
+            加入对比
+          </button>
+          <a
+            id="result-new-reference-button"
+            href="03.2-import-reference.html"
+            class="tap-highlight flex min-h-11 items-center justify-center rounded-lg border border-white/10 bg-white/[0.025] px-3 text-xs font-semibold text-white/62 no-underline active:bg-white/10"
+          >
+            再试一个参考
+          </a>
+          <a
+            id="result-credit-button"
+            href="03.7-credit-purchase.html"
+            class="tap-highlight flex min-h-11 items-center justify-center rounded-lg border border-[#9D7AFF]/22 bg-[#9D7AFF]/10 px-3 text-xs font-semibold text-[#D8CEFF] active:bg-[#9D7AFF]/16"
+          >
+            查看额度方案
+          </a>
+        </div>
+      </section>
+
+      <section
+        id="result-state-controls"
+        data-object-id="obj-result-state-controls"
+        class="pt-4"
+        aria-label="原型状态控制"
+      >
+        <p class="mb-2 text-xs font-semibold text-white/44">原型状态</p>
+        <div class="grid grid-cols-5 gap-2">
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="default">默认</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="saved">已保存</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="compared">已对比</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="detail">详情</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-1 py-2 text-[11px] font-semibold text-white/62" data-state="load-error">错误</button>
+        </div>
+      </section>
+
+      <div
+        id="result-toast"
+        class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-50 hidden w-[calc(100%-40px)] max-w-[388px] -translate-x-1/2 rounded-lg border border-white/10 bg-[#FAFAF7] px-4 py-3 text-center text-xs font-semibold leading-5 text-[#111111] shadow-2xl"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </main>
+
+    <script>
+      const app = document.getElementById('app');
+      let toastTimer = 0;
+      let saved = false;
+      let compared = false;
+      let detailOpen = false;
+      const judgment = {
+        likeness: '',
+        useful: ''
+      };
+
+      const fallbackData = {
+        tryOnResult: {
+          id: 'tryon-result-linman-cream-jacket-001',
+          generationId: 'tryon-linman-cream-jacket-001',
+          status: 'ready',
+          previewImageUrl: 'assets/tryon-result-cream-jacket-preview.svg',
+          referenceTitle: '奶油白短外套',
+          referenceSource: '电商截图',
+          decisionQuestion: '这件外套会不会显得肩宽，适不适合通勤约会两用？',
+          urgency: '今晚下单前想确认',
+          creditCharged: 1,
+          recommendationTone: '偏适合',
+          recommendationLabel: '可以考虑，下单前确认肩宽和内搭厚度',
+          headline: '整体比想象中更轻，肩线没有明显放宽。',
+          reasonBullets: [
+            '奶油白能提亮上半身，和林曼常用通勤妆感比较协调。',
+            '短外套长度停在高腰附近，能保留利落感，不会把比例压低。'
+          ],
+          cautionNote: '肩部垫感如果比参考图更厚，实物可能会显得更硬；下单前优先看肩宽和面料挺度。',
+          purchaseChecks: [
+            '确认肩宽不要比常穿外套多出 2cm 以上。',
+            '选择薄内搭或垂顺衬衫，避免领口和肩部同时堆量。'
+          ],
+          detailNotes: [
+            '通勤场景：适合搭配直筒裤或半裙，整体干净但不会太正式。',
+            '约会场景：建议用小面积亮色配饰，不需要再叠很重的项链。',
+            '风险点：如果实物颜色偏黄或面料太厚，可能削弱这次预览里的轻盈感。'
+          ]
+        }
+      };
+
+      function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+        }
+      }
+
+      function showResultToast(message) {
+        const toast = document.getElementById('result-toast');
+        if (!toast) {
+          return;
+        }
+
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.remove('hidden');
+        toastTimer = window.setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2600);
+      }
+
+      function renderList(id, items) {
+        const list = document.getElementById(id);
+        if (!list) {
+          return;
+        }
+
+        list.innerHTML = '';
+        items.forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          list.appendChild(li);
+        });
+      }
+
+      function renderTryOnResult(data) {
+        const result = {
+          ...fallbackData.tryOnResult,
+          ...(data.tryOnResult || {})
+        };
+        const preview = document.getElementById('result-preview-image');
+
+        if (preview) {
+          preview.src = result.previewImageUrl || fallbackData.tryOnResult.previewImageUrl;
+          preview.alt = `林曼穿上${result.referenceTitle}后的试穿预览`;
+        }
+
+        setText('result-hero-copy', `${result.headline} 先看效果，再确认购买前的关键风险。`);
+        setText('result-credit-chip', `已扣 ${result.creditCharged} 个额度`);
+        setText('result-tone-chip', result.recommendationTone);
+        setText('result-reference-title', result.referenceTitle);
+        setText('result-reference-source', `${result.referenceSource} · ${result.urgency}`);
+        setText('result-decision-question', result.decisionQuestion);
+        setText('result-recommendation-label', result.recommendationLabel);
+        setText('result-caution-note', result.cautionNote);
+        renderList('result-reason-list', result.reasonBullets);
+        renderList('result-check-list', result.purchaseChecks);
+        renderList('result-detail-list', result.detailNotes);
+      }
+
+      async function loadTryOnResultData() {
+        try {
+          const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error(`demo data request failed: ${response.status}`);
+          }
+          const loaded = await response.json();
+          renderTryOnResult({
+            ...fallbackData,
+            ...loaded,
+            tryOnResult: {
+              ...fallbackData.tryOnResult,
+              ...(loaded.tryOnResult || {})
+            }
+          });
+        } catch (error) {
+          renderTryOnResult(fallbackData);
+          console.warn('[Style AI Prototype] using fallback try-on result data', error);
+        }
+      }
+
+      function setSavedVisualState() {
+        const chip = document.getElementById('result-save-chip');
+        const saveButton = document.getElementById('result-save-button');
+        const compareButton = document.getElementById('result-compare-button');
+        if (!chip || !saveButton || !compareButton) {
+          return;
+        }
+
+        chip.textContent = saved ? '已保存' : '未保存';
+        chip.className = saved
+          ? 'shrink-0 rounded-full border border-[#9AE6C4]/22 bg-[#9AE6C4]/10 px-2.5 py-1 text-[11px] font-semibold text-[#C7F5DF]'
+          : 'shrink-0 rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] font-semibold text-white/50';
+        saveButton.textContent = saved ? '查看历史' : '保存结果';
+        compareButton.textContent = compared ? '查看对比' : '加入对比';
+      }
+
+      function renderResultState(state) {
+        app.dataset.saved = saved ? 'true' : 'false';
+        app.dataset.compared = compared ? 'true' : 'false';
+        app.dataset.detailOpen = detailOpen ? 'true' : 'false';
+
+        document.getElementById('result-error-state').classList.toggle('hidden', state !== 'load-error');
+        document.getElementById('result-content').classList.toggle('hidden', state === 'load-error');
+        document.getElementById('result-next-actions').classList.toggle('hidden', state === 'load-error');
+        document.getElementById('result-detail-panel').classList.toggle('hidden', !detailOpen);
+        document.getElementById('result-compare-note').classList.toggle('hidden', !compared);
+        setText('result-detail-toggle', detailOpen ? '收起' : '展开');
+        setSavedVisualState();
+
+        document.querySelectorAll('.state-control').forEach((button) => {
+          const active = button.dataset.state === state;
+          button.classList.toggle('border-[#9D7AFF]/50', active);
+          button.classList.toggle('bg-[#9D7AFF]/12', active);
+          button.classList.toggle('text-[#D8CEFF]', active);
+        });
+
+        console.info('[Style AI Prototype] 03.5 result state changed', {
+          state,
+          saved,
+          compared,
+          detailOpen,
+          judgment
+        });
+      }
+
+      function setResultState(state) {
+        const allowed = ['default', 'saved', 'compared', 'detail', 'load-error'];
+        const normalized = allowed.includes(state) ? state : 'default';
+        app.dataset.state = normalized;
+
+        saved = normalized === 'saved' || normalized === 'compared';
+        compared = normalized === 'compared';
+        detailOpen = normalized === 'detail';
+
+        renderResultState(normalized);
+      }
+
+      function openHistoryCollection(mode) {
+        window.location.href = `03.6-history-collection.html?mode=${encodeURIComponent(mode)}`;
+      }
+
+      function saveResult() {
+        if (saved) {
+          openHistoryCollection('saved');
+          return;
+        }
+
+        saved = true;
+        app.dataset.state = 'saved';
+        renderResultState('saved');
+        showResultToast('已保存到历史结果。再次点击可查看历史/收藏。');
+      }
+
+      function addToCompare() {
+        if (compared) {
+          openHistoryCollection('compare');
+          return;
+        }
+
+        saved = true;
+        compared = true;
+        app.dataset.state = 'compared';
+        renderResultState('compared');
+        showResultToast('已加入对比。再次点击可进入 03.6 历史/收藏页。');
+      }
+
+      function submitJudgment(field, value) {
+        judgment[field] = value;
+        document.querySelectorAll(`.judgment-choice[data-field="${field}"]`).forEach((button) => {
+          const active = button.dataset.value === value;
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+          button.className = active
+            ? 'judgment-choice tap-highlight min-h-11 rounded-lg border border-[#9AE6C4]/32 bg-[#9AE6C4]/10 px-3 text-xs font-semibold text-[#C7F5DF]'
+            : 'judgment-choice tap-highlight min-h-11 rounded-lg border border-white/10 px-3 text-xs font-semibold text-white/68 active:bg-white/10';
+        });
+        setText('result-feedback-chip', judgment.likeness || judgment.useful ? '已记录' : '未记录');
+        showResultToast('已记录这次判断。');
+      }
+
+      function toggleDetail() {
+        detailOpen = !detailOpen;
+        app.dataset.state = detailOpen ? 'detail' : 'default';
+        renderResultState(detailOpen ? 'detail' : 'default');
+      }
+
+      document.getElementById('result-save-button').addEventListener('click', saveResult);
+      document.getElementById('result-compare-button').addEventListener('click', addToCompare);
+      document.getElementById('result-detail-toggle').addEventListener('click', toggleDetail);
+      document.getElementById('result-error-retry-button').addEventListener('click', () => {
+        setResultState('default');
+        showResultToast('已重新打开结果。');
+      });
+
+      document.querySelectorAll('.judgment-choice').forEach((button) => {
+        button.addEventListener('click', () => submitJudgment(button.dataset.field, button.dataset.value));
+      });
+
+      document.querySelectorAll('.state-control').forEach((button) => {
+        button.addEventListener('click', () => setResultState(button.dataset.state));
+      });
+
+      window.__STYLE_AI_PROTOTYPE__ = {
+        scenario: '03-linman-tryon-decision',
+        page: '03.5-tryon-result',
+        states: ['default', 'saved', 'compared', 'detail', 'load-error'],
+        setResultState,
+        saveResult,
+        addToCompare,
+        submitJudgment
+      };
+
+      loadTryOnResultData().then(() => {
+        setResultState('default');
+      });
+    </script>
+  </body>
+</html>

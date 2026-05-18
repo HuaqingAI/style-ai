@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "project": "style-ai",
+    "scenario": "01-xiaoyu-first-preview",
+    "prototype": "DD-001-first-real-preview",
+    "language": "zh-CN",
+    "createdAt": "2026-05-13T00:00:00.000+08:00",
+    "comment": "Demo data for the first real preview prototype. Edit this file to change invite code, quota, user state, or generated result fixtures."
+  },
+  "currentUser": {
+    "id": "demo-user-xiaoyu-001",
+    "displayName": "小雨",
+    "phoneNumber": "13800000001",
+    "email": "",
+    "cityTier": "一线或新一线城市",
+    "persona": "daily-beauty-beginner",
+    "inviteCode": {
+      "code": "SEED-XIAOYU-001",
+      "issuedBy": "Sue",
+      "status": "active",
+      "expiresAt": "2026-06-30T23:59:59.000+08:00"
+    },
+    "googleLogin": {
+      "enabled": true,
+      "provider": "google.com",
+      "email": ""
+    },
+    "accountState": {
+      "isLoggedIn": false,
+      "isSeedUser": true,
+      "hasPersistentProfile": false,
+      "hasUploadedPhoto": false,
+      "hasGenerationHistory": false
+    }
+  },
+  "quota": {
+    "personalImageGenerationsTotal": 1,
+    "personalImageGenerationsUsed": 0,
+    "tryOnGenerationsTotal": 0,
+    "tryOnGenerationsUsed": 0,
+    "note": "首次体验提供 1 次个人形象生成额度。"
+  },
+  "photoSession": {
+    "id": "demo-photo-session-001",
+    "source": "none",
+    "uploadedImageUrl": "",
+    "qualityCheck": {
+      "status": "not_started",
+      "faceVisible": null,
+      "lighting": null,
+      "recommendation": ""
+    },
+    "privacyBoundary": {
+      "temporaryPhotoUse": true,
+      "saveAsPersistentProfile": false,
+      "requiresExplicitSaveAfterResult": true
+    }
+  },
+  "generation": {
+    "id": "demo-generation-001",
+    "status": "not_started",
+    "selectedStyleDirection": "",
+    "progress": 0,
+    "estimatedSeconds": 45,
+    "result": {
+      "imageUrl": "",
+      "previewImageUrl": "assets/image-result-atlas-preview.png",
+      "analysisAtlasUrl": "assets/image-result-ai-hair-analysis-long.png",
+      "detailTileUrls": [
+        "assets/image-result-atlas-core.png",
+        "assets/image-result-atlas-length.png",
+        "assets/image-result-atlas-color.png",
+        "assets/image-result-atlas-bangs.png"
+      ],
+      "cropMetadata": {
+        "atlasWidth": 720,
+        "atlasHeight": 2545,
+        "preview": { "x": 24, "y": 290, "width": 245, "height": 340 },
+        "core": { "x": 24, "y": 680, "width": 672, "height": 385 },
+        "length": { "x": 24, "y": 1100, "width": 672, "height": 265 },
+        "bangs": { "x": 24, "y": 1388, "width": 672, "height": 470 },
+        "color": { "x": 24, "y": 2178, "width": 672, "height": 330 }
+      },
+      "recommendedDirection": "中发层次 + 法式八字，变化明显但不突兀。",
+      "styleOptions": [
+        {
+          "id": "mid_layers",
+          "rank": 1,
+          "label": "中发层次",
+          "subtitle": "推荐",
+          "badge": "最稳",
+          "previewImageUrl": "assets/image-result-atlas-preview.png",
+          "reason": "保留脸型重心，增加轻盈层次，变化明显但不突兀。",
+          "caution": "长度不要一下剪太短，先从锁骨附近开始更稳。"
+        },
+        {
+          "id": "french_curtain",
+          "rank": 2,
+          "label": "法式八字",
+          "subtitle": "推荐",
+          "badge": "修饰",
+          "previewImageUrl": "assets/image-result-atlas-preview.png",
+          "reason": "能柔和额头和太阳穴区域，日常感比厚刘海更轻。",
+          "caution": "需要保留空气感，避免剪成厚重齐刘海。"
+        },
+        {
+          "id": "soft_texture",
+          "rank": 3,
+          "label": "轻纹理",
+          "subtitle": "可尝试",
+          "badge": "自然",
+          "previewImageUrl": "assets/image-result-atlas-preview.png",
+          "reason": "让发量和轮廓更有变化，但不改变整体气质。",
+          "caution": "卷度不要太密，太强会显得不够清爽。"
+        }
+      ],
+      "avoidOptions": [
+        {
+          "id": "very_short",
+          "label": "过短",
+          "reason": "变化幅度太大，容易让五官重心显得更硬，不适合作为第一次尝试。"
+        },
+        {
+          "id": "heavy_bangs",
+          "label": "厚重齐刘海",
+          "reason": "会压住额头和上半脸，整体更闷，也不利于判断真实轻盈感。"
+        },
+        {
+          "id": "flat_long",
+          "label": "贴头长发",
+          "reason": "容易贴住脸侧，让整体轮廓不够精神，和本次清爽方向相反。"
+        }
+      ],
+      "reasonBullets": [
+        "保留你的五官重心，只把发型层次往更轻盈的方向推进。",
+        "中发长度比短发更稳，日常变化明显但不用一次改太大。"
+      ],
+      "likenessConfidenceLabel": "可用于判断",
+      "recommendationReason": "保留了你本身的脸型和五官重心，只把发型层次、肤色明亮度和整体利落感往日常可尝试的方向推进。",
+      "cautionNote": "可以先避开过短长度和厚重齐刘海，容易让整体显得更闷。"
+    }
+  },
+  "copy": {
+    "loginBoundaryNote": "登录用于额度、历史和账号管理。是否保存为常用形象，会在生成后由你单独决定。",
+    "firstPreviewPromise": "先看看自己适不适合，再决定要不要继续探索。",
+    "quotaLabel": "首次体验包含 1 次个人形象生成额度。"
+  }
+}

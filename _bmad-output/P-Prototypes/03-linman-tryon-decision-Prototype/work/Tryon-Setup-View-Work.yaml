@@ -1,0 +1,137 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: Tryon Setup View
+  source_step: 03.3-tryon-setup
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.3-tryon-setup/03.3-tryon-setup.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.3-tryon-setup.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  spec_status: prototype-draft
+
+view_summary:
+  purpose: 林曼确认参考对象、本人形象和本次额度消耗后开始生成。
+  entry_context: 她已经导入参考图，正处于生成前最后确认。
+  exit_action: 点击开始生成，进入 03.4 tryon-waiting。
+  user_state:
+    hope: 少配置，快速确认后开始生成。
+    worry: 选错图、本人形象不合适、额度被误扣。
+
+object_inventory:
+  - id: obj-setup-header
+    name: 页面顶部导航
+    role: 标识生成前设置确认，并提供返回 03.2 的路径。
+  - id: obj-setup-hero
+    name: 设置说明区
+    role: 提醒用户确认参考图、本人形象和额度。
+  - id: obj-setup-reference-summary
+    name: 参考图摘要
+    role: 展示本次导入对象、来源和决策问题。
+  - id: obj-setup-profile-card
+    name: 本人形象卡
+    role: 展示常用本人形象可用状态，支持缺失状态。
+  - id: obj-setup-intent-control
+    name: 试穿意图选择
+    role: 支持衣服、发型、妆容三类意图切换。
+  - id: obj-setup-credit-confirmation
+    name: 额度确认
+    role: 展示余额、消耗和失败预期。
+  - id: obj-start-generation-action
+    name: 开始生成主行动
+    role: 默认进入 03.4；异常状态给出反馈。
+  - id: obj-setup-state-controls
+    name: 原型状态控制
+    role: 支持评审 default、missing-profile、low-credit、submitting、submit-error。
+
+functional_requirements:
+  - 默认状态主行动指向 03.4-tryon-waiting.html。
+  - missing-profile 状态禁用主行动并提示重新选择本人照片。
+  - low-credit 状态禁用主行动并提示余额不足。
+  - submitting 状态展示提交中，避免重复点击。
+  - submit-error 状态提供重试方式。
+  - 移动端 375/393/428px 宽度无水平滚动。
+
+sections:
+  - id: 1
+    name: Setup Shell & Context
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 15
+    objects:
+      - obj-setup-header
+      - obj-setup-hero
+    acceptance_criteria:
+      - 页面清楚标识为开始生成前确认。
+      - 不重复解释完整流程，只聚焦最后确认。
+    story_file: stories/03.3.1-tryon-setup-full-page.md
+
+  - id: 2
+    name: Reference & Profile Confirmation
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-setup-reference-summary
+      - obj-setup-profile-card
+    acceptance_criteria:
+      - 展示参考图标题、来源、决策问题。
+      - 展示常用本人形象状态，并支持 missing-profile 文案。
+    story_file: stories/03.3.1-tryon-setup-full-page.md
+
+  - id: 3
+    name: Intent & Credit Confirmation
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-setup-intent-control
+      - obj-setup-credit-confirmation
+    acceptance_criteria:
+      - 衣服、发型、妆容意图均可切换。
+      - 明确展示余额 6 和本次消耗 1。
+    story_file: stories/03.3.1-tryon-setup-full-page.md
+
+  - id: 4
+    name: Start Action & States
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-start-generation-action
+      - obj-setup-state-controls
+    acceptance_criteria:
+      - default 状态可进入 03.4。
+      - 五种状态均可通过原型控制切换。
+      - 异常状态不误导用户可以开始生成。
+    story_file: stories/03.3.1-tryon-setup-full-page.md
+
+verification:
+  static_checks: passed
+  browser_automation: passed-at-375-393-428
+  user_review: pending
+
+implementation_rules:
+  - This page is a prototype draft because 03.3 did not previously have a full approved page spec.
+  - Do not mark as final-approved until Sue reviews the draft spec and prototype behavior.
+  - Keep 03.4 route as a forward link placeholder until 03.4 is built.
+
+progress:
+  current_section: 4
+  completed_sections: 4
+  total_sections: 4
+  total_estimate_minutes: 90

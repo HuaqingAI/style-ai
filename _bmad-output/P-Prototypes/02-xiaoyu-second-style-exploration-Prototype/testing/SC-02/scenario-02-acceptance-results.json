@@ -1,0 +1,1908 @@
+{
+  "startedAt": "2026-05-18T06:25:15.639Z",
+  "baseUrl": "http://127.0.0.1:17868",
+  "happyPath": [
+    {
+      "id": "HP-ENTRY",
+      "pass": true,
+      "expected": "01.7 exposes Scenario 02 entry",
+      "actual": {
+        "entry": 1
+      }
+    },
+    {
+      "id": "HP-ENTRY-NAV",
+      "pass": true,
+      "expected": "entry navigates to 02.1",
+      "actual": {
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html"
+      }
+    },
+    {
+      "id": "HP-02.1-OPTIONS",
+      "pass": true,
+      "expected": "02.1 renders three style options",
+      "actual": {
+        "opt": 3
+      }
+    },
+    {
+      "id": "HP-02.1-SELECT",
+      "pass": true,
+      "expected": "style option switch updates active summary",
+      "actual": {
+        "pressed": "true",
+        "title": "明显短一点"
+      }
+    },
+    {
+      "id": "HP-02.1-TO-02.2",
+      "pass": false,
+      "expected": "02.1 primary routes to 02.2",
+      "actual": {
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html"
+      }
+    },
+    {
+      "id": "HP-02.2-CHOICES",
+      "pass": false,
+      "expected": "02.2 renders two save choices",
+      "actual": {
+        "choices": 3
+      }
+    },
+    {
+      "id": "HP-02.2-SELECT",
+      "pass": false,
+      "expected": "save choice updates primary action",
+      "actual": {
+        "button": "保存第一次结果",
+        "pressed": null
+      }
+    },
+    {
+      "id": "HP-02.2-SAVE",
+      "pass": false,
+      "expected": "save reaches saved state and offers 02.3",
+      "actual": {
+        "button": "保存第一次结果，继续",
+        "state": "saved"
+      }
+    },
+    {
+      "id": "HP-02.2-TO-02.3",
+      "pass": true,
+      "expected": "02.2 saved action routes to 02.3",
+      "actual": {
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.3-save-profile-prompt.html"
+      }
+    },
+    {
+      "id": "HP-02.3-SAVE-PROFILE",
+      "pass": true,
+      "expected": "save profile reaches end state",
+      "actual": {
+        "button": "返回首页",
+        "feedback": "已保存为常用形象",
+        "state": "profile-saved"
+      }
+    },
+    {
+      "id": "HP-02.3-HOME",
+      "pass": true,
+      "expected": "final action returns home",
+      "actual": {
+        "url": "http://127.0.0.1:17868/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html"
+      }
+    }
+  ],
+  "states": [
+    {
+      "page": "02.1",
+      "state": "default",
+      "pass": true,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": false,
+        "primaryText": "开始第二次生成",
+        "skipDisabled": null,
+        "state": "default"
+      }
+    },
+    {
+      "page": "02.1",
+      "state": "low-credit",
+      "pass": true,
+      "actual": {
+        "alertVisible": true,
+        "primaryDisabled": true,
+        "primaryText": "额度不足，暂不能生成",
+        "skipDisabled": null,
+        "state": "low-credit"
+      }
+    },
+    {
+      "page": "02.1",
+      "state": "submitting",
+      "pass": true,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": true,
+        "primaryText": "正在开始生成...",
+        "skipDisabled": null,
+        "state": "submitting"
+      }
+    },
+    {
+      "page": "02.1",
+      "state": "submit-error",
+      "pass": true,
+      "actual": {
+        "alertVisible": true,
+        "primaryDisabled": false,
+        "primaryText": "重新开始第二次生成",
+        "skipDisabled": null,
+        "state": "submit-error"
+      }
+    },
+    {
+      "page": "02.2",
+      "state": "default",
+      "pass": true,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": false,
+        "primaryText": "保存第二次结果",
+        "skipDisabled": null,
+        "state": "default"
+      }
+    },
+    {
+      "page": "02.2",
+      "state": "saving",
+      "pass": true,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": true,
+        "primaryText": "正在保存第二次结果...",
+        "skipDisabled": null,
+        "state": "saving"
+      }
+    },
+    {
+      "page": "02.2",
+      "state": "saved",
+      "pass": false,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": false,
+        "primaryText": "保存第二次结果，继续",
+        "skipDisabled": null,
+        "state": "saved"
+      }
+    },
+    {
+      "page": "02.2",
+      "state": "save-error",
+      "pass": true,
+      "actual": {
+        "alertVisible": true,
+        "primaryDisabled": false,
+        "primaryText": "重新保存第二次结果",
+        "skipDisabled": null,
+        "state": "save-error"
+      }
+    },
+    {
+      "page": "02.3",
+      "state": "default",
+      "pass": true,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": false,
+        "primaryText": "保存为常用形象",
+        "skipDisabled": false,
+        "state": "default"
+      }
+    },
+    {
+      "page": "02.3",
+      "state": "saving-profile",
+      "pass": true,
+      "actual": {
+        "alertVisible": false,
+        "primaryDisabled": true,
+        "primaryText": "正在保存常用形象...",
+        "skipDisabled": true,
+        "state": "saving-profile"
+      }
+    },
+    {
+      "page": "02.3",
+      "state": "profile-saved",
+      "pass": true,
+      "actual": {
+        "alertVisible": true,
+        "primaryDisabled": false,
+        "primaryText": "返回首页",
+        "skipDisabled": true,
+        "state": "profile-saved"
+      }
+    },
+    {
+      "page": "02.3",
+      "state": "skipped",
+      "pass": true,
+      "actual": {
+        "alertVisible": true,
+        "primaryDisabled": false,
+        "primaryText": "返回首页",
+        "skipDisabled": true,
+        "state": "skipped"
+      }
+    },
+    {
+      "page": "02.3",
+      "state": "save-error",
+      "pass": true,
+      "actual": {
+        "alertVisible": true,
+        "primaryDisabled": false,
+        "primaryText": "重新保存为常用形象",
+        "skipDisabled": false,
+        "state": "save-error"
+      }
+    },
+    {
+      "page": "02.3",
+      "state": "skip-action",
+      "pass": true,
+      "actual": {
+        "button": "返回首页",
+        "state": "skipped"
+      }
+    }
+  ],
+  "viewportChecks": [
+    {
+      "page": "02.1",
+      "viewport": {
+        "name": "iPhone SE",
+        "width": 375,
+        "height": 667
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨第一次生成的中发层次结果预览",
+            "complete": true,
+            "id": "second-style-first-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.1",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "second-style-header",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 1.3333333730697632,
+            "id": "second-style-first-result-context",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 594,
+            "id": "second-style-options",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 538,
+            "id": "second-style-option-list",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 372.8333435058594,
+            "id": "second-style-difference-summary",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 166.6666717529297,
+            "id": "second-style-credit-notice",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "second-style-primary-action",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 45.333335876464844,
+            "id": "second-style-back-to-result",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 165.33334350585938,
+            "id": "second-style-state-controls",
+            "visible": true,
+            "width": 335.3333435058594
+          }
+        ],
+        "scroll": {
+          "app": 375,
+          "appClientHeight": 667,
+          "appScrollHeight": 1748,
+          "body": 375,
+          "client": 375,
+          "doc": 375
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "首页",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "low-credit",
+            "reviewer": true,
+            "text": "额度不足",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "submitting",
+            "reviewer": true,
+            "text": "提交中",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "submit-error",
+            "reviewer": true,
+            "text": "提交失败",
+            "tooSmall": true,
+            "width": 147
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.1 Second Style Exploration - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.1",
+      "viewport": {
+        "name": "iPhone 14 Pro",
+        "width": 393,
+        "height": 852
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨第一次生成的中发层次结果预览",
+            "complete": true,
+            "id": "second-style-first-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.1",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "second-style-header",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 1.3333333730697632,
+            "id": "second-style-first-result-context",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 594,
+            "id": "second-style-options",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 538,
+            "id": "second-style-option-list",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 352.8333435058594,
+            "id": "second-style-difference-summary",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 166.6666717529297,
+            "id": "second-style-credit-notice",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "second-style-primary-action",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 45.333335876464844,
+            "id": "second-style-back-to-result",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 165.33334350585938,
+            "id": "second-style-state-controls",
+            "visible": true,
+            "width": 353.3333435058594
+          }
+        ],
+        "scroll": {
+          "app": 393,
+          "appClientHeight": 852,
+          "appScrollHeight": 1728,
+          "body": 393,
+          "client": 393,
+          "doc": 393
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "首页",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "low-credit",
+            "reviewer": true,
+            "text": "额度不足",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "submitting",
+            "reviewer": true,
+            "text": "提交中",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "submit-error",
+            "reviewer": true,
+            "text": "提交失败",
+            "tooSmall": true,
+            "width": 156
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.1 Second Style Exploration - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.1",
+      "viewport": {
+        "name": "iPhone 14 Pro Max",
+        "width": 428,
+        "height": 926
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨第一次生成的中发层次结果预览",
+            "complete": true,
+            "id": "second-style-first-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.1",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "second-style-header",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 1.3333333730697632,
+            "id": "second-style-first-result-context",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 594,
+            "id": "second-style-options",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 538,
+            "id": "second-style-option-list",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 352.8333435058594,
+            "id": "second-style-difference-summary",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 166.6666717529297,
+            "id": "second-style-credit-notice",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "second-style-primary-action",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 45.333335876464844,
+            "id": "second-style-back-to-result",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 165.33334350585938,
+            "id": "second-style-state-controls",
+            "visible": true,
+            "width": 388
+          }
+        ],
+        "scroll": {
+          "app": 428,
+          "appClientHeight": 926,
+          "appScrollHeight": 1728,
+          "body": 428,
+          "client": 428,
+          "doc": 428
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "首页",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "low-credit",
+            "reviewer": true,
+            "text": "额度不足",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "submitting",
+            "reviewer": true,
+            "text": "提交中",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "submit-error",
+            "reviewer": true,
+            "text": "提交失败",
+            "tooSmall": true,
+            "width": 173.3
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.1 Second Style Exploration - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.2",
+      "viewport": {
+        "name": "iPhone SE",
+        "width": 375,
+        "height": 667
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨第二次生成的日常轻层次结果预览",
+            "complete": true,
+            "id": "save-result-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.2",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "save-result-header",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 148.5,
+            "id": "save-result-hero",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 1.3333333730697632,
+            "id": "save-result-preview",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 383.8333435058594,
+            "id": "save-result-comparison",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 379.66668701171875,
+            "id": "save-result-choice-group",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 139.33334350585938,
+            "id": "save-result-value-note",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "save-result-primary-action",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 45.333335876464844,
+            "id": "save-result-secondary-actions",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 165.33334350585938,
+            "id": "save-result-state-controls",
+            "visible": true,
+            "width": 335.3333435058594
+          }
+        ],
+        "scroll": {
+          "app": 375,
+          "appClientHeight": 667,
+          "appScrollHeight": 1517,
+          "body": 375,
+          "client": 375,
+          "doc": 375
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "首页",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saving",
+            "reviewer": true,
+            "text": "保存中",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saved",
+            "reviewer": true,
+            "text": "已保存",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "save-error",
+            "reviewer": true,
+            "text": "保存失败",
+            "tooSmall": true,
+            "width": 147
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.2 Save Result - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.2-save-result.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.2",
+      "viewport": {
+        "name": "iPhone 14 Pro",
+        "width": 393,
+        "height": 852
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨第二次生成的日常轻层次结果预览",
+            "complete": true,
+            "id": "save-result-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.2",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "save-result-header",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 148.5,
+            "id": "save-result-hero",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 1.3333333730697632,
+            "id": "save-result-preview",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 383.8333435058594,
+            "id": "save-result-comparison",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 379.66668701171875,
+            "id": "save-result-choice-group",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 139.33334350585938,
+            "id": "save-result-value-note",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "save-result-primary-action",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 45.333335876464844,
+            "id": "save-result-secondary-actions",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 165.33334350585938,
+            "id": "save-result-state-controls",
+            "visible": true,
+            "width": 353.3333435058594
+          }
+        ],
+        "scroll": {
+          "app": 393,
+          "appClientHeight": 852,
+          "appScrollHeight": 1517,
+          "body": 393,
+          "client": 393,
+          "doc": 393
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "首页",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saving",
+            "reviewer": true,
+            "text": "保存中",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saved",
+            "reviewer": true,
+            "text": "已保存",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "save-error",
+            "reviewer": true,
+            "text": "保存失败",
+            "tooSmall": true,
+            "width": 156
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.2 Save Result - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.2-save-result.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.2",
+      "viewport": {
+        "name": "iPhone 14 Pro Max",
+        "width": 428,
+        "height": 926
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨第二次生成的日常轻层次结果预览",
+            "complete": true,
+            "id": "save-result-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.2",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "save-result-header",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 148.5,
+            "id": "save-result-hero",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 1.3333333730697632,
+            "id": "save-result-preview",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 363.8333435058594,
+            "id": "save-result-comparison",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 359.66668701171875,
+            "id": "save-result-choice-group",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 119.33333587646484,
+            "id": "save-result-value-note",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "save-result-primary-action",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 45.333335876464844,
+            "id": "save-result-secondary-actions",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 165.33334350585938,
+            "id": "save-result-state-controls",
+            "visible": true,
+            "width": 388
+          }
+        ],
+        "scroll": {
+          "app": 428,
+          "appClientHeight": 926,
+          "appScrollHeight": 1457,
+          "body": 428,
+          "client": 428,
+          "doc": 428
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "首页",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saving",
+            "reviewer": true,
+            "text": "保存中",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saved",
+            "reviewer": true,
+            "text": "已保存",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "save-error",
+            "reviewer": true,
+            "text": "保存失败",
+            "tooSmall": true,
+            "width": 173.3
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.2 Save Result - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.2-save-result.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.3",
+      "viewport": {
+        "name": "iPhone SE",
+        "width": 375,
+        "height": 667
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [
+          "[Circular]"
+        ],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨刚保存的日常轻层次结果预览",
+            "complete": true,
+            "id": "save-profile-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.3",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "save-profile-header",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 120.5,
+            "id": "save-profile-hero",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 395.03125,
+            "id": "save-profile-context",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 306,
+            "id": "save-profile-benefits",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 173.33334350585938,
+            "id": "save-profile-boundary-note",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "save-profile-primary-action",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 48,
+            "id": "save-profile-skip-action",
+            "visible": true,
+            "width": 335.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 0,
+            "id": "save-profile-state-feedback",
+            "visible": false,
+            "width": 0
+          },
+          {
+            "exists": true,
+            "height": 211.33334350585938,
+            "id": "save-profile-state-controls",
+            "visible": true,
+            "width": 335.3333435058594
+          }
+        ],
+        "scroll": {
+          "app": 375,
+          "appClientHeight": 667,
+          "appScrollHeight": 1492,
+          "body": 375,
+          "client": 375,
+          "doc": 375
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "save-profile-home-link",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saving-profile",
+            "reviewer": true,
+            "text": "保存中",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "profile-saved",
+            "reviewer": true,
+            "text": "已保存",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "skipped",
+            "reviewer": true,
+            "text": "已跳过",
+            "tooSmall": true,
+            "width": 147
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "save-error",
+            "reviewer": true,
+            "text": "保存失败",
+            "tooSmall": true,
+            "width": 302
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.3 Save Profile Prompt - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.3-save-profile-prompt.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.3",
+      "viewport": {
+        "name": "iPhone 14 Pro",
+        "width": 393,
+        "height": 852
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [
+          "[Circular]"
+        ],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨刚保存的日常轻层次结果预览",
+            "complete": true,
+            "id": "save-profile-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.3",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "save-profile-header",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 120.5,
+            "id": "save-profile-hero",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 385.4270935058594,
+            "id": "save-profile-context",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 286,
+            "id": "save-profile-benefits",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 173.33334350585938,
+            "id": "save-profile-boundary-note",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "save-profile-primary-action",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 48,
+            "id": "save-profile-skip-action",
+            "visible": true,
+            "width": 353.3333435058594
+          },
+          {
+            "exists": true,
+            "height": 0,
+            "id": "save-profile-state-feedback",
+            "visible": false,
+            "width": 0
+          },
+          {
+            "exists": true,
+            "height": 211.33334350585938,
+            "id": "save-profile-state-controls",
+            "visible": true,
+            "width": 353.3333435058594
+          }
+        ],
+        "scroll": {
+          "app": 393,
+          "appClientHeight": 852,
+          "appScrollHeight": 1463,
+          "body": 393,
+          "client": 393,
+          "doc": 393
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "save-profile-home-link",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saving-profile",
+            "reviewer": true,
+            "text": "保存中",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "profile-saved",
+            "reviewer": true,
+            "text": "已保存",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "skipped",
+            "reviewer": true,
+            "text": "已跳过",
+            "tooSmall": true,
+            "width": 156
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "save-error",
+            "reviewer": true,
+            "text": "保存失败",
+            "tooSmall": true,
+            "width": 320
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.3 Save Profile Prompt - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.3-save-profile-prompt.html",
+        "viewport": {}
+      }
+    },
+    {
+      "page": "02.3",
+      "viewport": {
+        "name": "iPhone 14 Pro Max",
+        "width": 428,
+        "height": 926
+      },
+      "pass": false,
+      "metrics": {
+        "hiddenRequired": [
+          "[Circular]"
+        ],
+        "horizontalOverflow": false,
+        "imageFailures": [
+          "[Circular]"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "complete": true,
+            "id": "style-ai-reversible-s-symbol.svg",
+            "naturalHeight": 1024,
+            "naturalWidth": 1024,
+            "src": "assets/style-ai-reversible-s-symbol.svg"
+          },
+          {
+            "alt": "小雨刚保存的日常轻层次结果预览",
+            "complete": true,
+            "id": "save-profile-preview-image",
+            "naturalHeight": 340,
+            "naturalWidth": 245,
+            "src": "assets/first-result-preview.png"
+          }
+        ],
+        "missingRequired": [],
+        "page": "02.3",
+        "required": [
+          {
+            "exists": true,
+            "height": 40,
+            "id": "save-profile-header",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 120.5,
+            "id": "save-profile-hero",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 413.16668701171875,
+            "id": "save-profile-context",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 286,
+            "id": "save-profile-benefits",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 133.33334350585938,
+            "id": "save-profile-boundary-note",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 50,
+            "id": "save-profile-primary-action",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 48,
+            "id": "save-profile-skip-action",
+            "visible": true,
+            "width": 388
+          },
+          {
+            "exists": true,
+            "height": 0,
+            "id": "save-profile-state-feedback",
+            "visible": false,
+            "width": 0
+          },
+          {
+            "exists": true,
+            "height": 211.33334350585938,
+            "id": "save-profile-state-controls",
+            "visible": true,
+            "width": 388
+          }
+        ],
+        "scroll": {
+          "app": 428,
+          "appClientHeight": 926,
+          "appScrollHeight": 1450,
+          "body": 428,
+          "client": 428,
+          "doc": 428
+        },
+        "smallHeaderTargets": [
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "‹",
+            "reviewer": false,
+            "text": "‹",
+            "tooSmall": true,
+            "width": 40
+          },
+          {
+            "disabled": false,
+            "header": true,
+            "height": 40,
+            "id": "save-profile-home-link",
+            "reviewer": false,
+            "text": "首页",
+            "tooSmall": true,
+            "width": 40
+          }
+        ],
+        "smallReviewerTargets": [
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "default",
+            "reviewer": true,
+            "text": "默认",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "saving-profile",
+            "reviewer": true,
+            "text": "保存中",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "profile-saved",
+            "reviewer": true,
+            "text": "已保存",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "skipped",
+            "reviewer": true,
+            "text": "已跳过",
+            "tooSmall": true,
+            "width": 173.3
+          },
+          {
+            "disabled": false,
+            "header": false,
+            "height": 38,
+            "id": "save-error",
+            "reviewer": true,
+            "text": "保存失败",
+            "tooSmall": true,
+            "width": 354.7
+          }
+        ],
+        "smallUserTargets": [],
+        "textOverflow": [],
+        "title": "02.3 Save Profile Prompt - Style AI",
+        "url": "http://127.0.0.1:17868/02-xiaoyu-second-style-exploration-Prototype/02.3-save-profile-prompt.html",
+        "viewport": {}
+      }
+    }
+  ],
+  "consoleErrors": [],
+  "finishedAt": "2026-05-18T06:25:42.472Z"
+}

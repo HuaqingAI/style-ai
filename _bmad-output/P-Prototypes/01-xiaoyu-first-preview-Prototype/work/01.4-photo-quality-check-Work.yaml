@@ -1,0 +1,158 @@
+metadata:
+  project: style-ai
+  scenario: 01-xiaoyu-first-preview
+  logical_view: Photo Quality Check View
+  page_number: "01.4"
+  page_name: photo-quality-check
+  prototype_file: 01.4-photo-quality-check.html
+  source_spec: _bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.4-photo-quality-check/01.4-photo-quality-check.md
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+    touch_optimized: true
+    hover_interactions: false
+  design_fidelity: Design System Components
+  primary_language: zh-CN
+  language_switcher: false
+  status: built
+  created: 2026-05-14
+  approved_by: Sue
+
+requirements:
+  purpose: "在开始生成前用轻量、温和的方式判断本次照片是否适合继续，并在风险或失败时给出可执行的重试建议。"
+  implementation_position: "Standalone lightweight preflight page. The 01.3 photo intake main CTA may continue to 01.5 after the route clarification; 01.4 remains available for validating the quality-check interaction model."
+  success_criteria:
+    - 合格照片显示可继续的总判断，并进入 01.5-generation-setup.html。
+    - Warning 状态允许用户理解风险后继续，也提供换照片路径。
+    - Fail 状态用不评判用户的文案解释问题，并优先给出重拍或重选建议。
+    - Check unavailable 状态说明检查失败不消耗额度，可重试或返回。
+    - 页面不承诺已经完成精确人脸识别，仅表达“轻量预检/模拟检查”。
+  entry_points:
+    - 01.3-photo-upload 选择照片后可进入。
+    - 可直接打开 01.4-photo-quality-check.html 验证所有状态。
+  exit_points:
+    - Pass 或 Warning 确认继续后进入 01.5-generation-setup.html。
+    - Fail 或用户主动重选时返回 01.3-photo-upload.html。
+    - Check unavailable 可重试检查或返回 01.3-photo-upload.html。
+
+object_registry:
+  - id: photo-quality-review-preview
+    type: Image preview
+    purpose: 展示当前照片和重选入口
+    required: true
+  - id: photo-quality-summary
+    type: Status panel
+    purpose: 总体质量判断
+    required: true
+  - id: photo-quality-checklist
+    type: Checklist
+    purpose: 解释脸部清楚、无遮挡、光线、近期照片、强滤镜等判断因素
+    required: true
+  - id: photo-quality-recovery-actions
+    type: Action group
+    purpose: 提供重拍、相册重选、查看拍摄建议、重试检查等恢复路径
+    required: true
+  - id: photo-quality-continue-button
+    type: Button
+    purpose: 继续到生成设置
+    required: true
+  - id: photo-quality-retake-button
+    type: Button
+    purpose: 返回重新选择照片
+    required: true
+
+states:
+  - name: Checking
+    data_state: checking
+    trigger: 正在检查照片
+    requirements:
+      - 显示检查中状态和轻量预检说明。
+      - 继续按钮不可用，避免重复提交。
+      - 用户可以返回换照片。
+  - name: Pass
+    data_state: pass
+    trigger: 照片可用
+    requirements:
+      - 显示“这张照片可以用来生成”摘要。
+      - checklist 主要为通过状态。
+      - 继续按钮可进入 01.5-generation-setup.html。
+  - name: Warning
+    data_state: warning
+    trigger: 照片可用但有风险
+    requirements:
+      - 显示提醒而不是错误。
+      - 至少一项 checklist 为提醒状态。
+      - 用户可以仍然继续，也可以换照片。
+  - name: Fail
+    data_state: fail
+    trigger: 照片不适合
+    requirements:
+      - 显示温和失败文案和具体建议。
+      - 继续按钮不可用。
+      - 重拍、相册重选和拍摄建议清晰可见。
+  - name: Check unavailable
+    data_state: unavailable
+    trigger: 检查服务失败
+    requirements:
+      - 说明未消耗生成额度。
+      - 提供重试检查和返回换照片。
+      - 不把失败归因于用户照片。
+
+sections:
+  - number: 1
+    name: Full Page Quality Preflight
+    status: complete
+    estimate_minutes: 120
+    completed: 2026-05-14
+    actual_minutes: 120
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - photo-quality-review-preview
+      - photo-quality-summary
+      - photo-quality-checklist
+      - photo-quality-recovery-actions
+      - photo-quality-continue-button
+      - photo-quality-retake-button
+    scope:
+      - 建立移动端页面容器、返回入口、品牌标记和状态摘要。
+      - 展示模拟当前照片、重选入口和轻量预检说明。
+      - 支持 Checking、Pass、Warning、Fail、Check unavailable 五个状态。
+      - 为每个状态更新 checklist、恢复动作和主按钮可用性。
+      - 加入紧凑原型状态切换控件，便于设计验收。
+    acceptance:
+      - 六个必需 Object ID 全部存在。
+      - 五个页面状态可本地切换。
+      - Pass 和 Warning 可继续到 01.5-generation-setup.html。
+      - Fail 和 unavailable 不消耗额度，恢复路径清楚。
+      - 375px、393px、428px 宽度无横向滚动。
+
+dependencies:
+  design_system:
+    - _bmad-output/D-Design-System/design-tokens.md
+    - _bmad-output/D-Design-System/components/style-ai-app-icon-system.md
+  demo_data:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
+  adjacent_pages:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.3-photo-upload.html
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html
+
+implementation_notes:
+  - This prototype simulates quality results in browser; it does not perform real face detection, blur detection, or backend image analysis.
+  - The page uses neutral, practical copy and avoids appearance judgment.
+  - Warning is intentionally non-blocking to keep first-use momentum while still surfacing risk.
+  - Check unavailable must not imply a credit charge or generation-task creation.
+
+next_step:
+  workflow_step: 5-finalization
+  next_logical_view: Generation Setup View

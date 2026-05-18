@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.2 Home Dual Entry - Style AI</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--style-ai-black);
+      letter-spacing: 0;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .tap-highlight {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+  <main
+    id="app"
+    class="mx-auto flex min-h-[100svh] w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(18px,env(safe-area-inset-top))]"
+    data-page="01.2-home-dual-entry"
+    data-state="first-time"
+  >
+    <header
+      id="home-dual-entry-header"
+      data-object-id="home-dual-entry-header"
+      class="shrink-0"
+      aria-label="Style AI authenticated home header"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex min-w-0 items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/18 bg-[#FAFAF7] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+            <img
+              src="assets/style-ai-reversible-s-symbol.svg"
+              alt=""
+              class="h-full w-full"
+              aria-hidden="true"
+            >
+          </span>
+          <div class="min-w-0">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">Style AI</p>
+            <p id="home-greeting" class="mt-1 text-xs leading-none text-white/48">小雨，欢迎回来</p>
+          </div>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-2">
+          <button
+            id="home-history-button"
+            type="button"
+            class="tap-highlight flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-sm text-white/72"
+            aria-label="查看历史"
+          >
+            历
+          </button>
+          <button
+            id="home-profile-button"
+            type="button"
+            class="tap-highlight flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-sm font-semibold text-white/72"
+            aria-label="查看账号"
+          >
+            雨
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="home-dual-entry-credit-snapshot"
+        data-object-id="home-dual-entry-credit-snapshot"
+        type="button"
+        class="tap-highlight mt-3 flex min-h-[36px] w-full items-center justify-between rounded-lg border border-[#9AE6C4]/24 bg-[#9AE6C4]/10 px-3 text-xs font-medium leading-none text-[#C7F5DF]"
+        aria-label="查看额度规则"
+      >
+        <span>今日可用额度：1 次</span>
+        <span class="text-[#C7F5DF]/62">失败不扣除</span>
+      </button>
+    </header>
+
+    <section class="mt-6" aria-label="首页主要入口">
+      <p class="text-xs font-medium text-[#C9BAFF]">首次真实预览</p>
+      <h1 class="mt-2 text-[26px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        先生成你的形象方案，再决定要不要继续探索。
+      </h1>
+      <p id="home-promise-copy" class="mt-3 text-sm leading-6 text-white/58">
+        上传一张当前照片，先看看几个主流风格放到你身上是什么效果。
+      </p>
+    </section>
+
+    <div class="mt-5 flex flex-1 flex-col gap-3">
+      <a
+        id="home-dual-entry-primary-card"
+        data-object-id="home-dual-entry-primary-card"
+        href="01.3-photo-upload.html"
+        class="tap-highlight block rounded-lg border border-[#9D7AFF]/34 bg-[#FAFAF7] p-4 text-[#111111] no-underline shadow-[0_18px_50px_rgba(0,0,0,0.30)] active:scale-[0.995]"
+        aria-label="生成我的形象方案"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-lg font-semibold leading-tight">生成我的形象方案</p>
+            <p class="mt-2 text-sm leading-5 text-black/62">
+              上传一张当前照片，先看看几个主流风格放到你身上是什么效果。
+            </p>
+          </div>
+          <span class="shrink-0 rounded-lg bg-[#111111] px-2.5 py-1 text-xs font-medium text-[#FAFAF7]">推荐</span>
+        </div>
+
+        <div class="mt-5 flex items-center justify-between gap-3">
+          <span class="text-xs leading-5 text-black/50">
+            本次生成后再决定是否保存为常用形象。
+          </span>
+          <span
+            id="home-dual-entry-primary-button"
+            data-object-id="home-dual-entry-primary-button"
+            class="flex min-h-[44px] shrink-0 items-center justify-center rounded-lg bg-[#111111] px-4 text-sm font-semibold text-[#FAFAF7]"
+          >
+            开始看看效果
+          </span>
+        </div>
+      </a>
+
+      <button
+        id="home-dual-entry-secondary-card"
+        data-object-id="home-dual-entry-secondary-card"
+        type="button"
+        class="tap-highlight w-full rounded-lg border border-white/10 bg-white/[0.045] p-4 text-left text-[#FAFAF7] active:scale-[0.995]"
+        aria-label="试穿或试造型"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-base font-semibold leading-tight text-[#FAFAF7]">试穿/试造型</p>
+            <p class="mt-2 text-sm leading-5 text-white/56">
+              有具体衣服、发型或配饰参考图时，用它快速试到自己身上。
+            </p>
+          </div>
+          <span
+            id="home-secondary-status"
+            class="shrink-0 rounded-lg border border-[#F2C86B]/20 bg-[#F2C86B]/10 px-2.5 py-1 text-xs font-medium text-[#F8DF9A]"
+          >
+            下一批开放
+          </span>
+        </div>
+      </button>
+
+      <section
+        id="home-dual-entry-empty-history-prompt"
+        data-object-id="home-dual-entry-empty-history-prompt"
+        class="rounded-lg border border-white/10 bg-white/[0.035] p-4"
+        aria-label="历史与常用形象说明"
+      >
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/24 text-xs text-white/58">
+            史
+          </span>
+          <div class="min-w-0">
+            <p id="home-history-title" class="text-sm font-medium text-[#FAFAF7]">还没有生成历史</p>
+            <p id="home-history-copy" class="mt-1.5 text-xs leading-5 text-white/54">
+              第一次结果会保存在历史里。是否保存为常用形象，由你生成后再决定。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="rounded-lg border border-white/10 bg-white/[0.03] p-3"
+        aria-label="原型状态切换"
+      >
+        <div class="grid grid-cols-4 gap-1">
+          <button type="button" class="home-state-button min-h-[34px] rounded-md bg-white/10 px-2 text-[11px] text-white" data-home-state="first-time">首次</button>
+          <button type="button" class="home-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-home-state="returning">返回</button>
+          <button type="button" class="home-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-home-state="low-credit">低额度</button>
+          <button type="button" class="home-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-home-state="feature-unavailable">未开放</button>
+        </div>
+      </section>
+    </div>
+
+    <div
+      id="home-toast"
+      class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-20 hidden w-[min(388px,calc(100vw-32px))] -translate-x-1/2 rounded-lg border border-white/10 bg-[#1C1C1C] px-4 py-3 text-sm leading-5 text-[#FAFAF7] shadow-[0_16px_60px_rgba(0,0,0,0.42)]"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.2-home-dual-entry',
+      section: 'full-page',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨',
+        accountState: {
+          hasGenerationHistory: false,
+          hasPersistentProfile: false
+        }
+      },
+      quota: {
+        personalImageGenerationsTotal: 1,
+        personalImageGenerationsUsed: 0
+      },
+      copy: {
+        firstPreviewPromise: '先看看自己适不适合，再决定要不要继续探索。'
+      }
+    };
+
+    let demoData = fallbackData;
+    let currentHomeState = 'first-time';
+    let toastTimer = 0;
+
+    function availablePersonalGenerations(data = demoData) {
+      const total = Number(data.quota && data.quota.personalImageGenerationsTotal) || 0;
+      const used = Number(data.quota && data.quota.personalImageGenerationsUsed) || 0;
+      return Math.max(total - used, 0);
+    }
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showHomeToast(message) {
+      const toast = document.getElementById('home-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2400);
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.home-state-button')) {
+        const selected = button.dataset.homeState === stateName;
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        button.classList.toggle('bg-white/10', selected);
+        button.classList.toggle('text-white', selected);
+        button.classList.toggle('text-white/58', !selected);
+      }
+    }
+
+    function setPrimaryActionMode(mode) {
+      const card = document.getElementById('home-dual-entry-primary-card');
+      const button = document.getElementById('home-dual-entry-primary-button');
+      const lowCredit = mode === 'low-credit';
+
+      if (card) {
+        card.classList.toggle('bg-[#FAFAF7]', !lowCredit);
+        card.classList.toggle('text-[#111111]', !lowCredit);
+        card.classList.toggle('border-[#9D7AFF]/34', !lowCredit);
+        card.classList.toggle('bg-white/[0.055]', lowCredit);
+        card.classList.toggle('text-[#FAFAF7]', lowCredit);
+        card.classList.toggle('border-[#F2C86B]/28', lowCredit);
+        card.dataset.creditBlocked = lowCredit ? 'true' : 'false';
+      }
+
+      if (button) {
+        button.textContent = lowCredit ? '查看额度规则' : '开始看看效果';
+        button.classList.toggle('bg-[#111111]', !lowCredit);
+        button.classList.toggle('text-[#FAFAF7]', !lowCredit);
+        button.classList.toggle('bg-[#F2C86B]', lowCredit);
+        button.classList.toggle('text-[#111111]', lowCredit);
+      }
+    }
+
+    function applyHomeState(stateName) {
+      currentHomeState = stateName;
+      const app = document.getElementById('app');
+      const available = stateName === 'low-credit' ? 0 : availablePersonalGenerations();
+      const isReturning = stateName === 'returning';
+      const isFeatureUnavailable = stateName === 'feature-unavailable' || stateName === 'first-time' || stateName === 'low-credit';
+
+      if (app) {
+        app.dataset.state = stateName;
+      }
+
+      setText('home-dual-entry-credit-snapshot', `今日可用额度：${available} 次`);
+      setText('home-history-title', isReturning ? '最近一次结果可以继续查看' : '还没有生成历史');
+      setText(
+        'home-history-copy',
+        isReturning
+          ? '你可以查看上次结果，也可以重新生成一个当前状态下的形象方案。'
+          : '第一次结果会保存在历史里。是否保存为常用形象，由你生成后再决定。'
+      );
+      setText('home-secondary-status', isFeatureUnavailable ? '下一批开放' : '可试用');
+      setPrimaryActionMode(stateName === 'low-credit' ? 'low-credit' : 'default');
+      updateStateButtons(stateName);
+      console.info('[Style AI Prototype] home state changed', { stateName, available });
+    }
+
+    async function loadHomeDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        demoData = await response.json();
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback demo data', error);
+      }
+
+      const userName = (demoData.currentUser && demoData.currentUser.displayName) || fallbackData.currentUser.displayName;
+      setText('home-greeting', `${userName}，欢迎回来`);
+      if (demoData.copy && demoData.copy.firstPreviewPromise) {
+        setText('home-promise-copy', demoData.copy.firstPreviewPromise);
+      }
+    }
+
+    function handlePrimaryAction(event) {
+      if (currentHomeState === 'low-credit') {
+        event.preventDefault();
+        showHomeToast('当前没有可用生成额度。失败不扣除；额度规则和购买入口会在后续版本接入。');
+        return;
+      }
+
+      showHomeToast('下一步：上传当前照片。');
+    }
+
+    function initHomeDualEntry() {
+      document.getElementById('home-dual-entry-primary-card')?.addEventListener('click', handlePrimaryAction);
+      document.getElementById('home-dual-entry-secondary-card')?.addEventListener('click', () => {
+        showHomeToast('试穿/试造型会在种子测试下一批开放。');
+      });
+      document.getElementById('home-dual-entry-credit-snapshot')?.addEventListener('click', () => {
+        showHomeToast('今日可用额度用于个人形象生成。生成失败不扣除额度。');
+      });
+      document.getElementById('home-history-button')?.addEventListener('click', () => {
+        showHomeToast('第一次结果生成后会出现在历史里。');
+      });
+      document.getElementById('home-profile-button')?.addEventListener('click', () => {
+        showHomeToast('账号页会管理登录方式、额度和常用形象。');
+      });
+
+      for (const button of document.querySelectorAll('.home-state-button')) {
+        button.addEventListener('click', () => applyHomeState(button.dataset.homeState || 'first-time'));
+      }
+
+      console.info('[Style AI Prototype] 01.2 home dual entry ready', pageMeta);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadHomeDemoData();
+      initHomeDualEntry();
+      applyHomeState('first-time');
+    });
+  </script>
+</body>
+</html>

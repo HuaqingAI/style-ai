@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03.2 导入参考图 - Style AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              styleai: {
+                surface: '#111111',
+                mark: '#FAFAF7',
+                spark: '#7B52FA',
+                sparkLight: '#9D7AFF',
+                sparkCore: '#6D3DF7',
+                mint: '#9AE6C4',
+                amber: '#F2C86B',
+                rose: '#F2A7A0'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+        overflow-x: hidden;
+        background: #111111;
+        letter-spacing: 0;
+      }
+
+      .tap-highlight {
+        -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+      }
+
+      .reference-visual {
+        background:
+          radial-gradient(circle at 28% 18%, rgb(157 122 255 / 0.26), transparent 28%),
+          linear-gradient(145deg, #302B27 0%, #171717 48%, #111111 100%);
+      }
+
+      .reference-jacket {
+        background:
+          linear-gradient(90deg, transparent 0 18%, rgb(250 250 247 / 0.92) 18% 43%, transparent 43% 57%, rgb(250 250 247 / 0.92) 57% 82%, transparent 82%),
+          linear-gradient(180deg, #EDE2D0 0%, #BFAF9A 100%);
+      }
+
+      .reference-hair {
+        background:
+          radial-gradient(ellipse at 36% 55%, #4A3026 0 14%, transparent 15%),
+          radial-gradient(ellipse at 64% 55%, #4A3026 0 14%, transparent 15%),
+          radial-gradient(ellipse at 50% 38%, #2D201C 0 34%, transparent 35%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+    <main
+      id="app"
+      data-page="03.2-import-reference"
+      data-state="empty"
+      class="mx-auto min-h-screen w-full max-w-[428px] overflow-x-hidden bg-[#111111] px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))] font-sans"
+    >
+      <header
+        data-object-id="obj-import-header"
+        class="flex h-12 items-center justify-between gap-3"
+        aria-label="参考图导入页面顶部"
+      >
+        <a
+          href="03.1-tryon-entry.html"
+          aria-label="返回试穿入口"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-2xl leading-none text-[#FAFAF7] no-underline active:bg-white/10"
+        >
+          <span aria-hidden="true" class="-mt-0.5">‹</span>
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <img
+            src="../../E-Assets/brand-logo/style-ai-reversible-s-app-icon.svg"
+            alt=""
+            class="h-8 w-8 shrink-0 rounded-lg"
+            aria-hidden="true"
+          />
+          <div class="min-w-0 text-center">
+            <p class="truncate text-[15px] font-semibold leading-5 text-[#FAFAF7]">导入参考图</p>
+            <p class="truncate text-[11px] font-medium leading-4 text-white/45">03.2 试穿决策</p>
+          </div>
+        </div>
+
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
+          <span class="h-2 w-2 rounded-full bg-[#7B52FA] shadow-[0_0_14px_rgba(123,82,250,0.65)]"></span>
+        </div>
+      </header>
+
+      <section id="import-hero" data-object-id="obj-import-hero" class="pt-6">
+        <p class="text-[13px] font-semibold text-[#9D7AFF]">先选中你要判断的对象</p>
+        <h1 class="mt-3 text-[29px] font-semibold leading-[1.14] text-[#FAFAF7]">
+          把那张心动参考图放进来
+        </h1>
+        <p class="mt-3 text-[14px] leading-[23px] text-white/66">
+          本页只导入参考图。下一步再确认本人形象和本次额度消耗，避免选错图就开始生成。
+        </p>
+      </section>
+
+      <section
+        id="import-source-options"
+        data-object-id="obj-import-source-options"
+        class="pt-5"
+        aria-label="导入来源"
+      >
+        <div class="grid gap-2">
+          <button
+            id="import-album-button"
+            type="button"
+            class="tap-highlight flex min-h-[72px] w-full items-center gap-3 rounded-lg border border-[#9D7AFF]/24 bg-[#9D7AFF]/10 px-4 py-3 text-left active:scale-[0.995]"
+            data-candidate-id="ref-cream-jacket"
+          >
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FAFAF7] text-sm font-semibold text-[#111111]">图</span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-sm font-semibold leading-5 text-[#FAFAF7]">从相册或截图选择</span>
+              <span class="mt-1 block text-xs leading-5 text-white/52">适合电商截图、小红书保存图、聊天里的图片</span>
+            </span>
+          </button>
+
+          <button
+            id="import-share-button"
+            type="button"
+            class="tap-highlight flex min-h-[72px] w-full items-center gap-3 rounded-lg border border-white/10 bg-white/[0.045] px-4 py-3 text-left active:scale-[0.995]"
+            data-candidate-id="ref-soft-waves"
+          >
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/12 bg-white/[0.06] text-sm font-semibold text-[#D8CEFF]">转</span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-sm font-semibold leading-5 text-[#FAFAF7]">从当前页面分享导入</span>
+              <span class="mt-1 block text-xs leading-5 text-white/52">适合还停留在购物页或收藏页的时候</span>
+            </span>
+          </button>
+
+          <button
+            id="import-sample-button"
+            type="button"
+            class="tap-highlight flex min-h-[64px] w-full items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-left active:scale-[0.995]"
+            data-candidate-id="ref-cream-jacket"
+          >
+            <span class="min-w-0">
+              <span class="block text-sm font-semibold leading-5 text-[#FAFAF7]">先用示例参考图体验</span>
+              <span class="mt-1 block text-xs leading-5 text-white/46">奶油白短外套</span>
+            </span>
+            <span class="shrink-0 rounded-full bg-[#9D7AFF]/14 px-2.5 py-1 text-xs font-semibold text-[#9D7AFF]">示例</span>
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="reference-preview"
+        data-object-id="obj-reference-preview"
+        class="pt-5"
+        aria-label="参考图预览"
+      >
+        <article class="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04]">
+          <div class="reference-visual relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden">
+            <div id="preview-empty" class="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
+              <span class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/12 bg-black/20 text-lg text-white/52">图</span>
+              <p class="mt-3 text-sm font-semibold text-[#FAFAF7]">还没有导入参考图</p>
+              <p class="mt-1 text-xs leading-5 text-white/48">选中后会在这里确认，不会直接消耗额度。</p>
+            </div>
+
+            <div id="preview-importing" class="absolute inset-0 hidden flex-col items-center justify-center px-8 text-center">
+              <span class="h-10 w-10 animate-spin rounded-full border-2 border-white/14 border-t-[#9D7AFF]"></span>
+              <p class="mt-4 text-sm font-semibold text-[#FAFAF7]">正在读取参考图</p>
+              <p class="mt-1 text-xs leading-5 text-white/48">保留原图比例和关键细节。</p>
+            </div>
+
+            <div id="preview-error" class="absolute inset-0 hidden flex-col items-center justify-center px-8 text-center">
+              <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F2A7A0]/14 text-sm font-semibold text-[#F2A7A0]">!</span>
+              <p class="mt-3 text-sm font-semibold text-[#FAFAF7]">这张图暂时无法导入</p>
+              <p class="mt-1 text-xs leading-5 text-white/48">可以换一张更清晰的截图，或先用示例图继续评审流程。</p>
+            </div>
+
+            <div id="preview-imported" class="absolute inset-0 hidden">
+              <div id="reference-art" class="relative h-full w-full">
+                <div class="absolute left-1/2 top-[14%] h-[64%] w-[50%] -translate-x-1/2 rounded-t-[44%] reference-jacket shadow-[0_28px_70px_rgb(0_0_0/0.38)]"></div>
+                <div class="absolute left-1/2 top-[9%] h-[70%] w-[58%] -translate-x-1/2 rounded-full border border-white/12 opacity-0 reference-hair"></div>
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/82 to-transparent px-4 pb-4 pt-16">
+                  <p id="preview-title" class="text-base font-semibold leading-6 text-[#FAFAF7]">奶油白短外套</p>
+                  <p id="preview-source" class="mt-1 text-xs leading-5 text-white/58">电商截图</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="reference-details"
+        data-object-id="obj-reference-details"
+        class="pt-4"
+        aria-label="参考图信息"
+      >
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-xs font-semibold text-white/48">本次参考对象</p>
+            <span id="reference-state-chip" class="shrink-0 rounded-full bg-white/[0.07] px-2.5 py-1 text-xs font-semibold text-white/56">未选择</span>
+          </div>
+          <h2 id="reference-title" class="mt-3 text-lg font-semibold leading-6 text-[#FAFAF7]">等待导入</h2>
+          <p id="reference-question" class="mt-2 text-sm leading-6 text-white/62">
+            选择参考图后，这里会显示你正在判断的问题。
+          </p>
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <div class="rounded-md border border-white/10 bg-black/20 px-3 py-2">
+              <p class="text-[11px] text-white/38">来源</p>
+              <p id="reference-source" class="mt-1 truncate text-xs font-semibold text-white/72">-</p>
+            </div>
+            <div class="rounded-md border border-white/10 bg-black/20 px-3 py-2">
+              <p class="text-[11px] text-white/38">紧迫性</p>
+              <p id="reference-urgency" class="mt-1 truncate text-xs font-semibold text-white/72">-</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="import-recovery"
+        data-object-id="obj-import-recovery"
+        class="pt-4"
+        aria-live="polite"
+      >
+        <div class="rounded-lg border border-[#9D7AFF]/18 bg-[#9D7AFF]/8 p-4">
+          <p id="recovery-title" class="text-sm font-semibold text-[#D8CEFF]">下一步再确认额度</p>
+          <p id="recovery-copy" class="mt-1 text-xs leading-5 text-white/56">
+            导入参考图不会扣额度。进入设置页后，你还能更换参考图或本人形象。
+          </p>
+        </div>
+      </section>
+
+      <section class="sticky bottom-0 -mx-5 mt-5 border-t border-white/10 bg-[#111111]/95 px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-3 backdrop-blur">
+        <a
+          id="confirm-reference-action"
+          data-object-id="obj-confirm-reference-action"
+          href="#"
+          aria-disabled="true"
+          class="tap-highlight flex h-12 w-full items-center justify-center rounded-lg bg-white/10 px-4 text-sm font-semibold text-white/40 no-underline"
+        >
+          确认参考图，继续设置
+        </a>
+      </section>
+
+      <section
+        id="prototype-state-controls"
+        data-object-id="obj-prototype-state-controls"
+        class="pt-4"
+        aria-label="原型状态控制"
+      >
+        <p class="mb-2 text-xs font-semibold text-white/44">原型状态</p>
+        <div class="grid grid-cols-4 gap-2">
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="empty">空</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="importing">读取</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="imported">已导入</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="error">失败</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const referenceCandidates = [
+        {
+          id: 'ref-cream-jacket',
+          type: 'clothing',
+          typeLabel: '衣服',
+          source: '电商截图',
+          title: '奶油白短外套',
+          decisionQuestion: '这件外套会不会显得肩宽，适不适合通勤约会两用？',
+          urgency: '今晚下单前想确认'
+        },
+        {
+          id: 'ref-soft-waves',
+          type: 'hairstyle',
+          typeLabel: '发型',
+          source: '小红书收藏图',
+          title: '低层次微卷发',
+          decisionQuestion: '这个发型放到我的脸型上会不会显成熟？',
+          urgency: '预约理发前想先看效果'
+        }
+      ];
+
+      const app = document.getElementById('app');
+      const confirmAction = document.getElementById('confirm-reference-action');
+      const stateChip = document.getElementById('reference-state-chip');
+      const referenceTitle = document.getElementById('reference-title');
+      const referenceQuestion = document.getElementById('reference-question');
+      const referenceSource = document.getElementById('reference-source');
+      const referenceUrgency = document.getElementById('reference-urgency');
+      const previewTitle = document.getElementById('preview-title');
+      const previewSource = document.getElementById('preview-source');
+      const referenceArt = document.getElementById('reference-art');
+      const recoveryTitle = document.getElementById('recovery-title');
+      const recoveryCopy = document.getElementById('recovery-copy');
+      let activeCandidate = referenceCandidates[0];
+
+      function showPreviewPanel(panelId) {
+        ['preview-empty', 'preview-importing', 'preview-imported', 'preview-error'].forEach((id) => {
+          const panel = document.getElementById(id);
+          if (!panel) return;
+          panel.classList.toggle('hidden', id !== panelId);
+          panel.classList.toggle('flex', id === panelId && id !== 'preview-imported');
+        });
+      }
+
+      function setConfirmEnabled(enabled) {
+        confirmAction.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+        confirmAction.href = enabled ? '03.3-tryon-setup.html' : '#';
+        confirmAction.className = enabled
+          ? 'tap-highlight flex h-12 w-full items-center justify-center rounded-lg bg-[#FAFAF7] px-4 text-sm font-semibold text-[#111111] no-underline active:bg-white/82'
+          : 'tap-highlight flex h-12 w-full items-center justify-center rounded-lg bg-white/10 px-4 text-sm font-semibold text-white/40 no-underline';
+      }
+
+      function setCandidate(candidateId) {
+        activeCandidate = referenceCandidates.find((candidate) => candidate.id === candidateId) || referenceCandidates[0];
+        previewTitle.textContent = activeCandidate.title;
+        previewSource.textContent = `${activeCandidate.source} · ${activeCandidate.typeLabel}`;
+        referenceTitle.textContent = activeCandidate.title;
+        referenceQuestion.textContent = activeCandidate.decisionQuestion;
+        referenceSource.textContent = activeCandidate.source;
+        referenceUrgency.textContent = activeCandidate.urgency;
+        referenceArt.classList.toggle('is-hair-reference', activeCandidate.type === 'hairstyle');
+        const jacket = referenceArt.querySelector('.reference-jacket');
+        const hair = referenceArt.querySelector('.reference-hair');
+        if (jacket && hair) {
+          jacket.style.opacity = activeCandidate.type === 'hairstyle' ? '0' : '1';
+          hair.style.opacity = activeCandidate.type === 'hairstyle' ? '1' : '0';
+        }
+      }
+
+      function setImportState(state, candidateId) {
+        app.dataset.state = state;
+
+        if (candidateId) {
+          setCandidate(candidateId);
+        }
+
+        if (state === 'empty') {
+          showPreviewPanel('preview-empty');
+          stateChip.textContent = '未选择';
+          stateChip.className = 'shrink-0 rounded-full bg-white/[0.07] px-2.5 py-1 text-xs font-semibold text-white/56';
+          referenceTitle.textContent = '等待导入';
+          referenceQuestion.textContent = '选择参考图后，这里会显示你正在判断的问题。';
+          referenceSource.textContent = '-';
+          referenceUrgency.textContent = '-';
+          recoveryTitle.textContent = '下一步再确认额度';
+          recoveryCopy.textContent = '导入参考图不会扣额度。进入设置页后，你还能更换参考图或本人形象。';
+          setConfirmEnabled(false);
+        }
+
+        if (state === 'importing') {
+          showPreviewPanel('preview-importing');
+          stateChip.textContent = '读取中';
+          stateChip.className = 'shrink-0 rounded-full bg-[#9D7AFF]/14 px-2.5 py-1 text-xs font-semibold text-[#9D7AFF]';
+          referenceTitle.textContent = '正在读取参考图';
+          referenceQuestion.textContent = '正在保留原图比例、颜色和关键轮廓，稍后用于试穿设置。';
+          referenceSource.textContent = activeCandidate.source;
+          referenceUrgency.textContent = activeCandidate.urgency;
+          recoveryTitle.textContent = '读取完成后再继续';
+          recoveryCopy.textContent = '这一页只处理参考图，仍然不会消耗生成额度。';
+          setConfirmEnabled(false);
+        }
+
+        if (state === 'imported') {
+          setCandidate(candidateId || activeCandidate.id);
+          showPreviewPanel('preview-imported');
+          stateChip.textContent = `已导入 · ${activeCandidate.typeLabel}`;
+          stateChip.className = 'shrink-0 rounded-full bg-[#9AE6C4]/14 px-2.5 py-1 text-xs font-semibold text-[#C7F5DF]';
+          recoveryTitle.textContent = '参考图已准备好';
+          recoveryCopy.textContent = '下一步确认本人形象和本次消耗，再开始生成试穿预览。';
+          setConfirmEnabled(true);
+        }
+
+        if (state === 'error') {
+          showPreviewPanel('preview-error');
+          stateChip.textContent = '导入失败';
+          stateChip.className = 'shrink-0 rounded-full bg-[#F2A7A0]/14 px-2.5 py-1 text-xs font-semibold text-[#F2A7A0]';
+          referenceTitle.textContent = '需要重新选择参考图';
+          referenceQuestion.textContent = '建议换一张主体更完整、不要过度遮挡或过暗的图片。';
+          referenceSource.textContent = '-';
+          referenceUrgency.textContent = '-';
+          recoveryTitle.textContent = '可以直接重试';
+          recoveryCopy.textContent = '重新选择不会影响余额，也不会改变你的常用本人形象。';
+          setConfirmEnabled(false);
+        }
+
+        document.querySelectorAll('.state-control').forEach((button) => {
+          const isActive = button.dataset.state === state;
+          button.classList.toggle('border-[#9D7AFF]/50', isActive);
+          button.classList.toggle('bg-[#9D7AFF]/12', isActive);
+          button.classList.toggle('text-[#D8CEFF]', isActive);
+        });
+      }
+
+      function simulateImport(candidateId) {
+        setImportState('importing', candidateId);
+        window.clearTimeout(window.__styleAiImportTimer);
+        window.__styleAiImportTimer = window.setTimeout(() => {
+          setImportState('imported', candidateId);
+        }, 650);
+      }
+
+      document.querySelectorAll('[data-candidate-id]').forEach((button) => {
+        button.addEventListener('click', () => simulateImport(button.dataset.candidateId));
+      });
+
+      document.querySelectorAll('.state-control').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.clearTimeout(window.__styleAiImportTimer);
+          setImportState(button.dataset.state, activeCandidate.id);
+        });
+      });
+
+      confirmAction.addEventListener('click', (event) => {
+        if (confirmAction.getAttribute('aria-disabled') === 'true') {
+          event.preventDefault();
+        }
+      });
+
+      window.__STYLE_AI_PROTOTYPE__ = {
+        scenario: '03-linman-tryon-decision',
+        page: '03.2-import-reference',
+        states: ['empty', 'importing', 'imported', 'error'],
+        setImportState
+      };
+
+      setImportState('empty');
+    </script>
+  </body>
+</html>

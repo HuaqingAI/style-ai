@@ -1,0 +1,162 @@
+metadata:
+  project: style-ai
+  scenario: 02-xiaoyu-second-style-exploration
+  logical_view: Save Result View
+  page_number: "02.2"
+  page_name: save-result
+  prototype_file: 02.2-save-result.html
+  source_spec: _bmad-output/C-UX-Scenarios/02-xiaoyu-second-style-exploration/02.2-save-result/02.2-save-result.md
+  prototype_folder: _bmad-output/P-Prototypes/02-xiaoyu-second-style-exploration-Prototype
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  completed: 2026-05-18
+  spec_status: prototype-draft
+
+requirements:
+  purpose: 小雨看到第二次生成结果后，比较第一次和第二次方向，并保存一个她觉得有参考价值的结果。
+  entry_context: 她已经在 02.1 选择了一个第二次探索方向并完成生成。
+  exit_action: 点击保存结果，进入 02.3-save-profile-prompt。
+  on_page_interactions:
+    - 查看第二次生成的结果预览和方向说明。
+    - 对照第一次结果与第二次结果。
+    - 选择保存第一次或第二次结果。
+    - 保存结果、查看已保存反馈，或保存失败后重试。
+  user_concerns:
+    - 不想保存错结果。
+    - 需要知道两次结果的差异是否足够帮助判断。
+    - 不想把历史结果保存误解成常用形象。
+
+object_registry:
+  - id: save-result-header
+    type: Mobile header
+    purpose: 标识保存结果步骤，并提供返回 02.1 的路径。
+    required: true
+  - id: save-result-hero
+    type: Page intro
+    purpose: 说明第二次结果已生成，现在保存有参考价值的结果。
+    required: true
+  - id: save-result-preview
+    type: Result preview
+    purpose: 展示第二次生成结果、方向标签和可判断信号。
+    required: true
+  - id: save-result-comparison
+    type: Comparison panel
+    purpose: 对比第一次和第二次结果的差异、适用判断和谨慎点。
+    required: true
+  - id: save-result-choice-group
+    type: Radio-like choice group
+    purpose: 允许选择保存第一次或第二次结果，默认第二次。
+    required: true
+  - id: save-result-value-note
+    type: Explanatory note
+    purpose: 解释保存到历史结果与保存常用形象的区别。
+    required: true
+  - id: save-result-primary-action
+    type: Primary button
+    purpose: 保存当前选择，成功后进入 02.3。
+    required: true
+  - id: save-result-secondary-actions
+    type: Secondary action group
+    purpose: 提供重新生成或回看第一次结果路径。
+    required: true
+  - id: save-result-state-controls
+    type: Prototype controls
+    purpose: 切换 default、saving、saved、save-error 状态。
+    required: true
+
+states:
+  - name: Default
+    data_state: default
+    requirements:
+      - 展示第二次结果、对照、保存选择和主行动。
+      - 默认选择保存第二次结果。
+  - name: Saving
+    data_state: saving
+    requirements:
+      - 主按钮显示保存中并禁止重复点击。
+      - 保留页面上下文不跳转。
+  - name: Saved
+    data_state: saved
+    requirements:
+      - 显示已保存反馈。
+      - 主按钮文案变为继续。
+      - 点击主按钮进入 02.3-save-profile-prompt.html。
+  - name: Save error
+    data_state: save-error
+    requirements:
+      - 显示可恢复错误提示。
+      - 用户可重试保存或改选保存对象。
+
+sections:
+  - number: 1
+    name: Full Page Save Result
+    status: complete
+    estimate_minutes: 120
+    completed: 2026-05-18
+    actual_minutes: 120
+    object_ids:
+      - save-result-header
+      - save-result-hero
+      - save-result-preview
+      - save-result-comparison
+      - save-result-choice-group
+      - save-result-value-note
+      - save-result-primary-action
+      - save-result-secondary-actions
+      - save-result-state-controls
+    scope:
+      - 建立移动端页面壳、顶部导航和品牌标识。
+      - 展示第二次结果预览和生成完成信号。
+      - 对照第一次与第二次结果的差异、适合判断的场景和谨慎点。
+      - 实现保存对象选择，默认保存第二次结果。
+      - 解释保存到历史结果与常用形象的区别。
+      - 实现 default、saving、saved、save-error 本地状态控制。
+    acceptance:
+      - 必需 Object ID 全部存在。
+      - 两个保存选择可见并可切换 active state。
+      - 切换保存对象会更新保存说明和主按钮语义。
+      - default 状态下主按钮可用。
+      - saving 状态下主按钮禁用。
+      - saved 状态显示成功反馈，主按钮指向 02.3。
+      - save-error 状态显示错误说明和恢复入口。
+      - 页面在 375px、393px、428px 宽度无横向滚动。
+    story_file: stories/02.2.1-save-result-full-page.md
+
+verification_results:
+  verified_url: http://127.0.0.1:17866/02-xiaoyu-second-style-exploration-Prototype/02.2-save-result.html
+  verified_date: 2026-05-18
+  method: Browser automation against local prototype server
+  screenshot: _bmad-output/P-Prototypes/02-xiaoyu-second-style-exploration-Prototype/02.2-save-result-393.png
+  notes:
+    - Port 17866 was used because 17865 was already occupied by an older local prototype process.
+    - Forward route to 02.3 was a placeholder during 02.2 verification and is now backed by 02.3-save-profile-prompt.html.
+  passed:
+    - Required object IDs exist.
+    - Two save target choices render from demo data.
+    - Selecting the first result updates active save target, save note, and primary button copy.
+    - default, saving, saved, and save-error states are switchable.
+    - saving state disables the primary action.
+    - saved state primary action routes to 02.3-save-profile-prompt.html.
+    - 02.1 primary action routes to 02.2-save-result.html after simulated generation startup.
+    - 375px, 393px, and 428px widths have no horizontal overflow.
+    - Console has no relevant errors.
+  fixes:
+    - 2026-05-18: Changed 02.2 and 02.1 to use an explicit `.mobile-scroll-page` container with `overflow-y: auto` and touch scrolling because the mobile preview environment did not scroll the body reliably.
+    - Verified 02.2 scrollability at 375px, 393px, and 428px; app scrollTop changes after wheel/touch-style scroll and horizontal overflow remains false.
+
+next_step:
+  workflow_step: Sue review of prototype draft, then create or build 02.3-save-profile-prompt

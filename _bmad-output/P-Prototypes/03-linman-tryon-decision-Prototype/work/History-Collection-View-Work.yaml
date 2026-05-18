@@ -1,0 +1,128 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: History Collection View
+  source_step: 03.6-history-collection
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.6-history-collection/03.6-history-collection.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.6-history-collection.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  spec_status: prototype-draft
+
+view_summary:
+  purpose: 林曼把刚生成的试穿结果保存到历史，并决定是否加入对比或收藏。
+  entry_context: 03.5 结果页已经给出奶油白短外套的本人试穿效果和推荐理由。
+  exit_action: 回到 03.5 继续查看结果，或进入后续 03.7 额度方案判断。
+  user_state:
+    hope: 不丢失本次结果，并能和最近结果放在一起继续判断。
+    worry: 保存、收藏、常用形象和额度购买边界不清。
+
+object_inventory:
+  - id: obj-history-header
+    name: 页面顶部导航
+    role: 标识当前历史/收藏步骤，并提供返回 03.5 和入口页路径。
+  - id: obj-history-hero
+    name: 保存说明区
+    role: 说明本页管理历史/收藏/对比，不会自动保存为常用形象。
+  - id: obj-current-saved-result
+    name: 当前保存结果
+    role: 展示本次奶油白短外套结果、推荐结论、额度和决策问题。
+  - id: obj-history-collection-actions
+    name: 收藏与对比操作
+    role: 支持加入对比、收藏、取消和状态反馈。
+  - id: obj-compare-list
+    name: 对比候选列表
+    role: 展示当前结果与最近结果的对比关系。
+  - id: obj-history-decision-actions
+    name: 后续决策动作
+    role: 提供回到结果、再试参考、查看额度方案等下一步。
+  - id: obj-history-state-controls
+    name: 原型状态控制
+    role: 支持评审 default、compare、favorite、empty、save-error。
+
+functional_requirements:
+  - 页面必须说明历史保存不同于常用形象保存。
+  - 当前结果必须展示参考对象、推荐结论、扣除额度、保存时间和决策问题。
+  - 加入对比和收藏操作必须更新页面状态和可见文案。
+  - 对比候选列表至少展示当前结果和两个最近结果。
+  - 空历史和保存失败状态必须提供恢复路径。
+  - 03.7 未建时额度入口必须使用原型提示。
+  - 移动端 375/393/428px 宽度无水平滚动。
+
+sections:
+  - id: 1
+    name: History Shell & Current Result
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 30
+    objects:
+      - obj-history-header
+      - obj-history-hero
+      - obj-current-saved-result
+    acceptance_criteria:
+      - 页面清楚标识为 03.6 历史/收藏。
+      - 当前结果摘要能承接 03.5 奶油白短外套结果。
+      - 明确说明历史保存不等于常用形象保存。
+    story_file: stories/03.6.1-history-collection-full-page.md
+
+  - id: 2
+    name: Collection Actions & Compare List
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 35
+    objects:
+      - obj-history-collection-actions
+      - obj-compare-list
+    acceptance_criteria:
+      - 加入对比和收藏操作能更新状态。
+      - 对比列表展示当前结果和最近结果。
+      - empty 和 save-error 状态有清晰恢复说明。
+    story_file: stories/03.6.1-history-collection-full-page.md
+
+  - id: 3
+    name: Decision Actions & Prototype States
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-history-decision-actions
+      - obj-history-state-controls
+    acceptance_criteria:
+      - 回到结果页和再试参考路由有效。
+      - 额度方案入口给出 03.7 未建提示。
+      - 五种原型状态均可切换。
+    story_file: stories/03.6.1-history-collection-full-page.md
+
+verification:
+  static_checks: passed
+  browser_automation: passed-at-375-393-428
+  route_from_03_5: passed
+  screenshot: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype/03.6-history-collection-393.png
+  user_review: accepted-locally-2026-05-18
+
+implementation_rules:
+  - This page is a prototype draft because 03.6 did not previously have a full approved page spec.
+  - Do not mark as final-approved until Sue reviews the draft spec and prototype behavior.
+  - Keep 03.7 exits visible as next-step placeholders with explanatory toast behavior until that page is built.
+  - Reuse the dark Style AI mobile visual language from 03.2 through 03.5.
+
+progress:
+  current_section: 3
+  completed_sections: 3
+  total_sections: 3
+  total_estimate_minutes: 90

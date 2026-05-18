@@ -1,0 +1,276 @@
+{
+  "generatedAt": "2026-05-18T07:33:41.029Z",
+  "baseUrl": "http://127.0.0.1:18084/P-Prototypes/04-xiaoyu-seed-feedback-Prototype",
+  "page": "04.1-result-quick-feedback-panel.html",
+  "counts": {
+    "total": 39,
+    "passed": 39,
+    "failed": 0
+  },
+  "results": [
+    {
+      "category": "page-load",
+      "id": "04.1-result-quick-feedback-panel.html",
+      "status": "pass",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "initial-load",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-result-context",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-entry",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-panel",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-likeness-choice-group",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-judgment-choice-group",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-issue-tags",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-issue-category-group",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-note",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-submit-feedback-action",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-validation",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-success",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-next-actions",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "obj-feedback-state-controls",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "default",
+      "status": "pass",
+      "currentState": "default"
+    },
+    {
+      "category": "state",
+      "id": "open",
+      "status": "pass",
+      "currentState": "open"
+    },
+    {
+      "category": "state",
+      "id": "validation-error",
+      "status": "pass",
+      "currentState": "validation-error"
+    },
+    {
+      "category": "state",
+      "id": "submitting",
+      "status": "pass",
+      "currentState": "submitting"
+    },
+    {
+      "category": "state",
+      "id": "submitted",
+      "status": "pass",
+      "currentState": "submitted"
+    },
+    {
+      "category": "state",
+      "id": "tryon-context",
+      "status": "pass",
+      "currentState": "tryon-context"
+    },
+    {
+      "category": "interaction",
+      "id": "entry-opens-panel",
+      "status": "pass",
+      "openedByEntry": "open",
+      "expanded": "true"
+    },
+    {
+      "category": "interaction",
+      "id": "valid-submit",
+      "status": "pass",
+      "currentState": "submitted"
+    },
+    {
+      "category": "interaction",
+      "id": "empty-submit-validation",
+      "status": "pass",
+      "validationVisible": true,
+      "validationState": "validation-error"
+    },
+    {
+      "category": "route",
+      "id": "personal-back",
+      "status": "pass",
+      "href": "../01-xiaoyu-first-preview-Prototype/01.7-image-result.html",
+      "absoluteUrl": "http://127.0.0.1:18084/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.7-image-result.html",
+      "expectedSuffix": "/01-xiaoyu-first-preview-Prototype/01.7-image-result.html",
+      "statusCode": 200
+    },
+    {
+      "category": "route",
+      "id": "personal-primary-continue",
+      "status": "pass",
+      "href": "../02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+      "absoluteUrl": "http://127.0.0.1:18084/P-Prototypes/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+      "expectedSuffix": "/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+      "statusCode": 200
+    },
+    {
+      "category": "route",
+      "id": "personal-retry",
+      "status": "pass",
+      "href": "../01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html",
+      "absoluteUrl": "http://127.0.0.1:18084/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html",
+      "expectedSuffix": "/01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html",
+      "statusCode": 200
+    },
+    {
+      "category": "route",
+      "id": "tryon-back",
+      "status": "pass",
+      "href": "../03-linman-tryon-decision-Prototype/03.5-tryon-result.html",
+      "absoluteUrl": "http://127.0.0.1:18084/P-Prototypes/03-linman-tryon-decision-Prototype/03.5-tryon-result.html",
+      "expectedSuffix": "/03-linman-tryon-decision-Prototype/03.5-tryon-result.html",
+      "statusCode": 200
+    },
+    {
+      "category": "route",
+      "id": "tryon-primary-continue",
+      "status": "pass",
+      "href": "../03-linman-tryon-decision-Prototype/03.6-history-collection.html",
+      "absoluteUrl": "http://127.0.0.1:18084/P-Prototypes/03-linman-tryon-decision-Prototype/03.6-history-collection.html",
+      "expectedSuffix": "/03-linman-tryon-decision-Prototype/03.6-history-collection.html",
+      "statusCode": 200
+    },
+    {
+      "category": "route",
+      "id": "tryon-retry",
+      "status": "pass",
+      "href": "../03-linman-tryon-decision-Prototype/03.3-tryon-setup.html",
+      "absoluteUrl": "http://127.0.0.1:18084/P-Prototypes/03-linman-tryon-decision-Prototype/03.3-tryon-setup.html",
+      "expectedSuffix": "/03-linman-tryon-decision-Prototype/03.3-tryon-setup.html",
+      "statusCode": 200
+    },
+    {
+      "category": "dynamic-tags",
+      "id": "personal-tags",
+      "status": "pass",
+      "personalTags": "脸不像本人发型不自然妆感不像我风格跑偏照片角度影响结果无法判断"
+    },
+    {
+      "category": "dynamic-tags",
+      "id": "tryon-tags",
+      "status": "pass",
+      "resultType": "tryon",
+      "tryonTags": "不像参考图\n比例不对\n材质不对\n肩线不准\n照片角度影响结果\n无法判断"
+    },
+    {
+      "category": "images",
+      "id": "visible-images",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "visible-images",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "touch-target",
+      "id": "04.1-result-quick-feedback-panel.html",
+      "status": "pass",
+      "touchIssues": []
+    }
+  ]
+}

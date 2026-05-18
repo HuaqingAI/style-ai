@@ -1,0 +1,919 @@
+{
+  "generatedAt": "2026-05-18T07:14:04.155Z",
+  "baseUrl": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype",
+  "pages": [
+    "03.1-tryon-entry.html",
+    "03.2-import-reference.html",
+    "03.3-tryon-setup.html",
+    "03.4-tryon-waiting.html",
+    "03.5-tryon-result.html",
+    "03.6-history-collection.html",
+    "03.7-credit-purchase.html"
+  ],
+  "counts": {
+    "total": 133,
+    "passed": 133,
+    "failed": 0
+  },
+  "results": [
+    {
+      "category": "page-load",
+      "id": "03.1",
+      "status": "pass",
+      "file": "03.1-tryon-entry.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.1",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.1:obj-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.1:obj-entry-hero",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.1:obj-reference-options",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.1:obj-primary-action",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.1:obj-credit-notice",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "images",
+      "id": "03.1",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.1",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.1:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.1:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.1:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "page-load",
+      "id": "03.2",
+      "status": "pass",
+      "file": "03.2-import-reference.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.2",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.2:obj-import-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.2:obj-import-source-options",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.2:obj-reference-preview",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.2:obj-reference-details",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.2:obj-confirm-reference-action",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "03.2:empty",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "empty"
+    },
+    {
+      "category": "state",
+      "id": "03.2:importing",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "importing"
+    },
+    {
+      "category": "state",
+      "id": "03.2:imported",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "imported"
+    },
+    {
+      "category": "state",
+      "id": "03.2:error",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "error"
+    },
+    {
+      "category": "images",
+      "id": "03.2",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.2",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.2:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.2:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.2:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "page-load",
+      "id": "03.3",
+      "status": "pass",
+      "file": "03.3-tryon-setup.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.3",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.3:obj-setup-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.3:obj-setup-reference-summary",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.3:obj-setup-profile-card",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.3:obj-setup-credit-confirmation",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.3:obj-start-generation-action",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "03.3:default",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "default"
+    },
+    {
+      "category": "state",
+      "id": "03.3:missing-profile",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "missing-profile"
+    },
+    {
+      "category": "state",
+      "id": "03.3:low-credit",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "low-credit"
+    },
+    {
+      "category": "state",
+      "id": "03.3:submitting",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "submitting"
+    },
+    {
+      "category": "state",
+      "id": "03.3:submit-error",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "submit-error"
+    },
+    {
+      "category": "images",
+      "id": "03.3",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.3",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.3:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.3:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.3:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "page-load",
+      "id": "03.4",
+      "status": "pass",
+      "file": "03.4-tryon-waiting.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.4",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.4:obj-waiting-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.4:obj-waiting-status",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.4:obj-waiting-context-summary",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.4:obj-waiting-credit-policy",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.4:obj-waiting-recovery-actions",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "03.4:queued",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "queued"
+    },
+    {
+      "category": "state",
+      "id": "03.4:generating",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "generating"
+    },
+    {
+      "category": "state",
+      "id": "03.4:finalizing",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "finalizing"
+    },
+    {
+      "category": "state",
+      "id": "03.4:success",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "success"
+    },
+    {
+      "category": "state",
+      "id": "03.4:timeout",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "timeout"
+    },
+    {
+      "category": "state",
+      "id": "03.4:failed",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "failed"
+    },
+    {
+      "category": "images",
+      "id": "03.4",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.4",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.4:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.4:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.4:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "page-load",
+      "id": "03.5",
+      "status": "pass",
+      "file": "03.5-tryon-result.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.5",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.5:obj-result-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.5:obj-result-viewer",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.5:obj-result-reference-summary",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.5:obj-result-fit-summary",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.5:obj-result-judgment-feedback",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.5:obj-result-next-actions",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "03.5:default",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "default"
+    },
+    {
+      "category": "state",
+      "id": "03.5:saved",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "saved"
+    },
+    {
+      "category": "state",
+      "id": "03.5:compared",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "compared"
+    },
+    {
+      "category": "state",
+      "id": "03.5:detail",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "detail"
+    },
+    {
+      "category": "state",
+      "id": "03.5:load-error",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "load-error"
+    },
+    {
+      "category": "images",
+      "id": "03.5",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.5",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.5:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.5:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.5:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "page-load",
+      "id": "03.6",
+      "status": "pass",
+      "file": "03.6-history-collection.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.6",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.6:obj-history-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.6:obj-current-saved-result",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.6:obj-history-collection-actions",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.6:obj-compare-list",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.6:obj-history-decision-actions",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "03.6:default",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "default"
+    },
+    {
+      "category": "state",
+      "id": "03.6:compare",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "compare"
+    },
+    {
+      "category": "state",
+      "id": "03.6:favorite",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "favorite"
+    },
+    {
+      "category": "state",
+      "id": "03.6:empty",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "empty"
+    },
+    {
+      "category": "state",
+      "id": "03.6:save-error",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "save-error"
+    },
+    {
+      "category": "images",
+      "id": "03.6",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.6",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.6:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.6:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.6:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "page-load",
+      "id": "03.7",
+      "status": "pass",
+      "file": "03.7-credit-purchase.html",
+      "statusCode": 200
+    },
+    {
+      "category": "console",
+      "id": "03.7",
+      "status": "pass",
+      "errors": []
+    },
+    {
+      "category": "required-object",
+      "id": "03.7:obj-credit-header",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.7:obj-credit-value-recap",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.7:obj-credit-balance-card",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.7:obj-credit-plan-list",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.7:obj-credit-policy-note",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "required-object",
+      "id": "03.7:obj-credit-purchase-actions",
+      "status": "pass",
+      "count": 1
+    },
+    {
+      "category": "state",
+      "id": "03.7:default",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "default"
+    },
+    {
+      "category": "state",
+      "id": "03.7:selected",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "selected"
+    },
+    {
+      "category": "state",
+      "id": "03.7:purchasing",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "purchasing"
+    },
+    {
+      "category": "state",
+      "id": "03.7:success",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "success"
+    },
+    {
+      "category": "state",
+      "id": "03.7:purchase-error",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "purchase-error"
+    },
+    {
+      "category": "state",
+      "id": "03.7:declined",
+      "status": "pass",
+      "clicked": true,
+      "currentState": "declined"
+    },
+    {
+      "category": "images",
+      "id": "03.7",
+      "status": "pass",
+      "brokenImages": []
+    },
+    {
+      "category": "image-alt",
+      "id": "03.7",
+      "status": "pass",
+      "visibleImagesMissingAlt": []
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.7:375",
+      "status": "pass",
+      "bodyScrollWidth": 375,
+      "docScrollWidth": 375,
+      "innerWidth": 375,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.7:393",
+      "status": "pass",
+      "bodyScrollWidth": 393,
+      "docScrollWidth": 393,
+      "innerWidth": 393,
+      "overflowing": false
+    },
+    {
+      "category": "mobile-overflow",
+      "id": "03.7:428",
+      "status": "pass",
+      "bodyScrollWidth": 428,
+      "docScrollWidth": 428,
+      "innerWidth": 428,
+      "overflowing": false
+    },
+    {
+      "category": "happy-path-route",
+      "id": "03.1-tryon-entry.html->03.2-import-reference.html",
+      "status": "pass",
+      "current": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype/03.2-import-reference.html"
+    },
+    {
+      "category": "happy-path-route",
+      "id": "03.2-import-reference.html->03.3-tryon-setup.html",
+      "status": "pass",
+      "current": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype/03.3-tryon-setup.html"
+    },
+    {
+      "category": "happy-path-route",
+      "id": "03.3-tryon-setup.html->03.4-tryon-waiting.html",
+      "status": "pass",
+      "current": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype/03.4-tryon-waiting.html"
+    },
+    {
+      "category": "happy-path-route",
+      "id": "03.4-tryon-waiting.html->03.5-tryon-result.html",
+      "status": "pass",
+      "current": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype/03.5-tryon-result.html"
+    },
+    {
+      "category": "happy-path-route",
+      "id": "03.5-tryon-result.html->03.6-history-collection.html",
+      "status": "pass",
+      "current": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype/03.6-history-collection.html?mode=saved"
+    },
+    {
+      "category": "happy-path-route",
+      "id": "03.6-history-collection.html->03.7-credit-purchase.html",
+      "status": "pass",
+      "current": "http://127.0.0.1:18083/P-Prototypes/03-linman-tryon-decision-Prototype/03.7-credit-purchase.html"
+    },
+    {
+      "category": "interaction",
+      "id": "03.5-feedback-buttons",
+      "status": "pass",
+      "value": "已记录"
+    },
+    {
+      "category": "interaction",
+      "id": "03.6-compare-mode-query",
+      "status": "pass",
+      "value": "compare"
+    },
+    {
+      "category": "interaction",
+      "id": "03.7-plan-selection",
+      "status": "pass",
+      "value": "selected"
+    },
+    {
+      "category": "touch-target",
+      "id": "03.1",
+      "status": "pass",
+      "touchIssues": []
+    },
+    {
+      "category": "touch-target",
+      "id": "03.2",
+      "status": "pass",
+      "touchIssues": []
+    },
+    {
+      "category": "touch-target",
+      "id": "03.3",
+      "status": "pass",
+      "touchIssues": []
+    },
+    {
+      "category": "touch-target",
+      "id": "03.4",
+      "status": "pass",
+      "touchIssues": []
+    },
+    {
+      "category": "touch-target",
+      "id": "03.5",
+      "status": "pass",
+      "touchIssues": []
+    },
+    {
+      "category": "touch-target",
+      "id": "03.6",
+      "status": "pass",
+      "touchIssues": []
+    },
+    {
+      "category": "touch-target",
+      "id": "03.7",
+      "status": "pass",
+      "touchIssues": []
+    }
+  ]
+}

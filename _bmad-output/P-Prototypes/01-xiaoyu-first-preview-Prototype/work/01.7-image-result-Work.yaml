@@ -1,0 +1,204 @@
+metadata:
+  project: style-ai
+  scenario: 01-xiaoyu-first-preview
+  logical_view: Image Result View
+  page_number: "01.7"
+  page_name: image-result
+  prototype_file: 01.7-image-result.html
+  source_spec: _bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.7-image-result/01.7-image-result.md
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+    touch_optimized: true
+    hover_interactions: false
+  design_fidelity: Design System Components
+  primary_language: zh-CN
+  language_switcher: false
+  status: built
+  created: 2026-05-14
+  completed: 2026-05-14
+  approved_by: Pending qualitative review
+
+requirements:
+  purpose: "让小雨看到第一张足够像自己的风格预览，并把结果转化为可判断的推荐、谨慎点、保存动作和轻量反馈。"
+  implementation_position: "Standalone result page after generation success; can also be opened directly from history in prototype."
+  generation_display_decision:
+    mode: single_generation_fixed_atlas_app_composed
+    rationale:
+      - 多次 AI 生成图片对成本不友好。
+      - 单张完整长图直接展示会牺牲移动端首屏节奏和交互体验。
+      - 固定规格结果图谱允许一次生成后裁剪复用，App 保留原生排版、反馈和状态控制。
+    output_contract:
+      - AI 生成固定规格视觉图谱，包含主结果图、关键对比块、推荐/谨慎视觉块和可选细节块。
+      - 服务端按固定坐标裁剪图谱，返回主预览图、细节 tile、原始 atlas 和裁剪 metadata。
+      - 推荐方向、适合原因、谨慎点、相似度/可判断反馈字段以结构化文本返回，避免完全依赖图片内文字。
+    page_decision: "01.7 保持单页结果体验；详细分析作为可展开区域或详情层，不拆成默认第二页。"
+  success_criteria:
+    - 用户优先看到结果图，而不是被解释文字遮挡。
+    - 用户在主结果后立即看到“像不像自己”和“能不能用于判断”的轻量判断入口。
+    - 推荐方向、适合原因和谨慎尝试点温和、具体、不像外貌评分。
+    - 专业分析可以继续深入，但默认不要求用户读完整长图才能操作。
+    - 用户可以继续换风格、保存结果、保存为常用形象或返回首页。
+    - 反馈是轻量可跳过的，不阻断继续探索。
+  entry_points:
+    - 01.6-generation-waiting.html 生成成功后进入。
+    - 历史结果重新打开。
+  exit_points:
+    - Scenario 02 二次探索入口，当前原型指向 `/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html`。
+    - 01.2-home-dual-entry.html 返回首页。
+
+object_registry:
+  - id: image-result-viewer
+    type: Image viewer
+    purpose: 展示从固定结果图谱裁剪出的主结果图
+    required: true
+  - id: image-result-judgment-strip
+    type: Quick judgment
+    purpose: 收集像不像自己、能不能用于判断的核心信号
+    required: true
+  - id: image-result-fit-summary
+    type: Analysis card
+    purpose: 解释推荐方向、适合原因和谨慎点
+    required: true
+  - id: image-result-recommended-direction
+    type: Content object
+    purpose: 推荐方向
+    required: true
+  - id: image-result-caution-note
+    type: Content object
+    purpose: 谨慎尝试点
+    required: true
+  - id: image-result-analysis-detail
+    type: Expandable detail
+    purpose: 展示从固定结果图谱裁剪出的可选专业分析细节
+    required: false
+  - id: image-result-next-actions
+    type: Action group
+    purpose: 后续动作
+    required: true
+  - id: image-result-explore-another-style-button
+    type: Button
+    purpose: 二次探索
+    required: true
+  - id: image-result-save-result-button
+    type: Button
+    purpose: 保存历史结果
+    required: true
+  - id: image-result-common-profile-prompt
+    type: Optional prompt
+    purpose: 询问是否保存为常用形象
+    required: true
+  - id: image-result-seed-feedback-panel
+    type: Feedback panel
+    purpose: 收集种子反馈
+    required: true
+
+states:
+  - name: Default
+    data_state: default
+    trigger: 结果图和分析都可用
+    requirements:
+      - 展示主结果图、即时判断入口、方向解释、原因、谨慎点、下一步动作、常用形象提示和轻量反馈入口。
+      - 详细分析默认以折叠或预览形式出现，不阻挡主动作。
+  - name: Partial result
+    data_state: partial-result
+    trigger: 图可用但分析缺失
+    requirements:
+      - 结果图优先展示。
+      - 分析区域提示稍后补全，并提供刷新分析入口。
+  - name: Load error
+    data_state: load-error
+    trigger: 历史结果打开失败
+    requirements:
+      - 隐藏结果图和非必要动作。
+      - 提供重试和返回首页入口。
+  - name: Feedback submitted
+    data_state: feedback-submitted
+    trigger: 用户提交轻量反馈
+    requirements:
+      - 显示感谢提示，保留继续探索和返回动作。
+
+sections:
+  - number: 1
+    name: Full Page Image Result
+    status: complete
+    estimate_minutes: 150
+    completed: 2026-05-14
+    actual_minutes: 150
+    approved_by: Pending qualitative review
+    issues: []
+    improvements: []
+    object_ids:
+      - image-result-viewer
+      - image-result-judgment-strip
+      - image-result-fit-summary
+      - image-result-recommended-direction
+      - image-result-caution-note
+      - image-result-analysis-detail
+      - image-result-next-actions
+      - image-result-explore-another-style-button
+      - image-result-save-result-button
+      - image-result-common-profile-prompt
+      - image-result-seed-feedback-panel
+    scope:
+      - 建立移动端结果页容器、顶部导航、品牌标识和状态芯片。
+      - 使用固定规格结果图谱的主预览裁剪作为结果图；原型期可用占位资产模拟该裁剪。
+      - 把“像不像自己”“能不能用于判断”前置到主结果后的轻量判断条。
+      - 展示推荐方向、适合原因、谨慎点和“不是外貌评分”的边界说明。
+      - 详细专业分析使用可展开图文 tile，不默认把完整长图铺在主页面中间。
+      - 实现保存结果、保存/暂不保存常用形象、换风格、返回首页动作。
+      - 实现“像不像自己”“能不能用于判断”“哪里不对”的轻量反馈，并支持提交后状态。
+      - 提供 default、partial-result、load-error、feedback-submitted 本地状态控制。
+    acceptance:
+      - 必需 Object ID 全部存在；可选详细分析对象在有分析 tile 时出现。
+      - Default 状态展示主结果图、即时判断入口、推荐、原因、谨慎点、动作、常用形象提示和反馈入口。
+      - 用户不需要滚过完整长图即可看到主动作。
+      - Partial result 状态保留图，分析区显示稍后补全和刷新分析入口。
+      - Load error 状态显示恢复说明、重试和返回首页。
+      - Feedback submitted 状态显示感谢提示，不阻断换风格和返回首页。
+      - 保存结果与保存常用形象动作有本地反馈且状态可见。
+      - 页面不出现“Prototype asset”“生产环境中替换”等实现说明文案。
+      - 375px、393px、428px 宽度无横向滚动。
+
+dependencies:
+  design_system:
+    - _bmad-output/D-Design-System/design-tokens.md
+    - _bmad-output/D-Design-System/components/style-ai-app-icon-system.md
+  demo_data:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
+  adjacent_pages:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.6-generation-waiting.html
+
+implementation_notes:
+  - Redesign should model a single AI-generated fixed atlas plus server-side crop metadata, not multiple image generations.
+  - The app should compose cropped visual tiles and structured text natively; the full atlas is not default primary content.
+  - Save actions are local prototype state only; they do not persist to backend or demo-data.json.
+  - The explore-another-style action now points to Scenario 02 page `/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html` when served from the shared `P-Prototypes` root.
+
+verification_results:
+  verified_url: http://127.0.0.1:17864/01.7-image-result.html
+  verified_date: 2026-05-14
+  method: Chromium CDP automation
+  passed:
+    - Required object IDs exist.
+    - Default, partial-result, load-error, and feedback-submitted states are switchable.
+    - Save result action changes visible saved state and toast.
+    - Common profile prompt supports save and skip responses.
+    - Feedback submit transitions to feedback-submitted state.
+    - 375px, 393px, and 428px widths have no horizontal overflow.
+    - Console has no errors.
+
+next_step:
+  workflow_step: 5-finalization
+  next_logical_view: Generation Waiting View

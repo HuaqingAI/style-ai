@@ -1,0 +1,100 @@
+{
+  "scenario": {
+    "id": "04-xiaoyu-seed-feedback",
+    "name": "小雨的种子用户反馈",
+    "currentPage": "04.1-result-quick-feedback-panel",
+    "prototypeLanguage": "zh-CN",
+    "deviceCompatibility": {
+      "type": "mobile-only",
+      "testViewports": [
+        { "name": "iPhone SE", "width": 375, "height": 667 },
+        { "name": "iPhone 14 Pro", "width": 393, "height": 852 },
+        { "name": "iPhone 14 Pro Max", "width": 428, "height": 926 }
+      ]
+    },
+    "designFidelity": "design-system-components"
+  },
+  "user": {
+    "id": "demo-user-xiaoyu-001",
+    "name": "小雨",
+    "persona": "daily-beauty-beginner",
+    "seedUser": true
+  },
+  "resultContexts": {
+    "personal": {
+      "id": "style-result-xiaoyu-001",
+      "type": "personal-image",
+      "typeLabel": "个人形象结果",
+      "title": "中发层次方向",
+      "subtitle": "首次真实预览",
+      "headline": "这次有参考价值，但有些细节还不确定。",
+      "body": "小雨觉得发型方向可以参考，但妆感和脸部相似度还需要更准确。",
+      "imageUrl": "../01-xiaoyu-first-preview-Prototype/assets/image-result-atlas-preview.png",
+      "imageAlt": "小雨生成后的中发层次个人形象预览",
+      "primaryAction": "继续换个风格",
+      "primaryHref": "../02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html",
+      "retryAction": "重新生成",
+      "retryHref": "../01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html"
+    },
+    "tryon": {
+      "id": "tryon-result-linman-cream-jacket-001",
+      "type": "try-on",
+      "typeLabel": "试穿结果",
+      "title": "奶油白短外套",
+      "subtitle": "试穿决策预览",
+      "headline": "整体能判断，但比例和参考图还需要确认。",
+      "body": "这张试穿图能帮助判断大方向，但肩线、材质和比例可能还不够准。",
+      "imageUrl": "../03-linman-tryon-decision-Prototype/assets/tryon-result-cream-jacket-preview.svg",
+      "imageAlt": "奶油白短外套试穿结果预览",
+      "primaryAction": "回到历史对比",
+      "primaryHref": "../03-linman-tryon-decision-Prototype/03.6-history-collection.html",
+      "retryAction": "重新试穿",
+      "retryHref": "../03-linman-tryon-decision-Prototype/03.3-tryon-setup.html"
+    }
+  },
+  "feedbackOptions": {
+    "likeness": [
+      { "value": "yes", "label": "像本人" },
+      { "value": "partly", "label": "有点像" },
+      { "value": "no", "label": "不像" }
+    ],
+    "judgmentUsefulness": [
+      { "value": "yes", "label": "能判断" },
+      { "value": "unsure", "label": "还不确定" },
+      { "value": "no", "label": "不能判断" }
+    ],
+    "issueTags": {
+      "personal": [
+        { "value": "face_not_like_me", "label": "脸不像本人" },
+        { "value": "hair_unnatural", "label": "发型不自然" },
+        { "value": "makeup_not_me", "label": "妆感不像我" },
+        { "value": "style_drift", "label": "风格跑偏" },
+        { "value": "photo_angle", "label": "照片角度影响结果" },
+        { "value": "hard_to_judge", "label": "无法判断" }
+      ],
+      "tryon": [
+        { "value": "not_like_reference", "label": "不像参考图" },
+        { "value": "proportion_wrong", "label": "比例不对" },
+        { "value": "material_wrong", "label": "材质不对" },
+        { "value": "shoulder_line_wrong", "label": "肩线不准" },
+        { "value": "photo_angle", "label": "照片角度影响结果" },
+        { "value": "hard_to_judge", "label": "无法判断" }
+      ]
+    },
+    "issueCategories": [
+      { "value": "not_like_me", "label": "不像本人" },
+      { "value": "style_drift", "label": "风格跑偏" },
+      { "value": "photo_problem", "label": "照片问题" },
+      { "value": "hard_to_judge", "label": "无法判断" },
+      { "value": "other", "label": "其他" }
+    ]
+  },
+  "exampleSubmission": {
+    "resultType": "personal",
+    "likeness": "partly",
+    "judgmentUsefulness": "unsure",
+    "issueTags": ["makeup_not_me", "style_drift"],
+    "issueCategory": "style_drift",
+    "freeText": "发型方向可以，但妆感有点不像我。"
+  }
+}
