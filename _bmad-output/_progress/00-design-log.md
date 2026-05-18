@@ -83,6 +83,17 @@
 
 ## Log
 
+### 2026-05-18 - WDS-8 implement completed for IMP-001
+- Agent: Codex / Freya Product Evolution
+- Activity: Implement
+- Branch: `evolution/imp-001-dd001-short-path`
+- Spec: `_bmad-output/evolution/specs/IMP-001-DD001-short-path-design-spec.md`
+- Prototype files updated: `_bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.3-photo-upload.html`, `01.6-generation-waiting.html`, `01.7-image-result.html`, and `data/demo-data.json`.
+- Spec/work files updated: Scenario 01 overview, `01.3`, `01.4`, `01.5`, `01.6`, `01.7`, `work/01.3-photo-upload-Work.yaml`, `work/01.6-generation-waiting-Work.yaml`, `work/01.7-image-result-Work.yaml`, and `work/Logical-View-Map.md`.
+- Result: first happy path now routes `01.3 -> 01.6 -> 01.7`; `01.4` and `01.5` are retained as secondary/system reference views.
+- Verification: `_bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/testing/IMP-001/TR-IMP-001-DD001-short-path.md`; automated acceptance passed 33/33 checks with no console errors and no horizontal overflow at 375/393/428 px.
+- Next: run WDS-8 `[T] Acceptance Test` for qualitative/local sign-off.
+
 ### 2026-05-18 - WDS-8 design solution completed for IMP-001
 - Agent: Codex / Freya Product Evolution
 - Activity: Design Solution

@@ -45,10 +45,11 @@
     "source": "none",
     "uploadedImageUrl": "",
     "qualityCheck": {
-      "status": "not_started",
+      "status": "pass",
       "faceVisible": null,
       "lighting": null,
-      "recommendation": ""
+      "reasonCodes": [],
+      "recommendation": "这张可以用来生成。"
     },
     "privacyBoundary": {
       "temporaryPhotoUse": true,
@@ -60,6 +61,9 @@
     "id": "demo-generation-001",
     "status": "not_started",
     "selectedStyleDirection": "",
+    "defaultGenerationIntent": "daily_judgment_safe_direction",
+    "source": "first_preview_auto_default",
+    "defaultIntentExplanation": "先给你生成一个变化明显但不突兀的方向，方便判断适不适合。",
     "progress": 0,
     "estimatedSeconds": 45,
     "result": {
@@ -137,6 +141,7 @@
       ],
       "likenessConfidenceLabel": "可用于判断",
       "recommendationReason": "保留了你本身的脸型和五官重心，只把发型层次、肤色明亮度和整体利落感往日常可尝试的方向推进。",
+      "resultJudgmentSentence": "这个方向先看自然清爽，变化看得出来，但不会一下子太夸张。",
       "cautionNote": "可以先避开过短长度和厚重齐刘海，容易让整体显得更闷。"
     }
   },

@@ -32,8 +32,8 @@ metadata:
     screenshot: _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.6-generation-waiting-393.png
 
 requirements:
-  purpose: "在首张真实预览生成期间维持信任感，让用户知道任务正在推进、成功后才扣除 1 次额度，失败或超时时有明确恢复路径。"
-  implementation_position: "Standalone async waiting page after generation setup and before image result."
+  purpose: "在首张真实预览生成期间维持信任感，让用户知道系统已用默认稳妥方向创建任务、任务正在推进、成功后才扣除 1 次额度，失败或超时时有明确恢复路径。"
+  implementation_position: "Standalone async waiting page after photo upload/default task creation and before image result."
   success_criteria:
     - 用户能看到清晰的任务状态，而不是空白 loading。
     - 用户知道生成成功后才扣除 1 次额度；失败不会消耗额度。
@@ -41,10 +41,11 @@ requirements:
     - 超时和失败时提供继续等待、重试、换照片、返回首页等恢复动作。
     - 成功状态提供进入结果页的明确出口。
   entry_points:
-    - 01.5-generation-setup.html 创建模拟生成任务后进入。
+    - 01.3-photo-upload.html 选择合格或 warning 照片后直接创建默认生成任务进入。
+    - 01.5-generation-setup.html 仅作为后续/高级路径可进入，不属于首次 happy path。
   exit_points:
     - 01.7-image-result.html 查看生成结果。
-    - 01.5-generation-setup.html 重试生成。
+    - 当前页直接重试默认生成任务。
     - 01.3-photo-upload.html 换照片。
     - 01.2-home-dual-entry.html 返回首页。
 
@@ -56,6 +57,10 @@ object_registry:
   - id: generation-waiting-credit-note
     type: Info note
     purpose: 说明本次额度只在成功后扣除，失败不会扣除。
+    required: true
+  - id: generation-waiting-default-direction-note
+    type: Info note
+    purpose: 说明首轮使用日常判断稳妥方向，不要求用户先选风格。
     required: true
   - id: generation-waiting-detail-list
     type: Progress list
@@ -116,11 +121,13 @@ sections:
     improvements: []
     object_ids:
       - generation-waiting-status
+      - generation-waiting-default-direction-note
       - generation-waiting-credit-note
       - generation-waiting-detail-list
       - generation-waiting-recovery-actions
     scope:
       - Build the mobile shell, top bar, brand mark, task identity, and async status panel.
+      - Add default direction note for daily_judgment_safe_direction.
       - Implement progress ring/bar, status copy, and task phase labels for queued, generating, finalizing, success, timeout, and failed.
       - Add the credit handling note with success-only deduction and failure-safe copy.
       - Add the detail list for reading photo, generating preview, and organizing recommendation/caution notes.
@@ -131,7 +138,7 @@ sections:
       - All six states can be switched locally and update status, progress, detail list, credit copy, and actions.
       - Failed and timeout states expose recovery actions.
       - Success state exposes the next route to 01.7-image-result.html.
-      - 01.5-generation-setup.html start behavior can navigate into this page.
+      - 01.3-photo-upload.html pass/warning continue behavior can navigate into this page.
       - 375px, 393px, and 428px widths have no horizontal overflow.
 
 dependencies:
@@ -141,11 +148,12 @@ dependencies:
   demo_data:
     - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
   adjacent_pages:
-    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.3-photo-upload.html
     - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.7-image-result.html
 
 implementation_notes:
   - This prototype simulates async task status in the browser; it does not call a backend or charge real credit.
+  - IMP-001 first path enters from 01.3 with defaultGenerationIntent daily_judgment_safe_direction and source first_preview_auto_default.
   - The default page starts in queued state. Query parameter state=generating/finalizing/success/timeout/failed can open a specific state.
   - Keep the waiting experience transparent but calm; avoid expert model terms.
 
@@ -162,7 +170,7 @@ verification_results:
     - Failed state shows retry, change-photo, and home recovery actions.
     - Timeout state shows continue-waiting, later-history, and home actions.
     - Success action targets 01.7-image-result.html and the route returns HTTP 200 on the prototype server.
-    - 01.5-generation-setup.html references the 01.6 waiting route.
+    - 01.3-photo-upload.html references the 01.6 waiting route.
     - 375px, 393px, and 428px widths have no horizontal overflow.
     - Console has no errors.
 

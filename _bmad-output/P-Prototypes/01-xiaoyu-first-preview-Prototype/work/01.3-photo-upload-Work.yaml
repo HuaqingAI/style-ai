@@ -38,7 +38,9 @@ requirements:
   entry_points:
     - 01.2-home-dual-entry 点击“开始看看效果”。
   exit_points:
-    - 选择照片后点击“用这张照片继续生成”进入 01.4-photo-quality-check.html；01.4 通过/提醒状态再进入 01.5-generation-setup.html。
+    - 选择合格照片后点击“用这张生成预览”直接进入 01.6-generation-waiting.html，并使用默认生成意图 daily_judgment_safe_direction。
+    - 轻微质量提醒在本页 inline 展示，仍可继续进入 01.6-generation-waiting.html。
+    - 严重质量问题停留本页，只提供重新上传。
     - 权限失败、取消或读取失败时停留本页。
 
 photo_intake_contract:
@@ -49,7 +51,8 @@ photo_intake_contract:
     - try_on
   photo_scope: session_photo
   persistence_rule: 常用形象必须在结果页或明确保存动作中由用户主动确认，不能由本页默认创建。
-  next_target: 01.4-photo-quality-check.html
+  next_target: 01.6-generation-waiting.html
+  default_generation_intent: daily_judgment_safe_direction
 
 object_registry:
   - id: photo-upload-boundary-note
@@ -71,6 +74,10 @@ object_registry:
   - id: photo-upload-selected-preview
     type: Image preview
     purpose: 确认所选照片
+    required: true
+  - id: photo-upload-quality-status
+    type: Inline status
+    purpose: 照片质量 pass/warning/fail/unavailable 状态
     required: true
   - id: photo-upload-continue-button
     type: Button
@@ -96,7 +103,17 @@ states:
     trigger: 已选择照片
     requirements:
       - 显示照片预览、来源、重选入口和继续按钮。
-      - 点击继续进入生成设置/生成路径；质量检查可作为后续流程的轻量 preflight，不作为本页的用户主心智。
+      - 点击继续直接创建默认生成任务并进入 01.6-generation-waiting.html；不进入 01.4 或 01.5。
+  - name: Selected warning
+    trigger: 已选择照片且仅有轻微质量提醒
+    requirements:
+      - 在本页显示 inline warning。
+      - 仍允许继续进入 01.6-generation-waiting.html。
+  - name: Selected fail
+    trigger: 已选择照片但严重不可用
+    requirements:
+      - 在本页显示阻断说明。
+      - 只提供重新上传，不进入 01.6。
   - name: Upload error
     trigger: 照片读取失败
     requirements:
@@ -158,8 +175,8 @@ sections:
       - photo-upload-continue-button
     scope:
       - 空态显示照片占位。
-      - 已选状态显示模拟照片预览、来源、时间和重选入口。
-      - 继续按钮在有照片后跳转到 01.4-photo-quality-check.html。
+      - 已选状态显示模拟照片预览、来源、质量状态和重选入口。
+      - 继续按钮在 pass/warning 状态后直接跳转到 01.6-generation-waiting.html。
     acceptance:
       - 未选照片时继续按钮不误导用户进入下一步。
       - 已选照片时继续按钮可用且目标明确为继续生成。
@@ -199,7 +216,8 @@ implementation_notes:
   - Keep upload, trust note, preview, and guidance patterns prototype-local until validated across the full DD-001 flow.
   - Treat this page as a reusable Photo Intake instance. Downstream flows should pass intent, photo requirements, and next target instead of duplicating picker logic.
   - Distinguish session photo, generation result, and persistent profile. Session photos can be reused within the current flow; persistent profile reuse requires explicit user save after seeing results.
+  - IMP-001 moves 01.4 and 01.5 out of the first happy path. Keep quality check and generation setup capabilities as system/secondary states.
 
 next_step:
   workflow_step: 3-logical-view-breakdown
-  next_logical_view: Photo Quality Check View
+  next_logical_view: Generation Waiting View

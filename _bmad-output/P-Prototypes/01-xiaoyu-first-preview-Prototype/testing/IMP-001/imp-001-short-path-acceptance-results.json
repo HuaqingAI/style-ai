@@ -1,0 +1,269 @@
+{
+  "baseUrl": "http://127.0.0.1:17872/01-xiaoyu-first-preview-Prototype",
+  "total": 33,
+  "passed": 33,
+  "failed": 0,
+  "results": [
+    {
+      "area": "01.3 objects",
+      "name": "#photo-upload-quality-status",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.3 objects",
+      "name": "#photo-upload-continue-button",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.3 objects",
+      "name": "[data-upload-state=\"selected\"]",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.3 objects",
+      "name": "[data-upload-state=\"selected-warning\"]",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.3 objects",
+      "name": "[data-upload-state=\"selected-fail\"]",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.3 pass route",
+      "name": "selected routes to 01.6",
+      "status": "pass",
+      "detail": {
+        "passHref": "01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default",
+        "passCta": "用这张生成预览"
+      }
+    },
+    {
+      "area": "01.3 warning",
+      "name": "inline warning can continue",
+      "status": "pass",
+      "detail": {
+        "warningHref": "01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default"
+      }
+    },
+    {
+      "area": "01.3 fail",
+      "name": "fail blocks generation",
+      "status": "pass",
+      "detail": {
+        "failDisabled": "true",
+        "failText": "需要重新上传"
+      }
+    },
+    {
+      "area": "happy path",
+      "name": "01.3 -> 01.6",
+      "status": "pass",
+      "detail": {
+        "url": "http://127.0.0.1:17872/01-xiaoyu-first-preview-Prototype/01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default"
+      }
+    },
+    {
+      "area": "01.6 objects",
+      "name": "#generation-waiting-default-direction-note",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.6 objects",
+      "name": "#generation-waiting-status",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.6 copy",
+      "name": "default direction note",
+      "status": "pass",
+      "detail": {
+        "waitingText": "\n      稳\n      \n        本轮不用先选风格\n        系统会先用“日常判断稳妥方向”生成，方便你快速判断像不像、能不能参考。\n      \n    "
+      }
+    },
+    {
+      "area": "happy path",
+      "name": "01.6 -> 01.7",
+      "status": "pass",
+      "detail": {
+        "url": "http://127.0.0.1:17872/01-xiaoyu-first-preview-Prototype/01.7-image-result.html"
+      }
+    },
+    {
+      "area": "01.7 first screen objects",
+      "name": "#image-result-viewer",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 first screen objects",
+      "name": "#image-result-judgment-sentence",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 first screen objects",
+      "name": "#image-result-next-actions",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 first screen objects",
+      "name": "#image-result-explore-another-style-button",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 first screen objects",
+      "name": "#image-result-save-result-button",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 actions",
+      "name": "only primary actions visible",
+      "status": "pass",
+      "detail": {
+        "actionsText": "\n        \n          \n            换个方向\n          \n          \n            保存\n          \n        \n      "
+      }
+    },
+    {
+      "area": "01.7 progressive disclosure",
+      "name": "profile hidden initially",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 progressive disclosure",
+      "name": "feedback reasons hidden initially",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 save",
+      "name": "save reveals profile prompt",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "01.7 feedback",
+      "name": "negative reveals reason panel",
+      "status": "pass",
+      "detail": {}
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.3-photo-upload.html:375",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 375,
+        "docWidth": 375,
+        "viewportWidth": 375,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.6-generation-waiting.html:375",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 375,
+        "docWidth": 375,
+        "viewportWidth": 375,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.7-image-result.html:375",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 375,
+        "docWidth": 375,
+        "viewportWidth": 375,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.3-photo-upload.html:393",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 393,
+        "docWidth": 393,
+        "viewportWidth": 393,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.6-generation-waiting.html:393",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 393,
+        "docWidth": 393,
+        "viewportWidth": 393,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.7-image-result.html:393",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 393,
+        "docWidth": 393,
+        "viewportWidth": 393,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.3-photo-upload.html:428",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 428,
+        "docWidth": 428,
+        "viewportWidth": 428,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.6-generation-waiting.html:428",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 428,
+        "docWidth": 428,
+        "viewportWidth": 428,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "mobile overflow",
+      "name": "01.7-image-result.html:428",
+      "status": "pass",
+      "detail": {
+        "bodyWidth": 428,
+        "docWidth": 428,
+        "viewportWidth": 428,
+        "overflowing": false
+      }
+    },
+    {
+      "area": "console",
+      "name": "no console errors",
+      "status": "pass",
+      "detail": {
+        "consoleErrors": []
+      }
+    }
+  ]
+}

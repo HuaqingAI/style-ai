@@ -29,7 +29,7 @@ metadata:
   approved_by: Pending qualitative review
 
 requirements:
-  purpose: "让小雨看到第一张足够像自己的风格预览，并把结果转化为可判断的推荐、谨慎点、保存动作和轻量反馈。"
+  purpose: "让小雨第一眼看到足够像自己的风格预览，用一句判断和两个主动作完成首次结果判断，再按需查看推荐、谨慎点、保存常用形象和反馈。"
   implementation_position: "Standalone result page after generation success; can also be opened directly from history in prototype."
   generation_display_decision:
     mode: single_generation_fixed_atlas_app_composed
@@ -44,11 +44,12 @@ requirements:
     page_decision: "01.7 保持单页结果体验；详细分析作为可展开区域或详情层，不拆成默认第二页。"
   success_criteria:
     - 用户优先看到结果图，而不是被解释文字遮挡。
-    - 用户在主结果后立即看到“像不像自己”和“能不能用于判断”的轻量判断入口。
+    - 用户在主结果后立即看到一句判断、`换个方向` 和 `保存`。
+    - 用户在主动作后看到“像不像自己”和“能不能用于判断”的轻量判断入口。
     - 推荐方向、适合原因和谨慎尝试点温和、具体、不像外貌评分。
     - 专业分析可以继续深入，但默认不要求用户读完整长图才能操作。
-    - 用户可以继续换风格、保存结果、保存为常用形象或返回首页。
-    - 反馈是轻量可跳过的，不阻断继续探索。
+    - 用户可以继续换方向或保存结果；保存后才出现常用形象提示。
+    - 反馈原因面板默认隐藏，负向或不确定反馈后再展开，不阻断继续探索。
   entry_points:
     - 01.6-generation-waiting.html 生成成功后进入。
     - 历史结果重新打开。
@@ -64,6 +65,10 @@ object_registry:
   - id: image-result-judgment-strip
     type: Quick judgment
     purpose: 收集像不像自己、能不能用于判断的核心信号
+    required: true
+  - id: image-result-judgment-sentence
+    type: Content object
+    purpose: 第一屏一句判断
     required: true
   - id: image-result-fit-summary
     type: Analysis card
@@ -107,8 +112,8 @@ states:
     data_state: default
     trigger: 结果图和分析都可用
     requirements:
-      - 展示主结果图、即时判断入口、方向解释、原因、谨慎点、下一步动作、常用形象提示和轻量反馈入口。
-      - 详细分析默认以折叠或预览形式出现，不阻挡主动作。
+      - 展示主结果图、一句判断、换个方向和保存。
+      - 详细分析、反馈原因和常用形象提示默认不阻挡主动作。
   - name: Partial result
     data_state: partial-result
     trigger: 图可用但分析缺失
@@ -139,6 +144,7 @@ sections:
     improvements: []
     object_ids:
       - image-result-viewer
+      - image-result-judgment-sentence
       - image-result-judgment-strip
       - image-result-fit-summary
       - image-result-recommended-direction
@@ -152,15 +158,18 @@ sections:
     scope:
       - 建立移动端结果页容器、顶部导航、品牌标识和状态芯片。
       - 使用固定规格结果图谱的主预览裁剪作为结果图；原型期可用占位资产模拟该裁剪。
-      - 把“像不像自己”“能不能用于判断”前置到主结果后的轻量判断条。
+      - 把一句判断、换方向、保存前置到主结果后。
+      - 把“像不像自己”“能不能用于判断”作为轻量判断条，并让原因反馈按需展开。
       - 展示推荐方向、适合原因、谨慎点和“不是外貌评分”的边界说明。
       - 详细专业分析使用可展开图文 tile，不默认把完整长图铺在主页面中间。
-      - 实现保存结果、保存/暂不保存常用形象、换风格、返回首页动作。
-      - 实现“像不像自己”“能不能用于判断”“哪里不对”的轻量反馈，并支持提交后状态。
+      - 实现保存结果、保存后常用形象提示、换方向动作。
+      - 实现“像不像自己”“能不能用于判断”“哪里不对”的轻量反馈，并支持负向/不确定后展开和提交后状态。
       - 提供 default、partial-result、load-error、feedback-submitted 本地状态控制。
     acceptance:
       - 必需 Object ID 全部存在；可选详细分析对象在有分析 tile 时出现。
-      - Default 状态展示主结果图、即时判断入口、推荐、原因、谨慎点、动作、常用形象提示和反馈入口。
+      - Default 状态第一屏展示主结果图、一句判断、换方向和保存。
+      - 常用形象提示默认隐藏，保存结果后出现。
+      - 反馈原因面板默认隐藏，负向或不确定反馈后出现。
       - 用户不需要滚过完整长图即可看到主动作。
       - Partial result 状态保留图，分析区显示稍后补全和刷新分析入口。
       - Load error 状态显示恢复说明、重试和返回首页。
@@ -177,7 +186,6 @@ dependencies:
     - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
   adjacent_pages:
     - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html
-    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.5-generation-setup.html
     - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.6-generation-waiting.html
 
 implementation_notes:

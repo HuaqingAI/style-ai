@@ -12,7 +12,7 @@
 
 ## Mapping Decision
 
-DD-001 contains seven scenario steps. Each step is a separate logical view because each has a distinct page purpose, layout structure, user context, and exit action. No step is documented as inheriting from another step, and no step is only an overlay or modal state of a previous view.
+DD-001 v1 contained seven scenario steps. IMP-001 keeps all seven logical view files for traceability, but the first happy path now has five visible views: `01.1 -> 01.2 -> 01.3 -> 01.6 -> 01.7`. `01.4-photo-quality-check` and `01.5-generation-setup` are retained as system/secondary reference views, not visible first-run pages.
 
 `01.1-start-login` includes both welcome and login content in one logical view. A standalone welcome/onboarding page is not part of DD-001.
 
@@ -24,11 +24,11 @@ DD-001 contains seven scenario steps. Each step is a separate logical view becau
 |-------------|---------------|--------------|----------------|-----------|-------|
 | 1 | `01.1-start-login` | Start / Login View | `01.1-start-login.html` | Full page | Brand trust, invite code, phone login, Google login, boundary note |
 | 2 | `01.2-home-dual-entry` | Home Dual Entry View | `01.2-home-dual-entry.html` | Full page | Two product entry cards, quota snapshot, empty history prompt |
-| 3 | `01.3-photo-upload` | Photo Upload View | `01.3-photo-upload.html` | Full page | Photo boundary note, camera/album actions, selected photo preview |
-| 4 | `01.4-photo-quality-check` | Photo Quality Check View | `01.4-photo-quality-check.html` | Full page | Photo review, quality summary, checklist, recovery actions |
-| 5 | `01.5-generation-setup` | Generation Setup View | `01.5-generation-setup.html` | Full page | Style direction selector, credit summary, start generation |
-| 6 | `01.6-generation-waiting` | Generation Waiting View | `01.6-generation-waiting.html` | Full page with async states | Queued, generating, finalizing, success, timeout, failed |
-| 7 | `01.7-image-result` | Image Result View | `01.7-image-result.html` | Full page | Result viewer, fit summary, next actions, common profile prompt, feedback panel |
+| 3 | `01.3-photo-upload` | Photo Upload View | `01.3-photo-upload.html` | Full page | Photo boundary note, camera/album actions, selected photo preview, inline quality status, default task creation |
+| 4 | `01.4-photo-quality-check` | Photo Quality Check View | `01.4-photo-quality-check.html` | Secondary/system reference | Photo quality rules and recovery; skipped in first happy path |
+| 5 | `01.5-generation-setup` | Generation Setup View | `01.5-generation-setup.html` | Secondary/system reference | Style direction selector and credit summary for later/advanced paths; skipped in first happy path |
+| 6 | `01.6-generation-waiting` | Generation Waiting View | `01.6-generation-waiting.html` | Full page with async states | Queued, generating, finalizing, success, timeout, failed, default direction note |
+| 7 | `01.7-image-result` | Image Result View | `01.7-image-result.html` | Full page | Result viewer, judgment sentence, primary actions, progressive details, trigger-based profile/feedback |
 
 ---
 
@@ -55,9 +55,9 @@ Do not promote these into `_bmad-output/D-Design-System/` until the first vertic
 |--------------|------------------|
 | Start / Login View | Default, loading, error, success |
 | Home Dual Entry View | First-time, returning, low credit, feature unavailable |
-| Photo Upload View | Empty, permission denied, selected, upload error |
-| Photo Quality Check View | Checking, pass, warning, fail, check unavailable |
-| Generation Setup View | Default, no credit, submitting, submit error |
+| Photo Upload View | Empty, permission denied, selected/pass, selected/warning, selected/fail, check unavailable, task submit error, upload error |
+| Photo Quality Check View | Checking, pass, warning, fail, check unavailable; secondary/system only |
+| Generation Setup View | Default, no credit, submitting, submit error; secondary/system only |
 | Generation Waiting View | Queued, generating, finalizing, success, timeout, failed |
 | Image Result View | Default, partial result, load error, feedback submitted |
 
@@ -65,15 +65,18 @@ Do not promote these into `_bmad-output/D-Design-System/` until the first vertic
 
 ## Build Order
 
-Build in scenario order:
+Current first happy path build/test order:
 
 1. `01.1-start-login`
 2. `01.2-home-dual-entry`
 3. `01.3-photo-upload`
-4. `01.4-photo-quality-check`
-5. `01.5-generation-setup`
-6. `01.6-generation-waiting`
-7. `01.7-image-result`
+4. `01.6-generation-waiting`
+5. `01.7-image-result`
+
+Retained secondary/reference views:
+
+- `01.4-photo-quality-check`
+- `01.5-generation-setup`
 
 The first implementation target is `01.1-start-login`.
 

@@ -124,9 +124,9 @@
     <header class="shrink-0" aria-label="结果页顶部">
       <div class="flex items-center justify-between gap-3">
         <a
-          href="01.5-generation-setup.html"
+          href="01.6-generation-waiting.html?state=success"
           class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
-          aria-label="返回生成设置"
+          aria-label="返回生成等待"
         >
           ‹
         </a>
@@ -180,10 +180,10 @@
           <span id="image-result-save-chip" class="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/54">未保存</span>
         </div>
         <h1 class="mt-2 text-[25px] font-semibold leading-[1.12] text-[#FAFAF7]">
-          这次有 3 个发型方向可以参考。
+          先看这张结果，判断像不像你。
         </h1>
         <p id="image-result-intro-copy" class="mt-3 text-sm leading-6 text-white/58">
-          先看主推荐，再比较另外两个方向，判断哪一个最像你会真实尝试的样子。
+          这是系统先生成的稳妥方向；如果不对，可以马上换个方向。
         </p>
       </section>
 
@@ -201,7 +201,7 @@
             class="atlas-preview absolute left-1/2 top-1/2 h-[105%] w-auto max-w-none -translate-x-1/2 -translate-y-[39%]"
           >
           <div class="absolute left-4 top-4 z-10 rounded-lg bg-black/36 px-2.5 py-1 text-[11px] font-medium text-white/84">
-            多发型推荐
+            首次预览
           </div>
           <div class="absolute right-4 top-4 z-10 rounded-lg bg-[#9AE6C4]/16 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">
             可判断方向
@@ -225,6 +225,43 @@
             class="tap-highlight rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white/70"
           >
             保存到历史
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="image-result-judgment-sentence"
+        data-object-id="image-result-judgment-sentence"
+        class="mt-3 rounded-lg border border-[#9D7AFF]/18 bg-[#9D7AFF]/10 p-3"
+        aria-label="结果一句判断"
+      >
+        <p id="image-result-judgment-copy" class="text-sm font-semibold leading-6 text-[#FAFAF7]">
+          这个方向先看自然清爽，变化看得出来，但不会一下子太夸张。
+        </p>
+      </section>
+
+      <section
+        id="image-result-next-actions"
+        data-object-id="image-result-next-actions"
+        class="mt-3 rounded-lg border border-white/10 bg-white/[0.035] p-3"
+        aria-label="结果下一步动作"
+      >
+        <div class="grid grid-cols-2 gap-2">
+          <a
+            id="image-result-explore-another-style-button"
+            data-object-id="image-result-explore-another-style-button"
+            href="/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html"
+            class="tap-highlight flex min-h-[48px] items-center justify-center rounded-lg bg-[#FAFAF7] px-3 py-3 text-sm font-semibold text-[#111111] no-underline"
+          >
+            换个方向
+          </a>
+          <button
+            id="image-result-save-result-button"
+            data-object-id="image-result-save-result-button"
+            type="button"
+            class="tap-highlight min-h-[48px] rounded-lg border border-white/10 bg-white/[0.045] px-3 py-3 text-sm font-semibold text-white/78"
+          >
+            保存
           </button>
         </div>
       </section>
@@ -329,38 +366,6 @@
         </div>
       </section>
 
-      <section
-        id="image-result-next-actions"
-        data-object-id="image-result-next-actions"
-        class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
-        aria-label="结果下一步动作"
-      >
-        <div class="grid gap-2">
-          <a
-            id="image-result-explore-another-style-button"
-            data-object-id="image-result-explore-another-style-button"
-            href="/02-xiaoyu-second-style-exploration-Prototype/02.1-second-style-exploration.html"
-            class="tap-highlight flex min-h-[48px] items-center justify-center rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] no-underline"
-          >
-            换个风格看看
-          </a>
-          <button
-            id="image-result-save-result-button"
-            data-object-id="image-result-save-result-button"
-            type="button"
-            class="tap-highlight min-h-[48px] rounded-lg border border-white/10 bg-white/[0.045] px-4 py-3 text-sm font-semibold text-white/78"
-          >
-            保存这个结果
-          </button>
-          <a
-            href="01.2-home-dual-entry.html"
-            class="tap-highlight flex min-h-[44px] items-center justify-center rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-white/62 no-underline"
-          >
-            先回首页
-          </a>
-        </div>
-      </section>
-
       <details
         id="image-result-analysis-detail"
         data-object-id="image-result-analysis-detail"
@@ -395,7 +400,7 @@
       <section
         id="image-result-common-profile-prompt"
         data-object-id="image-result-common-profile-prompt"
-        class="mt-4 rounded-lg border border-[#9AE6C4]/20 bg-[#9AE6C4]/10 p-4"
+        class="mt-4 hidden rounded-lg border border-[#9AE6C4]/20 bg-[#9AE6C4]/10 p-4"
         aria-label="常用形象保存提示"
       >
         <p id="image-result-profile-title" class="text-sm font-semibold leading-5 text-[#C7F5DF]">保存这张作为常用形象？</p>
@@ -430,7 +435,7 @@
       <section
         id="image-result-seed-feedback-panel"
         data-object-id="image-result-seed-feedback-panel"
-        class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+        class="mt-4 hidden rounded-lg border border-white/10 bg-white/[0.035] p-4"
         aria-label="种子用户轻量反馈"
       >
         <div id="image-result-feedback-form">
@@ -574,6 +579,7 @@
             '保留你的五官重心，只把发型层次往更轻盈的方向推进。',
             '中发长度比短发更稳，日常变化明显但不用一次改太大。'
           ],
+          resultJudgmentSentence: '这个方向先看自然清爽，变化看得出来，但不会一下子太夸张。',
           cautionNote: '可以先避开过短长度和厚重齐刘海，容易让整体显得更闷。',
           likenessConfidenceLabel: '可用于判断'
         }
@@ -661,13 +667,15 @@
       const app = document.getElementById('app');
       const saveButton = document.getElementById('image-result-save-result-button');
       const shortcut = document.getElementById('image-result-viewer-save-shortcut');
+      const profilePrompt = document.getElementById('image-result-common-profile-prompt');
       const label = saved ? '已保存到历史' : '未保存';
       if (app) {
         app.dataset.resultSaved = saved ? 'true' : 'false';
       }
       setText('image-result-save-chip', label);
-      setText('image-result-save-result-button', saved ? '已保存这个结果' : '保存这个结果');
+      setText('image-result-save-result-button', saved ? '已保存' : '保存');
       setText('image-result-viewer-save-shortcut', saved ? '已保存' : '保存到历史');
+      profilePrompt?.classList.toggle('hidden', !saved);
       if (saveButton) {
         saveButton.classList.toggle('border-[#9AE6C4]/24', saved);
         saveButton.classList.toggle('text-[#C7F5DF]', saved);
@@ -731,6 +739,21 @@
       setText('image-result-intro-copy', config.intro);
       updateStateButtons(currentState);
       console.info('[Style AI Prototype] image result state changed', { stateName: currentState });
+    }
+
+    function maybeRevealFeedbackReasons() {
+      const panel = document.getElementById('image-result-seed-feedback-panel');
+      if (!panel) {
+        return;
+      }
+
+      const shouldReveal = feedback.looks_like_me === 'no'
+        || feedback.useful_for_judgment === 'unsure';
+
+      panel.classList.toggle('hidden', !shouldReveal);
+      if (shouldReveal) {
+        showImageResultToast('可以补充哪里不对，也可以直接换个方向。');
+      }
     }
 
     function updateChoiceButton(button, selected) {
@@ -859,6 +882,7 @@
           for (const peer of document.querySelectorAll(`.feedback-choice[data-field="${field}"]`)) {
             updateChoiceButton(peer, peer === button);
           }
+          maybeRevealFeedbackReasons();
           showImageResultToast('已记录这次判断。');
         });
       }
@@ -898,6 +922,7 @@
         : fallbackData.generation.result.styleOptions;
 
       setText('image-result-user-line', `${userName}的首次预览`);
+      setText('image-result-judgment-copy', result.resultJudgmentSentence || fallbackData.generation.result.resultJudgmentSentence);
 
       if (preview && result.previewImageUrl) {
         preview.src = result.previewImageUrl;

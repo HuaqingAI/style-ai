@@ -594,7 +594,7 @@
     data-task-id="demo-generation-001"
   >
     <header class="topbar" aria-label="生成等待页面顶部">
-      <a class="icon-button tap" href="01.5-generation-setup.html" aria-label="返回生成设置">‹</a>
+      <a class="icon-button tap" href="01.3-photo-upload.html" aria-label="返回照片选择">‹</a>
 
       <div class="brand-title">
         <span class="brand-mark">
@@ -611,8 +611,21 @@
 
     <section aria-label="页面说明">
       <p class="eyebrow">首次真实预览</p>
-      <h1>正在生成你的风格效果，稍等一下。</h1>
-      <p class="intro" id="generation-waiting-intro">这一步会处理照片、生成预览，并整理推荐理由。页面停留或切出去再回来，都应该能继续看到任务状态。</p>
+      <h1>正在生成一个适合日常判断的稳妥方向。</h1>
+      <p class="intro" id="generation-waiting-intro">先让你看到一个变化明显但不突兀的结果，之后可以再换方向。</p>
+    </section>
+
+    <section
+      id="generation-waiting-default-direction-note"
+      data-object-id="generation-waiting-default-direction-note"
+      class="panel credit-note"
+      aria-label="默认生成方向说明"
+    >
+      <span class="note-dot">稳</span>
+      <div>
+        <p class="note-title">本轮不用先选风格</p>
+        <p class="note-copy">系统会先用“日常判断稳妥方向”生成，方便你快速判断像不像、能不能参考。</p>
+      </div>
     </section>
 
     <section
@@ -727,8 +740,8 @@
       },
       {
         id: 'generate-preview',
-        title: '生成风格预览',
-        copy: '先生成一个能判断方向的真实预览。',
+        title: '生成稳妥方向预览',
+        copy: '先生成一个变化明显但不突兀的真实预览。',
         activeFrom: ['generating', 'timeout'],
         doneFrom: ['finalizing', 'success']
       },
@@ -745,7 +758,7 @@
       queued: {
         chip: '排队中',
         title: '任务已经创建',
-        copy: '正在等待处理。这个阶段通常很短，不需要重新提交。',
+        copy: '照片已经进入默认生成任务，不需要再选择风格或填写偏好。',
         progress: 10,
         estimate: '约 45 秒',
         color: '#9D7AFF',
@@ -758,8 +771,8 @@
       },
       generating: {
         chip: '生成中',
-        title: '正在生成风格预览',
-        copy: 'AI 正在根据这张照片做第一版风格效果。现在离开页面也不需要重新开始。',
+        title: '正在生成稳妥方向预览',
+        copy: 'AI 正在根据这张照片做第一版日常可判断效果。现在离开页面也不需要重新开始。',
         progress: 48,
         estimate: '约 30 秒',
         color: '#9D7AFF',
@@ -787,7 +800,7 @@
       success: {
         chip: '已完成',
         title: '结果已经准备好',
-        copy: '你的首次真实预览已经生成，可以去看结果、推荐理由和谨慎点。',
+        copy: '你的首次真实预览已经生成。先看主结果，再决定保存或换方向。',
         progress: 100,
         estimate: '已完成',
         color: '#9AE6C4',
@@ -844,8 +857,11 @@
       retry: {
         label: '重试生成',
         className: 'primary',
-        type: 'link',
-        href: '01.5-generation-setup.html'
+        type: 'button',
+        action: () => {
+          showGenerationWaitingToast('已按默认稳妥方向重新提交生成。');
+          applyGenerationWaitingState('queued');
+        }
       },
       photo: {
         label: '换一张照片',

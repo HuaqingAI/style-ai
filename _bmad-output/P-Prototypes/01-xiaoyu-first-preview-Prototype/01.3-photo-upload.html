@@ -256,14 +256,25 @@
         </div>
       </div>
 
+      <div
+        id="photo-upload-quality-status"
+        data-object-id="photo-upload-quality-status"
+        class="mt-3 hidden rounded-lg border px-3 py-3"
+        role="status"
+        aria-live="polite"
+      >
+        <p id="photo-upload-quality-title" class="text-xs font-semibold leading-5"></p>
+        <p id="photo-upload-quality-copy" class="mt-1 text-xs leading-5"></p>
+      </div>
+
       <a
         id="photo-upload-continue-button"
         data-object-id="photo-upload-continue-button"
-        href="01.4-photo-quality-check.html"
+        href="01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default"
         class="tap-highlight mt-4 flex min-h-[48px] w-full items-center justify-center rounded-lg bg-white/10 px-4 py-3 text-sm font-semibold text-white/42 no-underline"
         aria-disabled="true"
       >
-        用这张照片继续生成
+        用这张生成预览
       </a>
     </section>
 
@@ -289,8 +300,12 @@
       <div class="grid grid-cols-4 gap-1">
         <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md bg-white/10 px-2 text-[11px] text-white" data-upload-state="empty">空态</button>
         <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="selected">已选</button>
+        <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="selected-warning">提醒</button>
+        <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="selected-fail">阻断</button>
         <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="permission-denied">权限</button>
         <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="upload-error">错误</button>
+        <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="check-unavailable">检查</button>
+        <button type="button" class="photo-upload-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="submit-error">提交</button>
       </div>
     </section>
 
@@ -313,7 +328,8 @@
       intent: 'personal_style_advice',
       reusableFor: ['personal_style_advice', 'try_on'],
       photoScope: 'session_photo',
-      nextTarget: '01.4-photo-quality-check.html',
+      nextTarget: '01.6-generation-waiting.html',
+      defaultGenerationIntent: 'daily_judgment_safe_direction',
       persistentProfileRequiresExplicitSave: true
     };
 
@@ -343,11 +359,46 @@
       selected: {
         chip: '已选择',
         chipClass: 'bg-[#9AE6C4]/12 text-[#C7F5DF]',
-        message: '照片已选好。你可以继续生成，也可以重新选择。',
+        message: '照片已选好。系统会用默认稳妥方向直接生成，不需要先选风格。',
         messageTone: 'success',
-        title: '这张照片会用于本次生成',
+        title: '这张照片可以用来生成',
         copy: '这不是常用形象档案；生成后你可以再决定是否保存为以后复用。',
+        qualityVisible: true,
+        qualityTone: 'success',
+        qualityTitle: '这张可以生成',
+        qualityCopy: '先给你生成一个变化明显但不突兀的方向，方便判断适不适合。',
+        cta: '用这张生成预览',
         continueEnabled: true,
+        sourceLabel: '当前照片'
+      },
+      'selected-warning': {
+        chip: '可继续',
+        chipClass: 'bg-[#F2C86B]/12 text-[#F8DF9A]',
+        message: '照片可以先试，但有轻微质量提醒。你可以继续，也可以换一张。',
+        messageTone: 'warning',
+        title: '这张照片可以先试',
+        copy: '系统会保留提醒，结果如果不够准可以再换照片或换方向。',
+        qualityVisible: true,
+        qualityTone: 'warning',
+        qualityTitle: '轻微提醒，不阻断',
+        qualityCopy: '这张可以先试，但光线略暗，结果可能没那么准。',
+        cta: '仍然生成预览',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
+      },
+      'selected-fail': {
+        chip: '需重传',
+        chipClass: 'bg-[#F2A7A0]/12 text-[#FFD1CC]',
+        message: '这张照片暂时不适合生成。请换一张脸部更清楚的照片。',
+        messageTone: 'error',
+        title: '这张脸部不够清楚',
+        copy: '严重问题会阻断生成，避免浪费额度和得到误导性结果。',
+        qualityVisible: true,
+        qualityTone: 'error',
+        qualityTitle: '需要重新上传',
+        qualityCopy: '脸部不够清楚，换一张更容易生成。失败状态不会扣除额度。',
+        cta: '重新上传',
+        continueEnabled: false,
         sourceLabel: '当前照片'
       },
       'permission-denied': {
@@ -357,6 +408,8 @@
         messageTone: 'warning',
         title: '暂时无法读取照片',
         copy: '授权失败不会扣除额度，也不会离开本页。',
+        qualityVisible: false,
+        cta: '用这张生成预览',
         continueEnabled: false,
         sourceLabel: ''
       },
@@ -367,8 +420,40 @@
         messageTone: 'error',
         title: '照片没有成功读取',
         copy: '请换一张清晰的近期照片，确认后再继续生成。',
+        qualityVisible: false,
+        cta: '用这张生成预览',
         continueEnabled: false,
         sourceLabel: ''
+      },
+      'check-unavailable': {
+        chip: '可先试',
+        chipClass: 'bg-[#F2C86B]/12 text-[#F8DF9A]',
+        message: '暂时无法完成精确检查，但照片可以读取。你可以先生成预览。',
+        messageTone: 'warning',
+        title: '检查暂时不可用',
+        copy: '不会承诺已经完成精确人脸识别；如果结果不准，可以回到这里换照片。',
+        qualityVisible: true,
+        qualityTone: 'warning',
+        qualityTitle: '检查暂时不可用',
+        qualityCopy: '照片可以读取，先生成预览；失败不会扣除额度。',
+        cta: '先生成预览',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
+      },
+      'submit-error': {
+        chip: '未提交',
+        chipClass: 'bg-[#F2A7A0]/12 text-[#FFD1CC]',
+        message: '生成任务刚才没有创建成功，没有扣除额度。可以重试。',
+        messageTone: 'error',
+        title: '任务还没创建成功',
+        copy: '照片仍然保留在本页，重试会继续使用默认稳妥方向。',
+        qualityVisible: true,
+        qualityTone: 'error',
+        qualityTitle: '提交失败，不扣额度',
+        qualityCopy: '请检查网络后重试生成，或重新选择照片。',
+        cta: '重试生成',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
       }
     };
 
@@ -421,6 +506,29 @@
       messageElement.className = `mt-3 rounded-lg border px-3 py-2 text-xs leading-5 ${toneClasses[config.messageTone] || toneClasses.neutral}`;
     }
 
+    function setQualityStatus(config) {
+      const status = document.getElementById('photo-upload-quality-status');
+      if (!status) {
+        return;
+      }
+
+      status.className = 'mt-3 hidden rounded-lg border px-3 py-3';
+
+      if (!config.qualityVisible) {
+        return;
+      }
+
+      const toneClasses = {
+        success: 'border-[#9AE6C4]/20 bg-[#9AE6C4]/10 text-[#C7F5DF]',
+        warning: 'border-[#F2C86B]/20 bg-[#F2C86B]/10 text-[#F8DF9A]',
+        error: 'border-[#F2A7A0]/20 bg-[#F2A7A0]/10 text-[#FFD1CC]'
+      };
+
+      status.className = `mt-3 rounded-lg border px-3 py-3 ${toneClasses[config.qualityTone] || toneClasses.success}`;
+      setText('photo-upload-quality-title', config.qualityTitle || '');
+      setText('photo-upload-quality-copy', config.qualityCopy || '');
+    }
+
     function updateStateButtons(stateName) {
       for (const button of document.querySelectorAll('.photo-upload-state-button')) {
         const selected = button.dataset.uploadState === stateName;
@@ -440,7 +548,7 @@
       const emptyPreview = document.getElementById('photo-upload-empty-preview');
       const photoPreview = document.getElementById('photo-upload-photo-preview');
       const previewSource = document.getElementById('photo-upload-preview-source');
-      const hasPhoto = stateName === 'selected';
+      const hasPhoto = ['selected', 'selected-warning', 'selected-fail', 'check-unavailable', 'submit-error'].includes(stateName);
 
       if (options.source) {
         selectedSource = options.source;
@@ -472,9 +580,12 @@
       setText('photo-upload-preview-title', config.title);
       setText('photo-upload-preview-copy', config.copy);
       setStateMessage(config);
+      setQualityStatus(config);
       updateStateButtons(stateName);
 
       if (continueButton) {
+        continueButton.textContent = config.cta || '用这张生成预览';
+        continueButton.href = '01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default';
         continueButton.setAttribute('aria-disabled', config.continueEnabled ? 'false' : 'true');
         continueButton.tabIndex = config.continueEnabled ? 0 : -1;
         continueButton.classList.toggle('bg-[#FAFAF7]', config.continueEnabled);
@@ -546,10 +657,17 @@
         showPhotoUploadToast('可以重新选择照片。');
       });
 
+      document.getElementById('photo-upload-continue-button')?.addEventListener('click', () => {
+        if (stateConfig[currentUploadState]?.continueEnabled) {
+          console.info('[Style AI Prototype] default generation task requested', photoIntakeContract);
+        }
+      });
+
       for (const button of document.querySelectorAll('.photo-upload-state-button')) {
         button.addEventListener('click', () => {
           const targetState = button.dataset.uploadState || 'empty';
-          applyPhotoUploadState(targetState, targetState === 'selected' ? { source: selectedSource || 'album' } : {});
+          const photoStates = ['selected', 'selected-warning', 'selected-fail', 'check-unavailable', 'submit-error'];
+          applyPhotoUploadState(targetState, photoStates.includes(targetState) ? { source: selectedSource || 'album' } : {});
         });
       }
     }
