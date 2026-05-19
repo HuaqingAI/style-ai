@@ -2,7 +2,7 @@
 
 ## PR
 
-Pending PR creation.
+https://github.com/HuaqingAI/style-ai/pull/1
 
 ## Artifacts
 

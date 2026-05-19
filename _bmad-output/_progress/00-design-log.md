@@ -100,9 +100,10 @@
 - Agent: Codex / Freya Product Evolution
 - Activity: Deploy
 - Branch: `evolution/imp-001-dd001-short-path`
+- PR: `https://github.com/HuaqingAI/style-ai/pull/1`
 - Delivery summary: `_bmad-output/evolution/deliveries/DEL-IMP-001-DD001-short-path.md`
 - Package includes: analysis, improvement, scenario, design spec, validation report, prototype updates, acceptance touch-target fixes, and design log updates.
-- Status: ready to commit, push, and open draft PR to `main`.
+- Status: draft PR opened to `main`.
 
 ### 2026-05-18 - WDS-8 implement completed for IMP-001
 - Agent: Codex / Freya Product Evolution
