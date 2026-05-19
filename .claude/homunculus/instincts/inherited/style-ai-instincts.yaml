@@ -1,0 +1,434 @@
+# Instincts generated from https://github.com/HuaqingAI/style-ai
+# Generated: 2026-05-19T03:39:08.995Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: style-ai-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Commit Length
+
+## Action
+
+Keep commit messages concise (~41 characters)
+
+## Evidence
+
+- Average commit message length: 41 chars
+- Based on 7 commits
+
+---
+id: style-ai-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: style-ai-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: style-ai-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: style-ai-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: style-ai-workflow-prototype-scenario-development
+trigger: "when doing prototype scenario development"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Workflow Prototype Scenario Development
+
+## Action
+
+Follow the prototype-scenario-development workflow:
+1. Edit or add UX scenario markdown in _bmad-output/C-UX-Scenarios/[scenario]/[step].md
+2. Update or create corresponding prototype HTML and assets in _bmad-output/P-Prototypes/[scenario]-Prototype/[step].html and related files
+3. Update or add work YAMLs in _bmad-output/P-Prototypes/[scenario]-Prototype/work/[step]-Work.yaml
+4. Update or add test scripts/results in _bmad-output/P-Prototypes/[scenario]-Prototype/testing/[test-folder]/
+5. Update Logical-View-Map.md and/or PROTOTYPE-ROADMAP.md as needed
+6. Log progress in _bmad-output/_progress/00-design-log.md
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: _bmad-output/C-UX-Scenarios/*/*.md, _bmad-output/P-Prototypes/*-Prototype/*.html, _bmad-output/P-Prototypes/*-Prototype/work/*.yaml
+
+---
+id: style-ai-workflow-design-delivery-documentation
+trigger: "when doing design delivery documentation"
+confidence: 0.55
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Workflow Design Delivery Documentation
+
+## Action
+
+Follow the design-delivery-documentation workflow:
+1. Add or update delivery YAML in deliveries/DD-XXX-*.yaml
+2. Add or update handoff log in deliveries/DD-XXX-handoff-log.md
+3. Add or update test scenario YAML in test-scenarios/TS-XXX-*.yaml
+4. Update related UX scenario markdowns in _bmad-output/C-UX-Scenarios/
+5. Log progress in _bmad-output/_progress/00-design-log.md
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~1x per month
+- Files: deliveries/DD-*-handoff-log.md, deliveries/DD-*.yaml, test-scenarios/TS-*.yaml
+
+---
+id: style-ai-workflow-asset-update-and-log
+trigger: "when doing asset update and log"
+confidence: 0.55
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/HuaqingAI/style-ai
+---
+
+# Style Ai Workflow Asset Update And Log
+
+## Action
+
+Follow the asset-update-and-log workflow:
+1. Add or update image assets in _bmad-output/E-Assets/ or assets/images/
+2. Log the update in _bmad-output/_progress/00-design-log.md
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~1x per month
+- Files: _bmad-output/E-Assets/**/*, assets/images/*, _bmad-output/_progress/00-design-log.md
+
+---
+id: style-ai-naming-files-pascalcase
+trigger: "When creating or renaming a file in the codebase"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Naming Files Pascalcase
+
+## Action
+
+Name the file using PascalCase (e.g., MyComponent.js)
+
+## Evidence
+
+- Pattern in namingConventions.files: PascalCase
+
+---
+id: style-ai-naming-functions-camelcase
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Naming Functions Camelcase
+
+## Action
+
+Name the function using camelCase (e.g., getUserData)
+
+## Evidence
+
+- Pattern in namingConventions.functions: camelCase
+
+---
+id: style-ai-naming-classes-pascalcase
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Naming Classes Pascalcase
+
+## Action
+
+Name the class using PascalCase (e.g., UserProfile)
+
+## Evidence
+
+- Pattern in namingConventions.classes: PascalCase
+
+---
+id: style-ai-naming-constants-screaming-snake-case
+trigger: "When defining a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Naming Constants Screaming Snake Case
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE (e.g., MAX_RETRIES)
+
+## Evidence
+
+- Pattern in namingConventions.constants: SCREAMING_SNAKE_CASE
+
+---
+id: style-ai-imports-relative
+trigger: "When importing modules within the codebase"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Imports Relative
+
+## Action
+
+Use relative import paths (e.g., import foo from './foo')
+
+## Evidence
+
+- Pattern in importStyle: relative
+
+---
+id: style-ai-exports-named
+trigger: "When exporting functions, classes, or constants"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Exports Named
+
+## Action
+
+Use named exports (e.g., export function foo() {})
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: style-ai-error-handling-try-catch
+trigger: "When handling errors in JavaScript code"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Error Handling Try Catch
+
+## Action
+
+Use try-catch blocks for error handling
+
+## Evidence
+
+- Pattern in errorHandling.style: try-catch
+
+---
+id: style-ai-testing-location-separate
+trigger: "When adding or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Testing Location Separate
+
+## Action
+
+Place test files in a separate directory from source code
+
+## Evidence
+
+- Pattern in architecture.testLocation: separate
+
+---
+id: style-ai-commit-prefixes
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Commit Prefixes
+
+## Action
+
+Prefix the commit message with 'docs:', 'chore:', or 'feat:' as appropriate
+
+## Evidence
+
+- Seen in commit: docs: prepare DD-001 first real preview handoff
+- Seen in commit: chore: checkpoint WDS prototype artifacts before IMP-001 implementation
+- Seen in commit: feat: implement IMP-001 DD-001 short path prototype
+
+---
+id: style-ai-commit-length
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Commit Length
+
+## Action
+
+Keep commit messages concise, around 40 characters on average
+
+## Evidence
+
+- Pattern in commits.averageLength: 41
+
+---
+id: style-ai-workflow-prototype-scenario-development
+trigger: "When someone wants to add or update a user flow or scenario prototype"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Workflow Prototype Scenario Development
+
+## Action
+
+Follow the steps: edit UX scenario markdown, update prototype HTML/assets, update work YAMLs, update/add test scripts, update Logical-View-Map.md/PROTOTYPE-ROADMAP.md, and log progress in _bmad-output/_progress/00-design-log.md
+
+## Evidence
+
+- Workflow: prototype-scenario-development
+- Example commit sequences and files in workflow definition
+
+---
+id: style-ai-workflow-design-delivery-documentation
+trigger: "When someone wants to prepare or document a delivery/handoff milestone"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Workflow Design Delivery Documentation
+
+## Action
+
+Follow the steps: update delivery YAML, update handoff log, update test scenario YAML, update related UX scenario markdowns, and log progress in _bmad-output/_progress/00-design-log.md
+
+## Evidence
+
+- Workflow: design-delivery-documentation
+- Example commit sequences and files in workflow definition
+
+---
+id: style-ai-workflow-asset-update-and-log
+trigger: "When someone wants to update or add new branding or UI image assets"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: HuaqingAI/style-ai
+---
+
+# Style Ai Workflow Asset Update And Log
+
+## Action
+
+Add or update image assets in _bmad-output/E-Assets/ or assets/images/, then log the update in _bmad-output/_progress/00-design-log.md
+
+## Evidence
+
+- Workflow: asset-update-and-log
+- Example commit sequences and files in workflow definition
+
