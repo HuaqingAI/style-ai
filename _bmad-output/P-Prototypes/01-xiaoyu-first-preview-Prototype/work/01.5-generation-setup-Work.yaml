@@ -1,0 +1,169 @@
+metadata:
+  project: style-ai
+  scenario: 01-xiaoyu-first-preview
+  logical_view: Generation Setup View
+  page_number: "01.5"
+  page_name: generation-setup
+  prototype_file: 01.5-generation-setup.html
+  source_spec: _bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.5-generation-setup/01.5-generation-setup.md
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+    touch_optimized: true
+    hover_interactions: false
+  design_fidelity: Design System Components
+  primary_language: zh-CN
+  language_switcher: false
+  status: built
+  created: 2026-05-14
+  completed: 2026-05-14
+  approved_by: Pending qualitative review
+  verification:
+    url: http://127.0.0.1:17864/01.5-generation-setup.html
+    screenshot: _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.5-generation-setup-393.png
+
+requirements:
+  purpose: "让小雨在首次生成前选择一个低压力的主流风格方向，并清楚看到本次生成会消耗多少额度。"
+  implementation_position: "Standalone setup page after photo intake / lightweight quality preflight and before async generation waiting."
+  success_criteria:
+    - 用户默认看到并可保留“先由 AI 推荐”的低压力选项。
+    - 用户可以在 5 个主流风格方向中切换，且每个方向有生活化说明。
+    - 用户在开始前明确看到本次预计消耗 1 次生成额度，生成失败不会扣除。
+    - 额度不足时开始按钮禁用，并显示查看额度入口。
+    - 提交中和提交失败状态可被原型本地切换和验证。
+  entry_points:
+    - 01.3-photo-upload.html 选好照片后可直接进入。
+    - 01.4-photo-quality-check.html 通过或 warning 后可进入。
+  exit_points:
+    - 创建生成任务后进入 01.6-generation-waiting.html。
+    - 返回 01.3-photo-upload.html 重新选择照片。
+
+object_registry:
+  - id: generation-setup-context
+    type: Summary
+    purpose: 当前照片与本次生成说明
+    required: true
+  - id: generation-setup-style-selector
+    type: Selector
+    purpose: 风格方向选择
+    required: true
+  - id: generation-setup-style-ai-recommend
+    type: Option
+    purpose: AI 推荐默认项
+    required: true
+  - id: generation-setup-credit-summary
+    type: Credit panel
+    purpose: 显示消耗和失败规则
+    required: true
+  - id: generation-setup-start-action
+    type: Button
+    purpose: 创建生成任务
+    required: true
+  - id: generation-setup-preference-note
+    type: Optional note
+    purpose: 让用户用一句话补充不想尝试的点
+    required: false
+
+states:
+  - name: Default
+    data_state: default
+    trigger: 有可用照片和额度
+    requirements:
+      - 默认选中“先由 AI 推荐”。
+      - 显示风格选择、可选偏好备注、额度说明和可用开始按钮。
+  - name: No credit
+    data_state: no-credit
+    trigger: 额度不足
+    requirements:
+      - 开始按钮禁用。
+      - 额度面板显示剩余 0 次和查看额度入口。
+      - 不创建生成任务。
+  - name: Submitting
+    data_state: submitting
+    trigger: 正在创建生成任务
+    requirements:
+      - 开始按钮显示处理中并禁用。
+      - 风格选项不可重复触发提交。
+  - name: Submit error
+    data_state: submit-error
+    trigger: 任务创建失败
+    requirements:
+      - 显示不扣额度的错误说明。
+      - 允许重试或返回换照片。
+
+sections:
+  - number: 1
+    name: Full Page Generation Setup
+    status: complete
+    estimate_minutes: 120
+    completed: 2026-05-14
+    actual_minutes: 120
+    approved_by: Pending qualitative review
+    issues: []
+    improvements: []
+    object_ids:
+      - generation-setup-context
+      - generation-setup-style-selector
+      - generation-setup-style-ai-recommend
+      - generation-setup-credit-summary
+      - generation-setup-start-action
+      - generation-setup-preference-note
+    scope:
+      - 建立移动端页面容器、返回入口、品牌标记和页面说明。
+      - 展示当前照片缩略图与“生成后可以继续换风格”的安心说明。
+      - 实现 5 个风格方向卡片选择，默认 AI 推荐。
+      - 加入可选偏好备注，但不要求用户填写。
+      - 实现额度面板、无额度、提交中、提交失败状态。
+      - 开始生成时模拟创建 task id，并跳转到 01.6-generation-waiting.html。
+    acceptance:
+      - 五个必需 Object ID 全部存在。
+      - AI 推荐默认选中，切换风格会更新选中态和摘要。
+      - Default / no-credit / submitting / submit-error 四个状态可本地切换。
+      - No credit 状态禁止提交并显示查看额度入口。
+      - Submit error 状态说明失败不扣额度且可重试。
+      - 375px、393px、428px 宽度无横向滚动。
+
+dependencies:
+  design_system:
+    - _bmad-output/D-Design-System/design-tokens.md
+    - _bmad-output/D-Design-System/components/style-ai-app-icon-system.md
+  demo_data:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
+  adjacent_pages:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.3-photo-upload.html
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.6-generation-waiting.html
+
+implementation_notes:
+  - This prototype simulates generation task creation in browser; it does not call a backend or charge real credit.
+  - The style selector intentionally avoids expert parameters and keeps choices mainstream.
+  - The optional note is bounded to one short sentence so it does not turn into a complex prompt editor.
+  - The next route is wired to 01.6-generation-waiting.html; that logical view is still the next prototype target.
+
+verification_results:
+  verified_url: http://127.0.0.1:17864/01.5-generation-setup.html
+  verified_date: 2026-05-14
+  method: Chromium CDP automation
+  passed:
+    - Required object IDs exist.
+    - AI recommend is selected by default.
+    - Style selector updates selected state and summary.
+    - Default credit summary shows one available generation and failure-safe copy.
+    - No-credit state disables start action and shows credit entry.
+    - Submitting state disables start action and shows creating-task text.
+    - Submit-error state shows no-deduction copy and retry.
+    - Start action targets 01.6-generation-waiting.html.
+    - 375px, 393px, and 428px widths have no horizontal overflow.
+    - Console has no errors.
+
+next_step:
+  workflow_step: 5-finalization
+  next_logical_view: Generation Waiting View

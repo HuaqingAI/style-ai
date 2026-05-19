@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="900" viewBox="0 0 720 900" role="img" aria-label="Linman cream jacket try-on preview">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2B2824"/>
+      <stop offset="0.55" stop-color="#171717"/>
+      <stop offset="1" stop-color="#0F0F0F"/>
+    </linearGradient>
+    <linearGradient id="jacket" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#F3E8D5"/>
+      <stop offset="0.52" stop-color="#D9C9AF"/>
+      <stop offset="1" stop-color="#BDA98E"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#E4B991"/>
+      <stop offset="1" stop-color="#B9876B"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#34221B"/>
+      <stop offset="1" stop-color="#15100E"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#000000" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+
+  <rect width="720" height="900" fill="url(#bg)"/>
+  <path d="M78 118C162 58 259 44 368 61c123 19 221 95 272 204 43 92 42 203-2 299-54 117-168 196-301 207-124 10-239-39-307-131C-39 546-4 397 23 296c20-75 10-132 55-178Z" fill="#9D7AFF" opacity="0.12"/>
+  <path d="M132 137c98-62 232-69 340-14 108 55 178 166 174 291-4 133-92 246-214 295-113 45-244 25-340-51C-2 584-34 449 10 337c25-64 62-162 122-200Z" fill="#9AE6C4" opacity="0.08"/>
+
+  <g filter="url(#softShadow)">
+    <path d="M225 384c-45 49-77 128-95 234-6 34 19 64 53 65l355 6c35 1 62-29 57-64-17-114-49-196-96-243-37-38-77-55-137-55-61 0-101 17-137 57Z" fill="#2A2520"/>
+    <path d="M215 405c-39 52-63 130-75 235-3 27 18 51 45 52l350 6c28 0 50-23 47-51-12-108-38-190-79-243-36-47-78-68-145-68-66 0-107 21-143 69Z" fill="url(#jacket)"/>
+    <path d="M230 413c40 31 77 47 128 47 50 0 89-16 130-48l19 242-296-5 19-236Z" fill="#F8F1E3" opacity="0.55"/>
+    <path d="M275 364c14 55 43 84 86 85 43 0 73-30 87-86-22 16-50 25-86 25-36 0-65-8-87-24Z" fill="#D1A17D"/>
+    <path d="M301 328h121v82c-30 27-88 26-121-1v-81Z" fill="url(#skin)"/>
+    <path d="M227 408c18 34 38 61 59 82-18 51-33 107-44 168l-83-2c11-107 34-190 68-248Z" fill="#F3E8D5" opacity="0.92"/>
+    <path d="M493 407c-18 35-39 62-61 84 20 51 35 109 45 171l82 1c-11-110-34-196-66-256Z" fill="#CDBA9E" opacity="0.92"/>
+    <path d="M331 461h58l14 223-89-1 17-222Z" fill="#171717" opacity="0.86"/>
+    <path d="M276 425c24 34 49 58 79 72-10 11-18 20-24 29-35-21-66-51-93-89l38-12Z" fill="#FFF8EA" opacity="0.72"/>
+    <path d="M445 425c-23 34-50 59-81 73 10 11 19 21 26 31 35-22 67-53 93-91l-38-13Z" fill="#D5C5AA" opacity="0.62"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <path d="M244 214c5-84 55-141 123-139 70 2 121 62 122 147 1 55-20 107-42 137-26 36-57 55-88 54-31-1-62-21-86-57-21-32-32-86-29-142Z" fill="url(#hair)"/>
+    <path d="M285 202c15-46 48-72 87-70 41 2 73 33 86 82 12 45 4 97-18 133-20 34-48 53-80 53-33 0-61-20-81-55-22-38-14-97 6-143Z" fill="url(#skin)"/>
+    <path d="M280 228c18-38 56-61 102-61 33 0 62 13 84 38-10-61-48-101-101-102-58-1-96 47-105 111 5 7 12 12 20 14Z" fill="url(#hair)"/>
+    <path d="M301 254c17 11 41 16 72 15 30-1 54-8 73-20-9-38-36-76-78-83-45-7-77 32-67 88Z" fill="#201611" opacity="0.58"/>
+    <circle cx="326" cy="286" r="5" fill="#39251D"/>
+    <circle cx="398" cy="286" r="5" fill="#39251D"/>
+    <path d="M345 340c16 11 35 11 52 0" fill="none" stroke="#7D4E43" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <g opacity="0.95">
+    <rect x="88" y="722" width="544" height="88" rx="22" fill="#000000" opacity="0.38"/>
+    <rect x="112" y="744" width="146" height="14" rx="7" fill="#FAFAF7" opacity="0.78"/>
+    <rect x="112" y="772" width="228" height="10" rx="5" fill="#FAFAF7" opacity="0.38"/>
+    <rect x="112" y="792" width="188" height="10" rx="5" fill="#FAFAF7" opacity="0.25"/>
+    <rect x="477" y="748" width="111" height="38" rx="19" fill="#9AE6C4" opacity="0.18"/>
+    <circle cx="502" cy="767" r="8" fill="#9AE6C4"/>
+    <rect x="518" y="762" width="46" height="10" rx="5" fill="#C7F5DF" opacity="0.9"/>
+  </g>
+</svg>

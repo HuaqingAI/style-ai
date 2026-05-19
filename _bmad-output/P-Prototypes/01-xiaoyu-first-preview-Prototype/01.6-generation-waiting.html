@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.6 Generation Waiting - Style AI</title>
+  <link rel="icon" href="assets/style-ai-reversible-s-symbol.svg" type="image/svg+xml">
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+      --panel: rgb(255 255 255 / 0.045);
+      --panel-soft: rgb(255 255 255 / 0.03);
+      --line: rgb(255 255 255 / 0.10);
+      --muted: rgb(250 250 247 / 0.58);
+      --subtle: rgb(250 250 247 / 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    a,
+    textarea {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .tap {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 428px;
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(16px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .icon-button {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgb(255 255 255 / 0.035);
+      color: rgb(250 250 247 / 0.76);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .brand-title {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgb(255 255 255 / 0.16);
+      background: var(--style-ai-ivory);
+      padding: 4px;
+      flex-shrink: 0;
+    }
+
+    .brand-mark img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .eyebrow {
+      margin: 20px 0 0;
+      color: #C9BAFF;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+
+    h1 {
+      margin: 8px 0 0;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+
+    .intro {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .panel {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 16px;
+    }
+
+    .status-panel {
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(145deg, rgb(157 122 255 / 0.12), transparent 48%),
+        var(--panel);
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+    }
+
+    .progress-orbit {
+      --progress: 10;
+      width: 104px;
+      height: 104px;
+      position: relative;
+      border-radius: 50%;
+      background: conic-gradient(var(--status-color, var(--style-ai-spark-light)) calc(var(--progress) * 1%), rgb(255 255 255 / 0.10) 0);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.10);
+    }
+
+    .progress-orbit::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: #171717;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+    }
+
+    .progress-core {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--style-ai-ivory);
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .progress-pulse {
+      position: absolute;
+      inset: 17px;
+      border-radius: 50%;
+      border: 1px solid rgb(157 122 255 / 0.34);
+      animation: pulse-ring 1.8s ease-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.78);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1.16);
+        opacity: 0;
+      }
+    }
+
+    .state-chip {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      border-radius: 8px;
+      border: 1px solid rgb(157 122 255 / 0.26);
+      background: rgb(157 122 255 / 0.12);
+      color: #D8CEFF;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .status-title {
+      margin: 10px 0 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.28;
+    }
+
+    .status-copy {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .task-line {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--subtle);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .bar {
+      margin-top: 14px;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgb(255 255 255 / 0.08);
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 10%;
+      border-radius: inherit;
+      background: var(--status-color, var(--style-ai-spark-light));
+      transition: width 260ms ease, background 260ms ease;
+    }
+
+    .credit-note {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .note-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: rgb(154 230 196 / 0.12);
+      color: #C7F5DF;
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .note-title {
+      margin: 0;
+      color: #C7F5DF;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .note-copy {
+      margin: 4px 0 0;
+      color: rgb(199 245 223 / 0.72);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .credit-note.is-amber .note-dot {
+      background: rgb(242 200 107 / 0.12);
+      color: #F8DF9A;
+    }
+
+    .credit-note.is-amber .note-title {
+      color: #F8DF9A;
+    }
+
+    .credit-note.is-amber .note-copy {
+      color: rgb(248 223 154 / 0.74);
+    }
+
+    .credit-note.is-rose .note-dot {
+      background: rgb(242 167 160 / 0.12);
+      color: #F6C4BF;
+    }
+
+    .credit-note.is-rose .note-title {
+      color: #F6C4BF;
+    }
+
+    .credit-note.is-rose .note-copy {
+      color: rgb(246 196 191 / 0.74);
+    }
+
+    .section-head {
+      margin: 0;
+      color: var(--style-ai-ivory);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .section-sub {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .detail-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-item {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 10px;
+      border: 1px solid rgb(255 255 255 / 0.09);
+      border-radius: 8px;
+      background: rgb(0 0 0 / 0.16);
+      padding: 11px;
+    }
+
+    .step-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgb(255 255 255 / 0.12);
+      background: rgb(255 255 255 / 0.04);
+      color: rgb(250 250 247 / 0.56);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .detail-item.is-active .step-icon {
+      border-color: rgb(157 122 255 / 0.46);
+      background: rgb(157 122 255 / 0.14);
+      color: #D8CEFF;
+    }
+
+    .detail-item.is-done .step-icon {
+      border-color: rgb(154 230 196 / 0.36);
+      background: rgb(154 230 196 / 0.13);
+      color: #C7F5DF;
+    }
+
+    .detail-item.is-blocked .step-icon {
+      border-color: rgb(242 167 160 / 0.34);
+      background: rgb(242 167 160 / 0.12);
+      color: #F6C4BF;
+    }
+
+    .detail-title {
+      margin: 0;
+      color: var(--style-ai-ivory);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .detail-copy {
+      margin: 2px 0 0;
+      color: var(--subtle);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .detail-state {
+      max-width: 66px;
+      border-radius: 8px;
+      background: rgb(255 255 255 / 0.07);
+      color: rgb(250 250 247 / 0.50);
+      padding: 4px 7px;
+      font-size: 10px;
+      font-weight: 650;
+      line-height: 1.25;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .detail-item.is-active .detail-state {
+      background: rgb(157 122 255 / 0.13);
+      color: #D8CEFF;
+    }
+
+    .detail-item.is-done .detail-state {
+      background: rgb(154 230 196 / 0.12);
+      color: #C7F5DF;
+    }
+
+    .detail-item.is-blocked .detail-state {
+      background: rgb(242 167 160 / 0.12);
+      color: #F6C4BF;
+    }
+
+    .actions {
+      display: grid;
+      gap: 9px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+    }
+
+    .button {
+      min-height: 48px;
+      width: 100%;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .button.primary {
+      background: var(--style-ai-ivory);
+      color: var(--style-ai-black);
+    }
+
+    .button.secondary {
+      border: 1px solid var(--line);
+      background: rgb(255 255 255 / 0.035);
+      color: rgb(250 250 247 / 0.72);
+    }
+
+    .button.warning {
+      border: 1px solid rgb(242 200 107 / 0.25);
+      background: rgb(242 200 107 / 0.10);
+      color: #F8DF9A;
+    }
+
+    .button.danger {
+      border: 1px solid rgb(242 167 160 / 0.26);
+      background: rgb(242 167 160 / 0.10);
+      color: #F6C4BF;
+    }
+
+    .inline-note {
+      margin: 10px 0 0;
+      color: var(--subtle);
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .state-controls {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-soft);
+      padding: 10px;
+    }
+
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .state-button {
+      min-height: 44px;
+      border-radius: 7px;
+      background: transparent;
+      color: rgb(250 250 247 / 0.58);
+      font-size: 11px;
+      line-height: 1.2;
+      padding: 7px 6px;
+    }
+
+    .state-button.is-active {
+      background: rgb(255 255 255 / 0.10);
+      color: var(--style-ai-ivory);
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 20;
+      left: 50%;
+      top: max(18px, env(safe-area-inset-top));
+      width: min(388px, calc(100vw - 32px));
+      transform: translateX(-50%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #1C1C1C;
+      color: var(--style-ai-ivory);
+      padding: 12px 14px;
+      box-shadow: 0 16px 60px rgb(0 0 0 / 0.42);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 380px) {
+      .app {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .status-grid {
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 13px;
+      }
+
+      .progress-orbit {
+        width: 92px;
+        height: 92px;
+      }
+
+      .progress-core {
+        width: 62px;
+        height: 62px;
+        font-size: 16px;
+      }
+
+      .detail-item {
+        grid-template-columns: 28px minmax(0, 1fr);
+      }
+
+      .detail-state {
+        grid-column: 2;
+        max-width: none;
+        width: fit-content;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main
+    id="app"
+    class="app"
+    data-page="01.6-generation-waiting"
+    data-state="queued"
+    data-task-id="demo-generation-001"
+  >
+    <header class="topbar" aria-label="生成等待页面顶部">
+      <a class="icon-button tap" href="01.3-photo-upload.html" aria-label="返回照片选择">‹</a>
+
+      <div class="brand-title">
+        <span class="brand-mark">
+          <img src="assets/style-ai-reversible-s-symbol.svg" alt="" aria-hidden="true">
+        </span>
+        <div>
+          <div style="font-size:15px;font-weight:700;line-height:1;">生成中</div>
+          <div id="generation-waiting-user-line" style="margin-top:4px;font-size:11px;line-height:1;color:rgb(250 250 247 / 0.45);">小雨的首次预览</div>
+        </div>
+      </div>
+
+      <button id="generation-waiting-help" class="icon-button tap" type="button" aria-label="查看等待说明">?</button>
+    </header>
+
+    <section aria-label="页面说明">
+      <p class="eyebrow">首次真实预览</p>
+      <h1>正在生成一个适合日常判断的稳妥方向。</h1>
+      <p class="intro" id="generation-waiting-intro">先让你看到一个变化明显但不突兀的结果，之后可以再换方向。</p>
+    </section>
+
+    <section
+      id="generation-waiting-default-direction-note"
+      data-object-id="generation-waiting-default-direction-note"
+      class="panel credit-note"
+      aria-label="默认生成方向说明"
+    >
+      <span class="note-dot">稳</span>
+      <div>
+        <p class="note-title">本轮不用先选风格</p>
+        <p class="note-copy">系统会先用“日常判断稳妥方向”生成，方便你快速判断像不像、能不能参考。</p>
+      </div>
+    </section>
+
+    <section
+      id="generation-waiting-status"
+      data-object-id="generation-waiting-status"
+      class="panel status-panel"
+      aria-live="polite"
+      aria-label="生成状态"
+    >
+      <div class="status-grid">
+        <div class="progress-orbit" id="generation-waiting-progress-orbit" style="--progress: 10;">
+          <span class="progress-pulse" id="generation-waiting-pulse" aria-hidden="true"></span>
+          <div class="progress-core">
+            <span id="generation-waiting-progress-text">10%</span>
+          </div>
+        </div>
+
+        <div>
+          <span id="generation-waiting-state-chip" class="state-chip">排队中</span>
+          <p id="generation-waiting-status-title" class="status-title">任务已经创建</p>
+          <p id="generation-waiting-status-copy" class="status-copy">正在等待处理。这个阶段通常很短，不需要重新提交。</p>
+          <div class="task-line">
+            <span id="generation-waiting-task-id">任务 demo-generation-001</span>
+            <span id="generation-waiting-estimate">约 45 秒</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bar" aria-hidden="true">
+        <div id="generation-waiting-progress-bar" class="bar-fill"></div>
+      </div>
+    </section>
+
+    <section
+      id="generation-waiting-credit-note"
+      data-object-id="generation-waiting-credit-note"
+      class="panel credit-note"
+      aria-label="额度处理说明"
+    >
+      <span class="note-dot" id="generation-waiting-credit-icon">1</span>
+      <div>
+        <p id="generation-waiting-credit-title" class="note-title">成功后才扣除 1 次额度</p>
+        <p id="generation-waiting-credit-copy" class="note-copy">如果生成失败，不会扣除。本次结果准备好后会进入结果页。</p>
+      </div>
+    </section>
+
+    <section
+      id="generation-waiting-detail-list"
+      data-object-id="generation-waiting-detail-list"
+      class="panel"
+      aria-label="处理步骤"
+    >
+      <p class="section-head">现在在准备什么</p>
+      <p class="section-sub">用生活化步骤显示进度，避免只看到空转 loading。</p>
+      <ol class="detail-list" id="generation-waiting-steps"></ol>
+    </section>
+
+    <section
+      id="generation-waiting-recovery-actions"
+      data-object-id="generation-waiting-recovery-actions"
+      class="panel"
+      aria-label="恢复动作"
+    >
+      <div class="actions" id="generation-waiting-actions"></div>
+      <p class="inline-note" id="generation-waiting-action-note">任务会继续处理；请保持网络可用。</p>
+    </section>
+
+    <section class="state-controls" aria-label="原型状态切换">
+      <div class="state-grid">
+        <button type="button" class="state-button is-active" data-waiting-state="queued">排队</button>
+        <button type="button" class="state-button" data-waiting-state="generating">生成中</button>
+        <button type="button" class="state-button" data-waiting-state="finalizing">整理中</button>
+        <button type="button" class="state-button" data-waiting-state="success">完成</button>
+        <button type="button" class="state-button" data-waiting-state="timeout">超时</button>
+        <button type="button" class="state-button" data-waiting-state="failed">失败</button>
+      </div>
+    </section>
+
+    <div id="generation-waiting-toast" class="toast hidden" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.6-generation-waiting',
+      section: 'full-page',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      quota: {
+        personalImageGenerationsTotal: 1,
+        personalImageGenerationsUsed: 0
+      },
+      generation: {
+        id: 'demo-generation-001',
+        status: 'queued',
+        progress: 10,
+        estimatedSeconds: 45
+      }
+    };
+
+    const detailSteps = [
+      {
+        id: 'read-photo',
+        title: '读取当前照片',
+        copy: '确认脸部、光线和本次会话照片。',
+        activeFrom: ['queued'],
+        doneFrom: ['generating', 'finalizing', 'success', 'timeout']
+      },
+      {
+        id: 'generate-preview',
+        title: '生成稳妥方向预览',
+        copy: '先生成一个变化明显但不突兀的真实预览。',
+        activeFrom: ['generating', 'timeout'],
+        doneFrom: ['finalizing', 'success']
+      },
+      {
+        id: 'organize-notes',
+        title: '整理推荐理由和谨慎点',
+        copy: '把好看之处和需要谨慎尝试的点一起整理出来。',
+        activeFrom: ['finalizing'],
+        doneFrom: ['success']
+      }
+    ];
+
+    const stateConfig = {
+      queued: {
+        chip: '排队中',
+        title: '任务已经创建',
+        copy: '照片已经进入默认生成任务，不需要再选择风格或填写偏好。',
+        progress: 10,
+        estimate: '约 45 秒',
+        color: '#9D7AFF',
+        creditTone: 'mint',
+        creditIcon: '1',
+        creditTitle: '成功后才扣除 1 次额度',
+        creditCopy: '如果生成失败，不会扣除。本次结果准备好后会进入结果页。',
+        actions: ['home'],
+        actionNote: '任务会继续处理；请保持网络可用。'
+      },
+      generating: {
+        chip: '生成中',
+        title: '正在生成稳妥方向预览',
+        copy: 'AI 正在根据这张照片做第一版日常可判断效果。现在离开页面也不需要重新开始。',
+        progress: 48,
+        estimate: '约 30 秒',
+        color: '#9D7AFF',
+        creditTone: 'mint',
+        creditIcon: '1',
+        creditTitle: '仍未扣除额度',
+        creditCopy: '额度会在结果成功准备好后扣除；失败不会扣除。',
+        actions: ['wait'],
+        actionNote: '继续等待即可，不需要重复点击生成。'
+      },
+      finalizing: {
+        chip: '整理中',
+        title: '预览快好了',
+        copy: '结果已经返回，正在整理推荐理由和需要谨慎尝试的点。',
+        progress: 82,
+        estimate: '约 10 秒',
+        color: '#9AE6C4',
+        creditTone: 'mint',
+        creditIcon: '1',
+        creditTitle: '成功后扣除 1 次额度',
+        creditCopy: '即将进入结果页；如果最后一步失败，仍不会扣除。',
+        actions: ['wait'],
+        actionNote: '正在收尾，请再等一下。'
+      },
+      success: {
+        chip: '已完成',
+        title: '结果已经准备好',
+        copy: '你的首次真实预览已经生成。先看主结果，再决定保存或换方向。',
+        progress: 100,
+        estimate: '已完成',
+        color: '#9AE6C4',
+        creditTone: 'mint',
+        creditIcon: '✓',
+        creditTitle: '本次成功后扣除 1 次额度',
+        creditCopy: '结果会进入历史；是否保存为常用形象稍后再由你决定。',
+        actions: ['result', 'home'],
+        actionNote: '进入结果页后可以继续反馈或换一个方向。'
+      },
+      timeout: {
+        chip: '等待较久',
+        title: '任务还在处理',
+        copy: '这次等待超过了预期。你可以继续等，也可以稍后从历史里回来查看。',
+        progress: 68,
+        estimate: '稍后查看',
+        color: '#F2C86B',
+        creditTone: 'amber',
+        creditIcon: '!',
+        creditTitle: '暂时还没有扣除额度',
+        creditCopy: '只有结果成功准备好才会扣除。等待较久不代表一定失败。',
+        actions: ['wait', 'history', 'home'],
+        actionNote: '如果网络不稳定，可以先返回首页，稍后再看历史。'
+      },
+      failed: {
+        chip: '生成失败',
+        title: '这次没有生成成功',
+        copy: '可能是照片条件或服务临时问题。你可以直接重试，或者换一张更清晰的照片。',
+        progress: 0,
+        estimate: '未完成',
+        color: '#F2A7A0',
+        creditTone: 'rose',
+        creditIcon: '!',
+        creditTitle: '失败不扣除额度',
+        creditCopy: '本次没有消耗生成额度。重试前可以保留当前设置，也可以先换照片。',
+        actions: ['retry', 'photo', 'home'],
+        actionNote: '建议优先重试一次；如果仍失败，再换照片。'
+      }
+    };
+
+    const actionConfig = {
+      wait: {
+        label: '继续等待',
+        className: 'primary',
+        type: 'button',
+        action: () => applyGenerationWaitingState('generating')
+      },
+      result: {
+        label: '查看生成结果',
+        className: 'primary',
+        type: 'link',
+        href: '01.7-image-result.html'
+      },
+      retry: {
+        label: '重试生成',
+        className: 'primary',
+        type: 'button',
+        action: () => {
+          showGenerationWaitingToast('已按默认稳妥方向重新提交生成。');
+          applyGenerationWaitingState('queued');
+        }
+      },
+      photo: {
+        label: '换一张照片',
+        className: 'danger',
+        type: 'link',
+        href: '01.3-photo-upload.html'
+      },
+      history: {
+        label: '稍后看历史',
+        className: 'warning',
+        type: 'button',
+        action: () => showGenerationWaitingToast('历史入口会在结果页和首页继续补齐。')
+      },
+      home: {
+        label: '返回首页',
+        className: 'secondary',
+        type: 'link',
+        href: '01.2-home-dual-entry.html'
+      }
+    };
+
+    let demoData = fallbackData;
+    let currentState = 'queued';
+    let toastTimer = 0;
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showGenerationWaitingToast(message) {
+      const toast = document.getElementById('generation-waiting-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2400);
+    }
+
+    function getTaskId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('taskId') || (demoData.generation && demoData.generation.id) || fallbackData.generation.id;
+    }
+
+    function getInitialState() {
+      const params = new URLSearchParams(window.location.search);
+      const requested = params.get('state') || (demoData.generation && demoData.generation.status) || 'queued';
+
+      if (requested === 'processing') {
+        return 'generating';
+      }
+
+      if (requested === 'succeeded') {
+        return 'success';
+      }
+
+      return Object.prototype.hasOwnProperty.call(stateConfig, requested) ? requested : 'queued';
+    }
+
+    function updateCreditNoteTone(tone) {
+      const note = document.getElementById('generation-waiting-credit-note');
+      if (!note) {
+        return;
+      }
+
+      note.classList.remove('is-amber', 'is-rose');
+
+      if (tone === 'amber') {
+        note.classList.add('is-amber');
+      }
+
+      if (tone === 'rose') {
+        note.classList.add('is-rose');
+      }
+    }
+
+    function detailStatusFor(step, stateName) {
+      if (stateName === 'failed') {
+        if (step.id === 'read-photo') {
+          return 'done';
+        }
+        if (step.id === 'generate-preview') {
+          return 'blocked';
+        }
+        return 'waiting';
+      }
+
+      if (step.doneFrom.includes(stateName)) {
+        return 'done';
+      }
+
+      if (step.activeFrom.includes(stateName)) {
+        return 'active';
+      }
+
+      return 'waiting';
+    }
+
+    function renderDetailList(stateName) {
+      const list = document.getElementById('generation-waiting-steps');
+      if (!list) {
+        return;
+      }
+
+      const stateLabels = {
+        done: '已完成',
+        active: '处理中',
+        waiting: '等待',
+        blocked: '未完成'
+      };
+
+      const iconLabels = {
+        done: '✓',
+        active: '…',
+        waiting: String.fromCharCode(183),
+        blocked: '!'
+      };
+
+      list.innerHTML = detailSteps.map((step) => {
+        const status = detailStatusFor(step, stateName);
+        return `
+          <li class="detail-item is-${status}">
+            <span class="step-icon" aria-hidden="true">${iconLabels[status]}</span>
+            <span>
+              <span class="detail-title">${step.title}</span>
+              <span class="detail-copy">${step.copy}</span>
+            </span>
+            <span class="detail-state">${stateLabels[status]}</span>
+          </li>
+        `;
+      }).join('');
+    }
+
+    function renderActions(actionIds) {
+      const container = document.getElementById('generation-waiting-actions');
+      if (!container) {
+        return;
+      }
+
+      container.innerHTML = '';
+
+      actionIds.forEach((actionId) => {
+        const config = actionConfig[actionId];
+        if (!config) {
+          return;
+        }
+
+        const element = config.type === 'link'
+          ? document.createElement('a')
+          : document.createElement('button');
+
+        element.className = `button ${config.className} tap`;
+        element.textContent = config.label;
+
+        if (config.type === 'link') {
+          element.href = config.href;
+        } else {
+          element.type = 'button';
+          element.addEventListener('click', () => {
+            console.info('[Style AI Prototype] generation waiting action', { actionId, state: currentState });
+            config.action();
+          });
+        }
+
+        container.appendChild(element);
+      });
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.state-button')) {
+        const active = button.dataset.waitingState === stateName;
+        button.classList.toggle('is-active', active);
+      }
+    }
+
+    function applyGenerationWaitingState(stateName) {
+      const normalized = Object.prototype.hasOwnProperty.call(stateConfig, stateName) ? stateName : 'queued';
+      const config = stateConfig[normalized];
+      const app = document.getElementById('app');
+      const orbit = document.getElementById('generation-waiting-progress-orbit');
+      const pulse = document.getElementById('generation-waiting-pulse');
+      const bar = document.getElementById('generation-waiting-progress-bar');
+      const taskId = getTaskId();
+
+      currentState = normalized;
+
+      if (app) {
+        app.dataset.state = normalized;
+        app.dataset.taskId = taskId;
+      }
+
+      if (orbit) {
+        orbit.style.setProperty('--progress', String(config.progress));
+        orbit.style.setProperty('--status-color', config.color);
+      }
+
+      if (bar) {
+        bar.style.width = `${config.progress}%`;
+        bar.style.background = config.color;
+      }
+
+      if (pulse) {
+        pulse.classList.toggle('hidden', ['success', 'failed', 'timeout'].includes(normalized));
+      }
+
+      setText('generation-waiting-progress-text', `${config.progress}%`);
+      setText('generation-waiting-state-chip', config.chip);
+      setText('generation-waiting-status-title', config.title);
+      setText('generation-waiting-status-copy', config.copy);
+      setText('generation-waiting-task-id', `任务 ${taskId}`);
+      setText('generation-waiting-estimate', config.estimate);
+      setText('generation-waiting-credit-icon', config.creditIcon);
+      setText('generation-waiting-credit-title', config.creditTitle);
+      setText('generation-waiting-credit-copy', config.creditCopy);
+      setText('generation-waiting-action-note', config.actionNote);
+
+      updateCreditNoteTone(config.creditTone);
+      renderDetailList(normalized);
+      renderActions(config.actions);
+      updateStateButtons(normalized);
+
+      console.info('[Style AI Prototype] generation waiting state changed', {
+        state: normalized,
+        progress: config.progress,
+        taskId
+      });
+    }
+
+    async function loadGenerationWaitingDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        demoData = await response.json();
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback demo data', error);
+      }
+
+      const userName = (demoData.currentUser && demoData.currentUser.displayName) || fallbackData.currentUser.displayName;
+      setText('generation-waiting-user-line', `${userName}的首次预览`);
+    }
+
+    function initGenerationWaitingActions() {
+      document.getElementById('generation-waiting-help')?.addEventListener('click', () => {
+        showGenerationWaitingToast('页面会按任务状态更新。失败不会扣除额度，成功后才扣除 1 次。');
+      });
+
+      for (const button of document.querySelectorAll('.state-button')) {
+        button.addEventListener('click', () => {
+          applyGenerationWaitingState(button.dataset.waitingState || 'queued');
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadGenerationWaitingDemoData();
+      initGenerationWaitingActions();
+      applyGenerationWaitingState(getInitialState());
+      console.info('[Style AI Prototype] 01.6 generation waiting ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

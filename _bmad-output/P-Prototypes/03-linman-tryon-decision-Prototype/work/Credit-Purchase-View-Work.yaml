@@ -1,0 +1,134 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: Credit Purchase View
+  source_step: 03.7-credit-purchase
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.7-credit-purchase/03.7-credit-purchase.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.7-credit-purchase.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  spec_status: prototype-draft
+
+view_summary:
+  purpose: 林曼在看见一次试穿价值后，判断是否购买更多生成额度。
+  entry_context: 03.5 结果页或 03.6 历史页已经证明一次额度能支持真实购买判断。
+  exit_action: 购买额度后继续试参考，或暂不购买并回到结果/历史。
+  user_state:
+    hope: 确认继续花钱能用于真实决策。
+    worry: 被强推、买多用不完、价格和失败处理不透明。
+
+object_inventory:
+  - id: obj-credit-header
+    name: 页面顶部导航
+    role: 标识当前额度购买步骤，并提供返回历史和入口页路径。
+  - id: obj-credit-value-recap
+    name: 价值回顾区
+    role: 承接刚才 1 个额度带来的购买决策价值。
+  - id: obj-credit-balance-card
+    name: 余额与消耗说明
+    role: 展示余额、已消耗额度和继续试参考的预计消耗。
+  - id: obj-credit-plan-list
+    name: 额度方案列表
+    role: 展示 3 个方案、推荐方案和适用场景，支持选择。
+  - id: obj-credit-policy-note
+    name: 扣费边界说明
+    role: 说明成功后才消耗、失败处理、购买不会自动生成。
+  - id: obj-credit-purchase-actions
+    name: 购买与退出动作
+    role: 支持购买、暂不购买、继续试参考和回到历史。
+  - id: obj-credit-state-feedback
+    name: 状态反馈
+    role: 展示购买中、成功、失败和暂不购买状态。
+  - id: obj-credit-state-controls
+    name: 原型状态控制
+    role: 支持评审 default、selected、purchasing、success、purchase-error、declined。
+
+functional_requirements:
+  - 页面必须承接看见价值后再购买额度，而不是冷启动付费墙。
+  - 当前余额、已消耗额度、继续试参考预计消耗必须可见。
+  - 三个购买方案必须可选择，选中后主行动和摘要更新。
+  - 成功、失败、暂不购买状态必须有明确恢复路径。
+  - 扣费边界必须说明成功结果后才消耗生成额度。
+  - 03.5 和 03.6 的额度入口必须可进入本页面。
+  - 移动端 375/393/428px 宽度无水平滚动。
+
+sections:
+  - id: 1
+    name: Credit Shell & Value Recap
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 30
+    objects:
+      - obj-credit-header
+      - obj-credit-value-recap
+      - obj-credit-balance-card
+    acceptance_criteria:
+      - 页面清楚标识为 03.7 额度/购买。
+      - 价值回顾能承接 03.5 奶油白短外套结果。
+      - 余额、已消耗额度和下次预计消耗可见。
+    story_file: stories/03.7.1-credit-purchase-full-page.md
+
+  - id: 2
+    name: Plans & Credit Policy
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 35
+    objects:
+      - obj-credit-plan-list
+      - obj-credit-policy-note
+    acceptance_criteria:
+      - 三个额度方案都可见且有价格、额度和适用场景。
+      - 推荐方案被明确标注。
+      - 扣费边界清楚说明购买和生成消耗是两件事。
+    story_file: stories/03.7.1-credit-purchase-full-page.md
+
+  - id: 3
+    name: Purchase Actions & States
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 35
+    objects:
+      - obj-credit-purchase-actions
+      - obj-credit-state-feedback
+      - obj-credit-state-controls
+    acceptance_criteria:
+      - 六种原型状态均可切换。
+      - 购买成功展示新增额度和新余额。
+      - 购买失败和暂不购买都有恢复路径。
+      - 从 03.5/03.6 进入 03.7 的路由有效。
+    story_file: stories/03.7.1-credit-purchase-full-page.md
+
+verification:
+  static_checks: passed
+  browser_automation: passed-at-375-393-428
+  route_from_03_5: passed
+  route_from_03_6: passed
+  screenshot: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype/03.7-credit-purchase-393.png
+  user_review: pending
+
+implementation_rules:
+  - This page is a prototype draft because 03.7 did not previously have a full approved page spec.
+  - Do not mark as final-approved until Sue reviews the draft spec and prototype behavior.
+  - Keep purchase simulation local to the prototype; do not imply a real payment integration.
+  - Reuse the dark Style AI mobile visual language from 03.2 through 03.6.
+
+progress:
+  current_section: 3
+  completed_sections: 3
+  total_sections: 3
+  total_estimate_minutes: 100

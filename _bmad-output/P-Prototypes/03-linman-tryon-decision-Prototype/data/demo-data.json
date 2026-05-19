@@ -1,0 +1,225 @@
+{
+  "scenario": {
+    "id": "03-linman-tryon-decision",
+    "name": "林曼的试穿决策",
+    "currentPage": "03.1-tryon-entry",
+    "prototypeLanguage": "zh-CN",
+    "deviceCompatibility": {
+      "type": "mobile-only",
+      "testViewports": [
+        {
+          "name": "iPhone SE",
+          "width": 375,
+          "height": 667
+        },
+        {
+          "name": "iPhone 14 Pro",
+          "width": 393,
+          "height": 852
+        },
+        {
+          "name": "iPhone 14 Pro Max",
+          "width": 428,
+          "height": 926
+        }
+      ]
+    },
+    "designFidelity": "design-system-components"
+  },
+  "user": {
+    "id": "user-linman-001",
+    "name": "林曼",
+    "age": 31,
+    "persona": "城市白领",
+    "city": "上海",
+    "decisionContext": "在电商和小红书上看到具体想买或想尝试的参考对象，想先判断放到自己身上是否合适。"
+  },
+  "credits": {
+    "balance": 6,
+    "tryOnCost": 1,
+    "currencyLabel": "生成额度",
+    "lowBalanceThreshold": 2
+  },
+  "profileImage": {
+    "id": "profile-linman-default",
+    "label": "常用本人形象",
+    "status": "ready",
+    "quality": "usable",
+    "notes": "正面半身照，光线清晰，适合快速试穿。"
+  },
+  "referenceCandidates": [
+    {
+      "id": "ref-cream-jacket",
+      "type": "clothing",
+      "source": "电商截图",
+      "title": "奶油白短外套",
+      "decisionQuestion": "这件外套会不会显得肩宽，适不适合通勤约会两用？",
+      "urgency": "今晚下单前想确认",
+      "importStatus": "not-imported"
+    },
+    {
+      "id": "ref-soft-waves",
+      "type": "hairstyle",
+      "source": "小红书收藏图",
+      "title": "低层次微卷发",
+      "decisionQuestion": "这个发型放到我的脸型上会不会显成熟？",
+      "urgency": "预约理发前想先看效果",
+      "importStatus": "not-imported"
+    }
+  ],
+  "activeTryOnGeneration": {
+    "id": "tryon-linman-cream-jacket-001",
+    "referenceId": "ref-cream-jacket",
+    "profileImageId": "profile-linman-default",
+    "intent": "clothing",
+    "intentLabel": "衣服上身",
+    "status": "queued",
+    "progress": 10,
+    "estimatedSeconds": 50,
+    "creditPolicy": {
+      "cost": 1,
+      "currencyLabel": "生成额度",
+      "chargeTiming": "结果成功准备好后扣除",
+      "failureHandling": "失败不扣除或退回"
+    }
+  },
+  "tryOnResult": {
+    "id": "tryon-result-linman-cream-jacket-001",
+    "generationId": "tryon-linman-cream-jacket-001",
+    "status": "ready",
+    "previewImageUrl": "assets/tryon-result-cream-jacket-preview.svg",
+    "referenceTitle": "奶油白短外套",
+    "referenceSource": "电商截图",
+    "decisionQuestion": "这件外套会不会显得肩宽，适不适合通勤约会两用？",
+    "urgency": "今晚下单前想确认",
+    "creditCharged": 1,
+    "recommendationTone": "偏适合",
+    "recommendationLabel": "可以考虑，下单前确认肩宽和内搭厚度",
+    "headline": "整体比想象中更轻，肩线没有明显放宽。",
+    "reasonBullets": [
+      "奶油白能提亮上半身，和林曼常用通勤妆感比较协调。",
+      "短外套长度停在高腰附近，能保留利落感，不会把比例压低。"
+    ],
+    "cautionNote": "肩部垫感如果比参考图更厚，实物可能会显得更硬；下单前优先看肩宽和面料挺度。",
+    "purchaseChecks": [
+      "确认肩宽不要比常穿外套多出 2cm 以上。",
+      "选择薄内搭或垂顺衬衫，避免领口和肩部同时堆量。",
+      "如果主要用于约会，搭配浅色下装会比全黑下装更柔和。"
+    ],
+    "detailNotes": [
+      "通勤场景：适合搭配直筒裤或半裙，整体干净但不会太正式。",
+      "约会场景：建议用小面积亮色配饰，不需要再叠很重的项链。",
+      "风险点：如果实物颜色偏黄或面料太厚，可能削弱这次预览里的轻盈感。"
+    ]
+  },
+  "historyCollection": {
+    "savedAtLabel": "刚刚保存",
+    "defaultStatus": "已保存到历史",
+    "boundaryNote": "历史结果用于回看和对比，不会自动变成常用本人形象。",
+    "compareInstruction": "把这次结果和最近尝试放在一起，先判断是否值得继续下单或购买额度。",
+    "decisionPrompt": "如果这件外套仍然是候选，可以回到结果页看细节；如果还想继续试更多参考，再进入额度方案。",
+    "currentTags": [
+      "通勤/约会",
+      "奶油白短外套",
+      "偏适合"
+    ],
+    "compareCandidates": [
+      {
+        "id": "tryon-result-linman-cream-jacket-001",
+        "title": "奶油白短外套",
+        "recommendation": "偏适合",
+        "source": "本次结果",
+        "saved": true,
+        "active": true
+      },
+      {
+        "id": "result-001",
+        "title": "浅灰针织开衫",
+        "recommendation": "适合",
+        "source": "历史结果",
+        "saved": true,
+        "active": false
+      },
+      {
+        "id": "result-002",
+        "title": "齐肩内扣发型",
+        "recommendation": "谨慎",
+        "source": "历史结果",
+        "saved": false,
+        "active": false
+      }
+    ]
+  },
+  "recentResults": [
+    {
+      "id": "result-001",
+      "title": "浅灰针织开衫",
+      "recommendation": "适合",
+      "saved": true
+    },
+    {
+      "id": "result-002",
+      "title": "齐肩内扣发型",
+      "recommendation": "谨慎",
+      "saved": false
+    }
+  ],
+  "creditPurchase": {
+    "entryReason": "刚才 1 个生成额度已经帮你判断了奶油白短外套是否值得继续下单。",
+    "valueBullets": [
+      "看清了肩线、长度和通勤/约会两用的适配风险。",
+      "保留了结果到历史，之后可以和其他外套或发型继续对比。",
+      "如果还想试 3 到 5 个候选对象，现在补额度会比临时中断更顺。"
+    ],
+    "currentBalance": 5,
+    "lastBalance": 6,
+    "lastCreditCharged": 1,
+    "nextTryOnCost": 1,
+    "currencyLabel": "生成额度",
+    "recommendedPlanId": "plan-12",
+    "plans": [
+      {
+        "id": "plan-6",
+        "label": "轻量补充",
+        "credits": 6,
+        "priceLabel": "¥9.9",
+        "unitHint": "适合再试 6 个参考",
+        "bestFor": "只想确认今晚这件外套和 1-2 个相近候选。"
+      },
+      {
+        "id": "plan-12",
+        "label": "决策小包",
+        "credits": 12,
+        "priceLabel": "¥16.9",
+        "unitHint": "适合连续试衣服/发型",
+        "bestFor": "这周还有几件衣服、发型或妆容想一起判断。",
+        "badge": "推荐"
+      },
+      {
+        "id": "plan-30",
+        "label": "集中探索",
+        "credits": 30,
+        "priceLabel": "¥39.9",
+        "unitHint": "适合一轮风格整理",
+        "bestFor": "准备做一轮完整衣橱、发型或妆容探索。"
+      }
+    ],
+    "policyNotes": [
+      "购买额度不会自动开始生成，你仍然需要选择参考图并确认。",
+      "每次试穿预计消耗 1 个生成额度，结果成功准备好后才扣除。",
+      "生成失败不会重复扣额度；如已扣除，会在记录中退回或补偿。"
+    ],
+    "successTitle": "额度已补充",
+    "successCopy": "你可以继续导入下一个参考对象，也可以先回到历史页继续对比刚才的结果。",
+    "errorTitle": "购买没有完成",
+    "errorCopy": "这次没有扣款，也没有增加额度。可以重试，或先回到结果页继续判断。",
+    "declinedTitle": "这次先不购买",
+    "declinedCopy": "当前结果和历史记录仍然保留。之后余额不足时，也可以再回到额度方案。"
+  },
+  "entryPageCopy": {
+    "headline": "把心动参考图先试到自己身上",
+    "subhead": "导入衣服、发型或妆容参考，Style AI 会用你的常用形象生成一次快速预览，帮你判断值不值得买或改。",
+    "primaryAction": "导入参考图",
+    "secondaryAction": "查看历史结果"
+  }
+}

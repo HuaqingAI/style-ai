@@ -1,0 +1,235 @@
+test_scenario:
+  id: "TS-001"
+  name: "First Real Preview Flow Testing"
+  delivery_id: "DD-001"
+  type: "user_acceptance"
+  status: "ready"
+  tester: "designer"
+  created_at: "2026-05-13T14:04:48+08:00"
+
+test_objectives:
+  - "Validate that DD-001 implements the complete first real preview flow from login to result feedback."
+  - "Verify that the user understands photo, history, profile, and credit boundaries before risky actions."
+  - "Confirm generated-result presentation supports the MVP success signal: looks like me and useful for judgment."
+  - "Ensure error, permission, timeout, and credit-failure states are recoverable."
+  - "Check accessibility and design-system usage for the first mobile vertical slice."
+
+test_environment:
+  devices:
+    - "iOS seed-test device or simulator with camera/photo library permission testing"
+    - "Android seed-test device or emulator with camera/photo library permission testing"
+    - "Expo development build or production-like native build"
+  test_data:
+    - field: "seed_account"
+      value: "valid test account with positive credit balance"
+    - field: "low_credit_seed_account"
+      value: "valid test account with zero or insufficient credits"
+    - field: "photo_pass"
+      value: "clear recent portrait or full-body photo"
+    - field: "photo_fail"
+      value: "dark, blurred, occluded, or heavily filtered photo"
+    - field: "generation_success_mock"
+      value: "task returns generated image and analysis text"
+    - field: "generation_partial_mock"
+      value: "task returns image but analysis text fails"
+    - field: "generation_failure_mock"
+      value: "task fails without visible credit charge"
+
+happy_path:
+  - id: "HP-001"
+    name: "Seed user completes first real preview"
+    priority: "critical"
+    steps:
+      - action: "Open app from seed invite or launch screen."
+        expected: "Login page appears with Style AI identity and copy explaining login is for credits, history, and account management."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.1-start-login/01.1-start-login.md#page-sections"
+      - action: "Log in with a valid seed account."
+        expected: "User enters authenticated home page."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.1-start-login/01.1-start-login.md#page-states"
+      - action: "Tap the primary entry: start personal image generation."
+        expected: "Photo upload page opens; try-on remains a secondary entry."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.2-home-dual-entry/01.2-home-dual-entry.md#page-sections"
+      - action: "Choose a photo from camera or album."
+        expected: "Before or during selection, user sees current-photo/history/profile boundary copy; selected photo preview appears."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.3-photo-upload/01.3-photo-upload.md#page-sections"
+      - action: "Continue to photo quality check with a valid photo."
+        expected: "Photo quality pass state appears with a clear continue action."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.4-photo-quality-check/01.4-photo-quality-check.md#page-states"
+      - action: "Choose a style direction or keep AI recommendation, then start generation."
+        expected: "User sees expected credit cost and failure handling before generation starts."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.5-generation-setup/01.5-generation-setup.md#page-sections"
+      - action: "Wait for generation to complete."
+        expected: "Waiting page progresses through task states and explains credit handling."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.6-generation-waiting/01.6-generation-waiting.md#page-states"
+      - action: "View result page."
+        expected: "Generated image, recommendation, caution note, next actions, optional profile save prompt, and seed feedback panel are visible."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.7-image-result/01.7-image-result.md#page-sections"
+    success_criteria:
+      - "User reaches the result page without ambiguity about photo/profile retention."
+      - "User can submit or skip seed feedback without losing the result."
+      - "Result save and profile save are separate actions."
+
+error_states:
+  - id: "ES-001"
+    name: "Photo permission denied"
+    priority: "high"
+    steps:
+      - action: "Deny camera or photo library permission on the photo upload page."
+        expected: "App explains why access is needed and offers retry/system settings recovery."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.3-photo-upload/01.3-photo-upload.md#page-states"
+    success_criteria:
+      - "User is not trapped on a dead end."
+      - "No generation task is created."
+  - id: "ES-002"
+    name: "Photo quality failure"
+    priority: "high"
+    steps:
+      - action: "Submit a dark, blurred, occluded, or heavily filtered photo."
+        expected: "Quality page shows gentle failure copy and practical retry guidance."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.4-photo-quality-check/01.4-photo-quality-check.md#page-states"
+    success_criteria:
+      - "No visible credit is consumed."
+      - "Retry path is obvious."
+  - id: "ES-003"
+    name: "Generation fails"
+    priority: "critical"
+    steps:
+      - action: "Force generation task failure."
+        expected: "Waiting page or result fallback explains failure and offers retry/change photo; user perceives no credit charge."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.6-generation-waiting/01.6-generation-waiting.md#page-states"
+    success_criteria:
+      - "Credit balance is unchanged or restored."
+      - "User can recover without losing the selected photo where feasible."
+
+edge_cases:
+  - id: "EC-001"
+    name: "Insufficient credits"
+    priority: "high"
+    steps:
+      - action: "Use an account with insufficient credits and attempt to start generation."
+        expected: "Generation start is blocked before task creation; user sees quota rule or purchase path."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.5-generation-setup/01.5-generation-setup.md#page-states"
+    success_criteria:
+      - "No task is created without available credit."
+  - id: "EC-002"
+    name: "Partial result"
+    priority: "medium"
+    steps:
+      - action: "Return a generated image but fail analysis text."
+        expected: "Result image is visible; analysis area explains it can be refreshed or completed later."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.7-image-result/01.7-image-result.md#page-states"
+    success_criteria:
+      - "The generated image is not discarded."
+  - id: "EC-003"
+    name: "App background during generation"
+    priority: "medium"
+    steps:
+      - action: "Send app to background while generation is processing, then reopen."
+        expected: "App recovers task status and either resumes waiting or opens result/history."
+        design_ref: "_bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.6-generation-waiting/01.6-generation-waiting.md#technical-notes"
+    success_criteria:
+      - "User does not lose task state."
+
+design_system_checks:
+  - id: "DS-001"
+    name: "Brand identity use"
+    checks:
+      - component: "icn-001 Style AI App Icon System"
+        instances: ["Login header", "Home header", "Splash/app icon"]
+        verify:
+          - "Brand mark is used as product identity only."
+          - "Purple spark is not used as a generic AI action icon."
+          - "Logo instances have accessible label or are decorative when repeated beside visible text."
+        design_ref: "_bmad-output/D-Design-System/components/style-ai-app-icon-system.md"
+  - id: "DS-002"
+    name: "Candidate component capture"
+    checks:
+      - component: "DD-001 candidate components"
+        instances: ["header", "entry cards", "photo picker", "credit panel", "progress panel", "result viewer", "feedback panel"]
+        verify:
+          - "Repeated patterns are implemented consistently."
+          - "Components repeated on two or more screens are marked for promotion after prototype review."
+        design_ref: "_bmad-output/D-Design-System/component-catalog.md"
+
+accessibility:
+  - id: "A11Y-001"
+    name: "Screen reader flow"
+    priority: "high"
+    setup: "Enable VoiceOver or TalkBack."
+    steps:
+      - action: "Navigate through login, home, photo upload, generation setup, waiting and result screens."
+        verify:
+          - "Reading order matches visual order."
+          - "Every input and action has a visible label or accessibility label."
+          - "Generated result image has useful alt/label when it communicates content; decorative logos are not over-announced."
+    success_criteria:
+      - "Critical flow can be completed with screen reader support."
+  - id: "A11Y-002"
+    name: "Touch target and contrast"
+    priority: "high"
+    setup: "Use smallest supported mobile viewport."
+    steps:
+      - action: "Inspect primary and secondary actions across all pages."
+        verify:
+          - "Primary actions are at least 44x44 logical points."
+          - "Text contrast meets WCAG AA where possible."
+          - "Error and warning states are not communicated by color alone."
+    success_criteria:
+      - "No critical action is too small or color-only."
+
+usability:
+  - id: "UX-001"
+    name: "Seed user first impression"
+    type: "observational"
+    instructions: |
+      Ask a seed user to complete the first real preview without coaching.
+      Observe hesitation at login, photo upload, credit summary, generation wait,
+      and profile-save prompt. After result viewing, ask:
+      1. Does this look like you?
+      2. Can you use it to judge this style direction?
+      3. Did any photo/privacy/credit wording feel unclear?
+    success_criteria:
+      - "User completes flow without needing explanation from Sue."
+      - "User can explain the difference between result history and reusable profile."
+      - "User gives a clear looks-like-me and useful-for-judgment answer."
+
+performance:
+  - id: "PERF-001"
+    name: "Async generation resilience"
+    verify:
+      - "Waiting page displays progress quickly after task creation."
+      - "Timeout state appears when configured threshold is exceeded."
+      - "Reopening app recovers current task state."
+    success_criteria:
+      - "No blank or silent loading state persists without explanation."
+
+report_template:
+  sections:
+    - name: "Test Summary"
+      fields: ["Date tested", "Tester name", "Device tested", "Build version", "Overall result"]
+    - name: "Happy Path Results"
+      fields: ["Test ID", "Result", "Notes", "Screenshots"]
+    - name: "Issues Found"
+      fields: ["Issue ID", "Severity", "Description", "Steps to reproduce", "Expected vs Actual", "Design reference violated"]
+    - name: "Seed Learning Signals"
+      fields: ["Looks like me", "Useful for judgment", "Specific issue tags", "Free text"]
+    - name: "Design System Compliance"
+      fields: ["Component or candidate", "Compliant", "Deviation noted"]
+    - name: "Recommendations"
+      fields: ["What worked", "What needs improvement", "Suggested changes"]
+
+sign_off:
+  required_for_approval:
+    - "All critical happy path tests pass."
+    - "No critical or high severity issue remains open."
+    - "No photo/profile/credit boundary copy contradicts actual behavior."
+    - "Accessibility tests pass for critical path."
+    - "At least 60% seed-test target can be measured from result feedback data."
+  designer_approval:
+    statement: |
+      I confirm that the implemented first real preview flow matches DD-001,
+      preserves the trust boundaries in the specifications, and is ready for
+      seed-user validation.
+    signature: "________________"
+    date: "________________"
+

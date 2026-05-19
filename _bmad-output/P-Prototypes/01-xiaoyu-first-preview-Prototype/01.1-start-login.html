@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.1 Start Login - Style AI</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--style-ai-black);
+      letter-spacing: 0;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    #start-login-method-panel input {
+      background-color: rgb(0 0 0 / 0.24);
+      color: var(--style-ai-ivory);
+      color-scheme: dark;
+    }
+
+    #start-login-method-panel input:-webkit-autofill,
+    #start-login-method-panel input:-webkit-autofill:hover,
+    #start-login-method-panel input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px rgb(0 0 0 / 0.24) inset;
+      -webkit-text-fill-color: var(--style-ai-ivory);
+      caret-color: var(--style-ai-ivory);
+      transition: background-color 9999s ease-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+  <main
+    id="app"
+    class="mx-auto flex min-h-[100svh] w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(24px,env(safe-area-inset-top))]"
+    data-page="01.1-start-login"
+    data-section="1-page-shell-mobile-layout"
+  >
+    <div
+      class="mb-5 inline-flex w-fit items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[11px] leading-none text-white/55"
+      data-prototype-status="section-1"
+    >
+      <span class="h-1.5 w-1.5 rounded-full bg-[#9D7AFF]"></span>
+      <span>01.1 shell</span>
+    </div>
+
+    <div class="flex min-h-0 flex-1 flex-col gap-4">
+      <section
+        id="start-login-brand-trust-header"
+        class="rounded-lg border border-white/10 bg-white/[0.035] p-4"
+        data-object-id="start-login-brand-trust-header"
+        data-region="brand-trust-header"
+        aria-label="Style AI brand trust header"
+      >
+        <div class="flex items-center gap-3">
+          <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/18 bg-[#FAFAF7] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+            <img
+              src="assets/style-ai-reversible-s-symbol.svg"
+              alt=""
+              class="h-full w-full"
+              aria-hidden="true"
+            >
+          </span>
+          <div class="min-w-0">
+            <p class="text-lg font-semibold leading-none text-[#FAFAF7]">Style AI</p>
+            <p class="mt-1 text-xs leading-none text-white/50">首次真实预览</p>
+          </div>
+        </div>
+
+        <h1 class="mt-7 text-[28px] font-semibold leading-[1.08] text-[#FAFAF7]">
+          先看看自己适不适合，再决定要不要继续探索。
+        </h1>
+
+        <p class="mt-4 text-sm leading-6 text-white/62">
+          用一张当前照片，先看看真实效果。
+        </p>
+      </section>
+
+      <section
+        id="start-login-method-panel"
+        class="rounded-lg border border-white/10 bg-white/[0.045] p-4"
+        data-object-id="start-login-method-panel"
+        data-region="login-method-panel"
+        aria-label="Login method panel"
+      >
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-medium text-[#FAFAF7]">登录 Style AI</p>
+            <p class="mt-1 text-xs leading-5 text-white/48">使用邀请码、手机号或 Google 继续。</p>
+          </div>
+          <span class="rounded-lg bg-[#9D7AFF]/12 px-2.5 py-1 text-xs leading-none text-[#C9BAFF]">推荐</span>
+        </div>
+
+        <div class="mt-4">
+          <label for="start-login-invite-code-field" class="text-sm font-medium text-[#FAFAF7]">
+            邀请码
+          </label>
+          <input
+            id="start-login-invite-code-field"
+            data-object-id="start-login-invite-code-field"
+            name="inviteCode"
+            type="text"
+            autocomplete="one-time-code"
+            value="SEED-XIAOYU-001"
+            placeholder="输入邀请码"
+            class="mt-2 min-h-[44px] w-full rounded-lg border border-white/12 bg-black/24 px-3.5 py-3 text-base text-[#FAFAF7] outline-none transition focus:border-[#9D7AFF]/70 focus:ring-2 focus:ring-[#9D7AFF]/16"
+          >
+          <p id="invite-code-helper" class="mt-2 text-xs leading-5 text-white/48">
+            首次体验包含 1 次个人形象生成额度。
+          </p>
+          <p id="invite-code-error" class="mt-2 hidden text-xs leading-5 text-red-200"></p>
+        </div>
+
+        <div
+          id="start-login-phone-login-group"
+          class="mt-4 rounded-lg border border-white/8 bg-black/14 p-3"
+          data-object-id="start-login-phone-login-group"
+        >
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-sm font-medium text-white/78">手机号登录</p>
+              <p class="mt-1 text-xs leading-5 text-white/42">使用手机号接收验证码登录。</p>
+            </div>
+          </div>
+
+          <label for="start-login-phone-number-field" class="sr-only">手机号</label>
+          <input
+            id="start-login-phone-number-field"
+            name="phoneNumber"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="手机号"
+            class="mt-3 min-h-[44px] w-full rounded-lg border border-white/10 bg-black/20 px-3.5 py-3 text-base text-[#FAFAF7] outline-none transition placeholder:text-white/30 focus:border-[#9D7AFF]/60 focus:ring-2 focus:ring-[#9D7AFF]/14"
+          >
+
+          <div class="mt-3 flex gap-2">
+            <label for="start-login-phone-code-field" class="sr-only">验证码</label>
+            <input
+              id="start-login-phone-code-field"
+              name="phoneCode"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              placeholder="验证码"
+              class="min-h-[44px] min-w-0 flex-1 rounded-lg border border-white/10 bg-black/20 px-3.5 py-3 text-base text-[#FAFAF7] outline-none transition placeholder:text-white/30 focus:border-[#9D7AFF]/60 focus:ring-2 focus:ring-[#9D7AFF]/14"
+            >
+            <button
+              id="start-login-phone-code-button"
+              type="button"
+              class="min-h-[44px] shrink-0 rounded-lg border border-white/12 px-3 py-3 text-sm leading-none text-white/72"
+            >
+              获取验证码
+            </button>
+          </div>
+          <p id="phone-login-error" class="mt-2 hidden text-xs leading-5 text-red-200"></p>
+        </div>
+
+        <div
+          id="start-login-google-login-group"
+          class="mt-4"
+          data-object-id="start-login-google-login-group"
+        >
+          <div class="mb-3 flex items-center gap-3">
+            <span class="h-px flex-1 bg-white/10"></span>
+            <span class="text-xs text-white/38">或</span>
+            <span class="h-px flex-1 bg-white/10"></span>
+          </div>
+          <a
+            id="start-login-google-button"
+            href="01.2-home-dual-entry.html"
+            role="button"
+            data-login-path="google"
+            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-white/12 bg-white/[0.03] px-3 py-3 text-sm font-medium text-white/78"
+          >
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-[#FAFAF7] text-[12px] font-semibold text-[#111111]">G</span>
+            <span>使用 Google 继续</span>
+          </a>
+          <p id="google-login-helper" class="mt-2 text-xs leading-5 text-white/42">
+            使用 google.com 完成授权登录。
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="rounded-lg border border-white/10 bg-white/[0.045] p-4"
+        data-region="login-actions"
+        aria-label="Login actions"
+      >
+        <div id="start-login-action-form">
+          <a
+            id="start-login-primary-button"
+            data-object-id="start-login-primary-button"
+            href="01.2-home-dual-entry.html"
+            role="button"
+            data-login-path="primary"
+            class="flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] no-underline transition active:scale-[0.99]"
+          >
+            进入 Style AI
+          </a>
+          <p id="start-login-action-status" class="mt-3 hidden text-xs leading-5 text-white/55"></p>
+        </div>
+      </section>
+
+      <section
+        class="rounded-lg border border-white/10 bg-white/[0.03] p-4"
+        data-region="boundary-note"
+        data-object-id="start-login-boundary-note"
+        aria-label="登录与形象保存边界"
+      >
+        <p class="text-xs font-medium text-[#FAFAF7]/80">登录边界</p>
+        <p class="mt-2 text-xs leading-5 text-white/58">
+          登录用于额度、历史和账号管理。是否保存为常用形象，会在生成后由你单独决定。
+        </p>
+      </section>
+    </div>
+
+    <footer
+      class="mt-5 flex min-h-6 items-center justify-center gap-3 text-[11px] text-white/45"
+      data-region="legal-links"
+      aria-label="法律链接"
+    >
+      <a href="#" data-prototype-legal-link="privacy" class="text-white/45 underline-offset-4 active:text-white/70">隐私政策</a>
+      <span class="text-white/20">·</span>
+      <a href="#" data-prototype-legal-link="terms" class="text-white/45 underline-offset-4 active:text-white/70">用户协议</a>
+    </footer>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.1-start-login',
+      section: '5-boundary-note-and-legal-links',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const demoInviteCode = 'SEED-XIAOYU-001';
+    const demoPhoneNumber = '13800000001';
+    const demoPhoneCode = '123456';
+    const homeTargetUrl = '01.2-home-dual-entry.html';
+    const demoGoogleLoginEnabled = true;
+
+    function initStartLoginShell() {
+      console.info('[Style AI Prototype] 01.1 shell ready', pageMeta);
+    }
+
+    function clearLoginPanelMessages() {
+      for (const id of ['invite-code-error', 'phone-login-error']) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = '';
+          element.classList.add('hidden');
+        }
+      }
+
+      const statusElement = document.getElementById('start-login-action-status');
+      if (statusElement) {
+        statusElement.textContent = '';
+        statusElement.classList.add('hidden');
+        statusElement.classList.remove('text-[#C9BAFF]', 'text-red-200', 'text-white/55');
+        statusElement.classList.add('text-white/55');
+      }
+    }
+
+    function setLoginControlsDisabled(disabled) {
+      for (const id of [
+        'start-login-invite-code-field',
+        'start-login-phone-number-field',
+        'start-login-phone-code-field',
+        'start-login-phone-code-button',
+        'start-login-google-button'
+      ]) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.disabled = disabled;
+        }
+      }
+    }
+
+    function setStatusMessage(message, tone = 'neutral') {
+      const statusElement = document.getElementById('start-login-action-status');
+      if (!statusElement) {
+        return;
+      }
+
+      statusElement.textContent = message || '';
+      statusElement.classList.toggle('hidden', !message);
+      statusElement.classList.remove('text-[#C9BAFF]', 'text-red-200', 'text-white/55');
+      statusElement.classList.add(tone === 'success' ? 'text-[#C9BAFF]' : tone === 'error' ? 'text-red-200' : 'text-white/55');
+    }
+
+    function setLoginActionState(state = 'default', message = '') {
+      const primaryButton = document.getElementById('start-login-primary-button');
+      const isLoading = state === 'loading';
+      const isSuccess = state === 'success';
+
+      if (primaryButton) {
+        primaryButton.setAttribute('aria-disabled', isLoading || isSuccess ? 'true' : 'false');
+        primaryButton.classList.toggle('cursor-not-allowed', isLoading || isSuccess);
+        primaryButton.classList.toggle('opacity-55', isLoading || isSuccess);
+        primaryButton.textContent = isLoading ? '正在进入...' : isSuccess ? '登录成功' : '进入 Style AI';
+      }
+
+      setLoginControlsDisabled(isLoading || isSuccess);
+      setStatusMessage(message, isSuccess ? 'success' : state === 'error' ? 'error' : 'neutral');
+    }
+
+    function showFieldError(target, message) {
+      const errorId = target === 'phone' ? 'phone-login-error' : 'invite-code-error';
+      const errorElement = document.getElementById(errorId);
+      if (!errorElement) {
+        return;
+      }
+
+      errorElement.textContent = message;
+      errorElement.classList.add('text-red-200');
+      errorElement.classList.remove('hidden');
+      setLoginActionState('error');
+    }
+
+    function completeLogin(event) {
+      if (event) {
+        event.preventDefault();
+      }
+
+      setLoginActionState('success', '登录成功，正在进入首页。');
+      window.setTimeout(() => {
+        console.info('[Style AI Prototype] login success, navigating', homeTargetUrl);
+        window.location.href = homeTargetUrl;
+      }, 650);
+    }
+
+    function handlePrimaryLogin(event) {
+      clearLoginPanelMessages();
+
+      const submitter = event && event.submitter;
+      const loginPath = submitter && submitter.dataset ? submitter.dataset.loginPath : 'primary';
+
+      if (loginPath === 'google') {
+        if (!demoGoogleLoginEnabled) {
+          event.preventDefault();
+          setLoginActionState('error', '当前 Google 账号未开通访问权限。');
+          return false;
+        }
+
+        completeLogin(event);
+        return true;
+      }
+
+      const inviteCodeField = document.getElementById('start-login-invite-code-field');
+      const phoneNumberField = document.getElementById('start-login-phone-number-field');
+      const phoneCodeField = document.getElementById('start-login-phone-code-field');
+      const inviteCode = inviteCodeField ? inviteCodeField.value.trim() : '';
+      const phoneNumber = phoneNumberField ? phoneNumberField.value.trim() : '';
+      const phoneCode = phoneCodeField ? phoneCodeField.value.trim() : '';
+
+      if (phoneNumber || phoneCode) {
+        if (phoneNumber !== demoPhoneNumber || phoneCode !== demoPhoneCode) {
+          if (event) {
+            event.preventDefault();
+          }
+          showFieldError('phone', '手机号或验证码不匹配，请重新输入。');
+          return false;
+        }
+
+        completeLogin(event);
+        return true;
+      }
+
+      if (inviteCode) {
+        if (inviteCode !== demoInviteCode) {
+          if (event) {
+            event.preventDefault();
+          }
+          showFieldError('invite', '邀请码无效或已过期，请检查后重试。');
+          return false;
+        }
+
+        completeLogin(event);
+        return true;
+      }
+
+      if (!inviteCode) {
+        if (event) {
+          event.preventDefault();
+        }
+        showFieldError('invite', '请输入邀请码，或使用手机号 / Google 登录。');
+        return false;
+      }
+    }
+
+    function handleGetPhoneCode() {
+      clearLoginPanelMessages();
+
+      const phoneNumberField = document.getElementById('start-login-phone-number-field');
+      const phoneNumber = phoneNumberField ? phoneNumberField.value.trim() : '';
+
+      if (!phoneNumber) {
+        showFieldError('phone', '请输入手机号后获取验证码。');
+        return;
+      }
+
+      setLoginActionState('default', `验证码已发送，原型验证码为 ${demoPhoneCode}。`);
+    }
+
+    function handleGoogleLogin(event) {
+      clearLoginPanelMessages();
+      if (!demoGoogleLoginEnabled) {
+        if (event) {
+          event.preventDefault();
+        }
+        setLoginActionState('error', '当前 Google 账号未开通访问权限。');
+        return false;
+      }
+
+      completeLogin(event);
+      return true;
+    }
+
+    function initLoginMethodPanel() {
+      const inviteCodeField = document.getElementById('start-login-invite-code-field');
+      if (inviteCodeField && !inviteCodeField.value) {
+        inviteCodeField.value = demoInviteCode;
+      }
+      clearLoginPanelMessages();
+      console.info('[Style AI Prototype] login method panel ready');
+    }
+
+    function initLoginActions() {
+      const primaryButton = document.getElementById('start-login-primary-button');
+      const phoneCodeButton = document.getElementById('start-login-phone-code-button');
+      const googleButton = document.getElementById('start-login-google-button');
+
+      if (primaryButton) {
+        primaryButton.addEventListener('click', handlePrimaryLogin);
+      }
+
+      if (phoneCodeButton) {
+        phoneCodeButton.addEventListener('click', handleGetPhoneCode);
+      }
+
+      if (googleButton) {
+        googleButton.addEventListener('click', handleGoogleLogin);
+      }
+
+      setLoginActionState('default');
+      console.info('[Style AI Prototype] login actions ready');
+    }
+
+    function initBoundaryAndLegalLinks() {
+      for (const link of document.querySelectorAll('[data-prototype-legal-link]')) {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          setStatusMessage('原型中暂不打开隐私政策或用户协议。');
+        });
+      }
+
+      console.info('[Style AI Prototype] boundary note and legal links ready');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initStartLoginShell();
+      initLoginMethodPanel();
+      initLoginActions();
+      initBoundaryAndLegalLinks();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02.2 Save Result - Style AI</title>
+  <link rel="icon" href="assets/style-ai-reversible-s-symbol.svg" type="image/svg+xml">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .soft-panel {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.032));
+      border: 1px solid rgb(255 255 255 / 0.10);
+    }
+
+    .result-visual {
+      background:
+        radial-gradient(circle at 24% 16%, rgb(154 230 196 / 0.14), transparent 26%),
+        radial-gradient(circle at 76% 18%, rgb(157 122 255 / 0.18), transparent 28%),
+        linear-gradient(145deg, #262521 0%, #171717 58%, #0D0D0D 100%);
+    }
+
+    .mobile-scroll-page {
+      height: 100vh;
+      height: 100svh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .choice-card[aria-pressed="true"] {
+      border-color: rgb(154 230 196 / 0.48);
+      background: rgb(154 230 196 / 0.10);
+    }
+
+    .choice-card[aria-pressed="true"] .choice-check {
+      background: #C7F5DF;
+      color: #111111;
+    }
+
+    .choice-card[aria-pressed="true"] .choice-title {
+      color: #FAFAF7;
+    }
+  </style>
+</head>
+<body>
+  <main
+    id="app"
+    class="mobile-scroll-page mx-auto flex w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="02.2-save-result"
+    data-state="default"
+    data-save-target="second_result"
+  >
+    <header
+      id="save-result-header"
+      data-object-id="save-result-header"
+      class="shrink-0"
+      aria-label="保存结果顶部"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="02.1-second-style-exploration.html"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回二次探索"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img src="assets/style-ai-reversible-s-symbol.svg" alt="" class="h-full w-full" aria-hidden="true">
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">保存结果</p>
+            <p id="save-result-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的第二次风格</p>
+          </div>
+        </div>
+
+        <a
+          href="/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-xs font-semibold text-white/70 no-underline"
+          aria-label="返回首页"
+        >
+          首页
+        </a>
+      </div>
+    </header>
+
+    <section
+      id="save-result-hero"
+      data-object-id="save-result-hero"
+      class="mt-5"
+      aria-label="保存结果说明"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <p class="text-xs font-medium text-[#C9BAFF]">第二次结果已完成</p>
+        <span id="save-result-status-chip" class="rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">可保存</span>
+      </div>
+      <h1 class="mt-2 text-[25px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        把最有参考价值的那个结果留下来。
+      </h1>
+      <p id="save-result-intro-copy" class="mt-3 text-sm leading-6 text-white/58">
+        这一步只保存到历史结果。常用形象会在下一步单独询问，不会自动替你决定。
+      </p>
+    </section>
+
+    <section
+      id="save-result-alert"
+      class="mt-4 hidden rounded-lg border border-[#F2A7A0]/28 bg-[#F2A7A0]/10 p-4"
+      role="alert"
+      aria-live="polite"
+    >
+      <p id="save-result-alert-title" class="text-sm font-semibold leading-5 text-[#F6C4BF]">保存没有成功</p>
+      <p id="save-result-alert-copy" class="mt-1.5 text-xs leading-5 text-[#F6C4BF]/74">
+        可能是网络暂时不可用。当前选择会保留，你可以重新保存。
+      </p>
+    </section>
+
+    <section
+      id="save-result-preview"
+      data-object-id="save-result-preview"
+      class="soft-panel mt-4 overflow-hidden rounded-lg"
+      aria-label="第二次结果预览"
+    >
+      <div class="result-visual relative aspect-[5/4] w-full overflow-hidden">
+        <img
+          id="save-result-preview-image"
+          src="assets/first-result-preview.png"
+          alt="小雨第二次生成的日常轻层次结果预览"
+          class="absolute left-1/2 top-1/2 h-[124%] w-auto max-w-none -translate-x-1/2 -translate-y-[42%] opacity-95"
+        >
+        <div class="absolute left-3 top-3 rounded-lg bg-black/38 px-2.5 py-1 text-[11px] font-medium text-white/82">
+          第二次结果
+        </div>
+        <div id="save-result-preview-chip" class="absolute right-3 top-3 rounded-lg bg-[#9AE6C4]/16 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">
+          更日常
+        </div>
+        <div class="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-black/46 px-3 py-2 backdrop-blur">
+          <div class="flex items-center justify-between gap-3">
+            <span id="save-result-preview-label" class="text-xs font-semibold text-white/86">日常轻层次</span>
+            <span id="save-result-preview-signal" class="text-[11px] font-medium text-[#C7F5DF]">更日常 · 能沟通</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-4">
+        <p id="save-result-preview-summary" class="text-sm leading-6 text-white/72">
+          保留中发长度，把层次和蓬松感调轻，比第一次更接近日常可执行版本。
+        </p>
+      </div>
+    </section>
+
+    <section
+      id="save-result-comparison"
+      data-object-id="save-result-comparison"
+      class="soft-panel mt-4 rounded-lg p-4"
+      aria-label="两次结果对照"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-[#C9BAFF]">两次结果对照</p>
+          <h2 class="mt-1 text-base font-semibold leading-6 text-[#FAFAF7]">一个看变化，一个看日常落地。</h2>
+        </div>
+        <span class="shrink-0 rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/54">可比较</span>
+      </div>
+
+      <div class="mt-4 grid gap-2">
+        <article class="rounded-lg border border-white/10 bg-black/18 p-3">
+          <div class="flex items-center justify-between gap-3">
+            <p id="save-result-first-title" class="text-sm font-semibold leading-5 text-white/78">第一次：中发层次</p>
+            <span class="rounded-md bg-white/8 px-2 py-0.5 text-[10px] font-medium text-white/42">边界</span>
+          </div>
+          <p id="save-result-first-summary" class="mt-2 text-xs leading-5 text-white/54">
+            变化明显但不突兀，适合确认自己能不能接受整体层次感。
+          </p>
+        </article>
+
+        <article class="rounded-lg border border-[#9AE6C4]/22 bg-[#9AE6C4]/8 p-3">
+          <div class="flex items-center justify-between gap-3">
+            <p id="save-result-second-title" class="text-sm font-semibold leading-5 text-[#C7F5DF]">第二次：日常轻层次</p>
+            <span class="rounded-md bg-[#C7F5DF] px-2 py-0.5 text-[10px] font-semibold text-[#111111]">推荐保存</span>
+          </div>
+          <p id="save-result-second-summary" class="mt-2 text-xs leading-5 text-[#C7F5DF]/72">
+            更像现实里可以马上沟通的版本，适合当作本次探索的主要参考。
+          </p>
+        </article>
+
+        <div class="rounded-lg border border-[#F2C86B]/18 bg-[#F2C86B]/10 p-3">
+          <p class="text-[11px] font-medium text-[#F8DF9A]/72">保存前先确认</p>
+          <p id="save-result-difference-copy" class="mt-1.5 text-sm leading-5 text-[#F8DF9A]">
+            第一次更像“看到变化”，第二次更像“明天可以拿去沟通”。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="save-result-choice-group"
+      data-object-id="save-result-choice-group"
+      class="mt-4"
+      aria-label="选择保存哪个结果"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">这次保存哪一个？</p>
+          <p class="mt-1 text-xs leading-5 text-white/48">默认保存第二次，你也可以改存第一次。</p>
+        </div>
+        <span class="shrink-0 rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">选 1 个</span>
+      </div>
+      <div id="save-result-choice-list" class="mt-3 grid gap-2"></div>
+    </section>
+
+    <section
+      id="save-result-value-note"
+      data-object-id="save-result-value-note"
+      class="mt-4 rounded-lg border border-[#9D7AFF]/20 bg-[#9D7AFF]/10 p-4"
+      aria-label="保存价值说明"
+    >
+      <div class="flex items-start gap-3">
+        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#C9BAFF] text-xs font-bold text-[#111111]">i</span>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">保存到历史结果</p>
+          <p id="save-result-note-copy" class="mt-1.5 text-xs leading-5 text-[#D8CEFF]/76">
+            保存到历史结果后，你可以之后回看两次探索的差异。常用形象会在下一步单独询问，不会在这里自动保存。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-4 grid gap-2" aria-label="保存结果动作">
+      <button
+        id="save-result-primary-action"
+        data-object-id="save-result-primary-action"
+        type="button"
+        class="min-h-[50px] rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] disabled:cursor-not-allowed disabled:bg-white/14 disabled:text-white/36"
+      >
+        保存第二次结果
+      </button>
+      <div
+        id="save-result-secondary-actions"
+        data-object-id="save-result-secondary-actions"
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          href="02.1-second-style-exploration.html"
+          class="flex min-h-[44px] items-center justify-center rounded-lg border border-white/10 px-3 py-3 text-center text-xs font-semibold leading-5 text-white/62 no-underline"
+        >
+          重新选方向
+        </a>
+        <a
+          href="/01-xiaoyu-first-preview-Prototype/01.7-image-result.html"
+          class="flex min-h-[44px] items-center justify-center rounded-lg border border-white/10 px-3 py-3 text-center text-xs font-semibold leading-5 text-white/62 no-underline"
+        >
+          回看第一次
+        </a>
+      </div>
+    </section>
+
+    <section
+      id="save-result-state-controls"
+      data-object-id="save-result-state-controls"
+      class="mt-5 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="原型状态控制"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold text-white/70">原型状态</p>
+          <p class="mt-1 text-[11px] leading-4 text-white/42">用于验证保存中、已保存和失败状态。</p>
+        </div>
+        <span id="save-result-state-label" class="shrink-0 rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/54">default</span>
+      </div>
+      <div class="mt-3 grid grid-cols-2 gap-2">
+        <button type="button" class="save-result-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-save-state="default">默认</button>
+        <button type="button" class="save-result-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-save-state="saving">保存中</button>
+        <button type="button" class="save-result-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-save-state="saved">已保存</button>
+        <button type="button" class="save-result-state-button min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-save-state="save-error">保存失败</button>
+      </div>
+    </section>
+
+    <div
+      id="save-result-toast"
+      class="pointer-events-none fixed bottom-5 left-1/2 z-20 hidden w-[calc(100%-40px)] max-w-[388px] -translate-x-1/2 rounded-lg border border-white/10 bg-[#FAFAF7] px-4 py-3 text-center text-sm font-semibold text-[#111111] shadow-2xl"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      project: 'style-ai',
+      scenario: '02-xiaoyu-second-style-exploration',
+      page: '02.2-save-result'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      saveResult: {
+        defaultSaveTarget: 'second_result',
+        secondResult: {
+          label: '日常轻层次',
+          subtitle: '第二次结果',
+          previewImageUrl: 'assets/first-result-preview.png',
+          confidenceSignal: '更日常 · 能沟通',
+          summary: '保留中发长度，把层次和蓬松感调轻，比第一次更接近日常可执行版本。',
+          differenceFromFirst: '第一次更像“看到变化”，第二次更像“明天可以拿去沟通”。',
+          usefulFor: '适合保存下来，之后和发型师讨论一个稳妥、不用大改的方向。',
+          caution: '差异不会特别夸张，如果想验证更明显变化，可以之后再试短一点。'
+        },
+        firstResultComparison: {
+          label: '中发层次',
+          subtitle: '第一次结果',
+          previewImageUrl: 'assets/first-result-preview.png',
+          confidenceSignal: '有点像 · 能判断',
+          summary: '变化明显但不突兀，适合确认自己能不能接受整体层次感。',
+          differenceFromSecond: '第一次更适合看风格边界，第二次更适合看日常落地。',
+          usefulFor: '如果想保留一个变化更明显的参考，可以保存第一次结果。',
+          caution: '后续实际沟通时仍要避开过短长度和厚重齐刘海。'
+        },
+        choices: [
+          {
+            id: 'second_result',
+            label: '保存第二次结果',
+            tag: '默认',
+            title: '日常轻层次',
+            reason: '更像现实里可以马上沟通的版本，适合当作本次探索的主要参考。',
+            buttonLabel: '保存第二次结果'
+          },
+          {
+            id: 'first_result',
+            label: '改保存第一次结果',
+            tag: '对照',
+            title: '中发层次',
+            reason: '第一次变化更明显，如果你想保留风格边界，也可以把它作为主要历史结果。',
+            buttonLabel: '保存第一次结果'
+          }
+        ],
+        historyNote: '保存到历史结果后，你可以之后回看两次探索的差异。常用形象会在下一步单独询问，不会在这里自动保存。'
+      }
+    };
+
+    const stateConfig = {
+      default: {
+        alertVisible: false,
+        alertTitle: '',
+        alertCopy: '',
+        chip: '可保存',
+        chipClass: 'rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]',
+        primaryDisabled: false,
+        primarySuffix: '',
+        intro: '这一步只保存到历史结果。常用形象会在下一步单独询问，不会自动替你决定。'
+      },
+      saving: {
+        alertVisible: false,
+        alertTitle: '',
+        alertCopy: '',
+        chip: '保存中',
+        chipClass: 'rounded-lg bg-[#9D7AFF]/14 px-2.5 py-1 text-[11px] font-medium text-[#D8CEFF]',
+        primaryDisabled: true,
+        primarySuffix: '...',
+        intro: '正在保存当前选择。保存完成后，再单独询问是否设为常用形象。'
+      },
+      saved: {
+        alertVisible: false,
+        alertTitle: '',
+        alertCopy: '',
+        chip: '已保存',
+        chipClass: 'rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]',
+        primaryDisabled: false,
+        primarySuffix: '，继续',
+        intro: '结果已保存到历史。下一步会询问是否保存常用形象，你可以选择跳过。'
+      },
+      'save-error': {
+        alertVisible: true,
+        alertTitle: '保存没有成功',
+        alertCopy: '可能是网络暂时不可用。当前选择会保留，你可以重新保存。',
+        chip: '需重试',
+        chipClass: 'rounded-lg bg-[#F2A7A0]/14 px-2.5 py-1 text-[11px] font-medium text-[#F6C4BF]',
+        primaryDisabled: false,
+        primarySuffix: '',
+        intro: '刚刚没有保存成功。你可以保留当前选择后重新保存。'
+      }
+    };
+
+    let demoData = fallbackData;
+    let activeSaveTarget = fallbackData.saveResult.defaultSaveTarget;
+    let currentState = 'default';
+    let toastTimer = 0;
+    let saveTimer = 0;
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showSaveResultToast(message) {
+      const toast = document.getElementById('save-result-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2200);
+    }
+
+    function saveResultData() {
+      return demoData.saveResult || fallbackData.saveResult;
+    }
+
+    function getChoices() {
+      const choices = saveResultData().choices;
+      return Array.isArray(choices) && choices.length > 0
+        ? choices
+        : fallbackData.saveResult.choices;
+    }
+
+    function getActiveChoice() {
+      const choices = getChoices();
+      return choices.find((choice) => choice.id === activeSaveTarget) || choices[0];
+    }
+
+    function createChoiceButton(choice, active) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'choice-card rounded-lg border border-white/10 bg-white/[0.035] p-4 text-left transition';
+      button.dataset.saveTarget = choice.id;
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      button.innerHTML = `
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-[11px] font-medium text-white/46">${choice.tag}</p>
+            <p class="choice-title mt-1 text-base font-semibold leading-6 text-white/76">${choice.label}</p>
+          </div>
+          <span class="choice-check flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/8 text-[12px] font-bold text-white/48">${active ? '✓' : ''}</span>
+        </div>
+        <p class="mt-3 text-sm leading-5 text-white/64">${choice.title}</p>
+        <p class="mt-2 text-xs leading-5 text-white/42">${choice.reason}</p>
+      `;
+      button.addEventListener('click', () => {
+        setSaveTarget(choice.id);
+      });
+      return button;
+    }
+
+    function renderChoices() {
+      const list = document.getElementById('save-result-choice-list');
+      if (!list) {
+        return;
+      }
+
+      list.innerHTML = '';
+      for (const choice of getChoices()) {
+        list.appendChild(createChoiceButton(choice, choice.id === activeSaveTarget));
+      }
+    }
+
+    function updatePrimaryLabel() {
+      const choice = getActiveChoice();
+      const config = stateConfig[currentState] || stateConfig.default;
+      let label = choice?.buttonLabel || '保存这个结果';
+      if (currentState === 'saving') {
+        label = `正在${label}${config.primarySuffix}`;
+      } else if (currentState === 'saved') {
+        label = `${label}${config.primarySuffix}`;
+      } else if (currentState === 'save-error') {
+        label = `重新${label}`;
+      }
+      setText('save-result-primary-action', label);
+    }
+
+    function setSaveTarget(targetId, announce = true) {
+      const choice = getChoices().find((item) => item.id === targetId) || getChoices()[0];
+      const app = document.getElementById('app');
+      if (!choice) {
+        return;
+      }
+
+      activeSaveTarget = choice.id;
+      if (app) {
+        app.dataset.saveTarget = activeSaveTarget;
+      }
+
+      const data = saveResultData();
+      const second = data.secondResult || fallbackData.saveResult.secondResult;
+      const first = data.firstResultComparison || fallbackData.saveResult.firstResultComparison;
+
+      if (choice.id === 'first_result') {
+        setText('save-result-preview-label', first.label);
+        setText('save-result-preview-signal', first.confidenceSignal);
+        setText('save-result-preview-summary', first.summary);
+        setText('save-result-preview-chip', '第一次');
+        setText('save-result-difference-copy', first.differenceFromSecond);
+      } else {
+        setText('save-result-preview-label', second.label);
+        setText('save-result-preview-signal', second.confidenceSignal);
+        setText('save-result-preview-summary', second.summary);
+        setText('save-result-preview-chip', '更日常');
+        setText('save-result-difference-copy', second.differenceFromFirst);
+      }
+
+      setText('save-result-note-copy', `${choice.reason} ${data.historyNote || fallbackData.saveResult.historyNote}`);
+      updatePrimaryLabel();
+      renderChoices();
+
+      if (announce) {
+        showSaveResultToast(`已选择：${choice.title}。`);
+      }
+      console.info('[Style AI Prototype] save target selected', { targetId: choice.id });
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.save-result-state-button')) {
+        const active = button.dataset.saveState === stateName;
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        button.classList.toggle('bg-white/10', active);
+        button.classList.toggle('text-white', active);
+        button.classList.toggle('text-white/58', !active);
+      }
+    }
+
+    function applySaveResultState(stateName) {
+      const config = stateConfig[stateName] || stateConfig.default;
+      const app = document.getElementById('app');
+      const alert = document.getElementById('save-result-alert');
+      const chip = document.getElementById('save-result-status-chip');
+      const primary = document.getElementById('save-result-primary-action');
+
+      currentState = stateName in stateConfig ? stateName : 'default';
+      if (app) {
+        app.dataset.state = currentState;
+      }
+
+      alert?.classList.toggle('hidden', !config.alertVisible);
+      setText('save-result-alert-title', config.alertTitle);
+      setText('save-result-alert-copy', config.alertCopy);
+      setText('save-result-intro-copy', config.intro);
+      setText('save-result-state-label', currentState);
+      if (chip) {
+        chip.textContent = config.chip;
+        chip.className = config.chipClass;
+      }
+      if (primary) {
+        primary.disabled = config.primaryDisabled;
+      }
+
+      updatePrimaryLabel();
+      updateStateButtons(currentState);
+      console.info('[Style AI Prototype] save result state changed', { stateName: currentState });
+    }
+
+    function renderDemoData(data) {
+      const userName = data.currentUser?.displayName || fallbackData.currentUser.displayName;
+      const saveData = data.saveResult || fallbackData.saveResult;
+      const second = {
+        ...fallbackData.saveResult.secondResult,
+        ...(saveData.secondResult || {})
+      };
+      const first = {
+        ...fallbackData.saveResult.firstResultComparison,
+        ...(saveData.firstResultComparison || {})
+      };
+      const preview = document.getElementById('save-result-preview-image');
+
+      setText('save-result-user-line', `${userName}的第二次风格`);
+      setText('save-result-first-title', `第一次：${first.label}`);
+      setText('save-result-first-summary', first.summary);
+      setText('save-result-second-title', `第二次：${second.label}`);
+      setText('save-result-second-summary', second.usefulFor || second.summary);
+
+      if (preview && second.previewImageUrl) {
+        preview.src = second.previewImageUrl;
+        preview.alt = `${userName}第二次生成的${second.label}结果预览`;
+      }
+
+      activeSaveTarget = saveData.defaultSaveTarget || fallbackData.saveResult.defaultSaveTarget;
+      renderChoices();
+      setSaveTarget(activeSaveTarget, false);
+    }
+
+    async function loadSaveResultDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        const loaded = await response.json();
+        demoData = {
+          ...fallbackData,
+          ...loaded,
+          currentUser: {
+            ...fallbackData.currentUser,
+            ...(loaded.currentUser || {})
+          },
+          saveResult: {
+            ...fallbackData.saveResult,
+            ...(loaded.saveResult || {}),
+            secondResult: {
+              ...fallbackData.saveResult.secondResult,
+              ...(loaded.saveResult?.secondResult || {})
+            },
+            firstResultComparison: {
+              ...fallbackData.saveResult.firstResultComparison,
+              ...(loaded.saveResult?.firstResultComparison || {})
+            }
+          }
+        };
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback save result data', error);
+      }
+
+      renderDemoData(demoData);
+      console.info('[Style AI Prototype] save result demo data loaded', {
+        userName: demoData.currentUser?.displayName || fallbackData.currentUser.displayName
+      });
+    }
+
+    function initActions() {
+      document.getElementById('save-result-primary-action')?.addEventListener('click', () => {
+        if (currentState === 'saving') {
+          return;
+        }
+
+        if (currentState === 'saved') {
+          window.location.href = '02.3-save-profile-prompt.html';
+          return;
+        }
+
+        applySaveResultState('saving');
+        showSaveResultToast('正在保存到历史结果。');
+        window.clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(() => {
+          applySaveResultState('saved');
+          showSaveResultToast('已保存到历史结果。');
+        }, 650);
+      });
+
+      for (const button of document.querySelectorAll('.save-result-state-button')) {
+        button.addEventListener('click', () => {
+          window.clearTimeout(saveTimer);
+          applySaveResultState(button.dataset.saveState || 'default');
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadSaveResultDemoData();
+      initActions();
+      applySaveResultState('default');
+      console.info('[Style AI Prototype] 02.2 save result ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

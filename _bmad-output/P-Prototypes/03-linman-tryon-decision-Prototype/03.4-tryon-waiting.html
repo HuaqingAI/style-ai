@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03.4 生成等待 - Style AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              styleai: {
+                surface: '#111111',
+                mark: '#FAFAF7',
+                spark: '#7B52FA',
+                sparkLight: '#9D7AFF',
+                sparkCore: '#6D3DF7',
+                mint: '#9AE6C4',
+                amber: '#F2C86B',
+                rose: '#F2A7A0'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #111111;
+        letter-spacing: 0;
+      }
+
+      #app {
+        height: 100dvh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      button,
+      a {
+        font: inherit;
+        letter-spacing: 0;
+      }
+
+      .tap-highlight {
+        -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+      }
+
+      .progress-ring {
+        --progress: 10;
+        --status-color: #9D7AFF;
+        background: conic-gradient(var(--status-color) calc(var(--progress) * 1%), rgb(250 250 247 / 0.1) 0);
+      }
+
+      .progress-ring::before {
+        content: '';
+        position: absolute;
+        inset: 8px;
+        border-radius: 999px;
+        background: #171717;
+        box-shadow: inset 0 0 0 1px rgb(250 250 247 / 0.08);
+      }
+
+      .pulse-ring {
+        animation: pulse-ring 1.8s ease-out infinite;
+      }
+
+      @keyframes pulse-ring {
+        0% {
+          opacity: 0.82;
+          transform: scale(0.76);
+        }
+
+        100% {
+          opacity: 0;
+          transform: scale(1.18);
+        }
+      }
+
+      .reference-thumb {
+        background:
+          linear-gradient(90deg, transparent 0 18%, rgb(250 250 247 / 0.92) 18% 43%, transparent 43% 57%, rgb(250 250 247 / 0.92) 57% 82%, transparent 82%),
+          linear-gradient(180deg, #EDE2D0 0%, #BFAF9A 100%);
+      }
+
+      .profile-thumb {
+        background:
+          radial-gradient(circle at 38% 39%, rgb(250 250 247 / 0.72) 0 2px, transparent 3px),
+          radial-gradient(circle at 62% 39%, rgb(250 250 247 / 0.72) 0 2px, transparent 3px),
+          radial-gradient(ellipse at 50% 68%, rgb(250 250 247 / 0.28) 0 7px, transparent 8px),
+          linear-gradient(180deg, #D8C0AA 0%, #B89078 100%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+    <main
+      id="app"
+      data-page="03.4-tryon-waiting"
+      data-state="queued"
+      data-task-id="tryon-linman-cream-jacket-001"
+      class="mx-auto w-full max-w-[428px] bg-[#111111] px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))] font-sans"
+    >
+      <header
+        data-object-id="obj-waiting-header"
+        class="flex h-12 items-center justify-between gap-3"
+        aria-label="试穿生成等待页面顶部"
+      >
+        <a
+          href="03.3-tryon-setup.html"
+          aria-label="返回试穿设置"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-2xl leading-none text-[#FAFAF7] no-underline active:bg-white/10"
+        >
+          <span aria-hidden="true" class="-mt-0.5">‹</span>
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <img
+            src="../../E-Assets/brand-logo/style-ai-reversible-s-app-icon.svg"
+            alt=""
+            class="h-8 w-8 shrink-0 rounded-lg"
+            aria-hidden="true"
+          />
+          <div class="min-w-0 text-center">
+            <p class="truncate text-[15px] font-semibold leading-5 text-[#FAFAF7]">生成试穿预览</p>
+            <p class="truncate text-[11px] font-medium leading-4 text-white/45">03.4 等待结果</p>
+          </div>
+        </div>
+
+        <button
+          id="waiting-help-button"
+          type="button"
+          aria-label="查看等待说明"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-sm font-semibold text-white/68 active:bg-white/10"
+        >
+          ?
+        </button>
+      </header>
+
+      <section id="waiting-hero" data-object-id="obj-waiting-hero" class="pt-6">
+        <p class="text-[13px] font-semibold text-[#9D7AFF]">正在把参考图试到你身上</p>
+        <h1 class="mt-3 text-[29px] font-semibold leading-[1.14] text-[#FAFAF7]">
+          试穿预览生成中
+        </h1>
+        <p class="mt-3 text-[14px] leading-[23px] text-white/66">
+          页面会持续更新任务状态。成功准备好结果后才扣除额度，失败会说明处理方式。
+        </p>
+      </section>
+
+      <section
+        id="waiting-status"
+        data-object-id="obj-waiting-status"
+        class="pt-5"
+        aria-live="polite"
+        aria-label="生成状态"
+      >
+        <article class="overflow-hidden rounded-lg border border-white/10 bg-[linear-gradient(145deg,rgba(157,122,255,0.12),rgba(255,255,255,0.04)_46%,rgba(255,255,255,0.035))] p-4">
+          <div class="grid grid-cols-[96px_minmax(0,1fr)] items-center gap-4 min-[390px]:grid-cols-[108px_minmax(0,1fr)]">
+            <div
+              id="waiting-progress-ring"
+              class="progress-ring relative grid h-24 w-24 shrink-0 place-items-center rounded-full shadow-[inset_0_0_0_1px_rgba(250,250,247,0.1)] min-[390px]:h-[108px] min-[390px]:w-[108px]"
+              style="--progress: 10; --status-color: #9D7AFF;"
+            >
+              <span
+                id="waiting-progress-pulse"
+                class="pulse-ring absolute inset-[18px] rounded-full border border-[#9D7AFF]/35"
+                aria-hidden="true"
+              ></span>
+              <span
+                id="waiting-progress-text"
+                class="relative text-[18px] font-semibold leading-none text-[#FAFAF7]"
+              >
+                10%
+              </span>
+            </div>
+
+            <div class="min-w-0">
+              <span
+                id="waiting-state-chip"
+                class="inline-flex min-h-6 items-center rounded-full border border-[#9D7AFF]/28 bg-[#9D7AFF]/12 px-2.5 py-1 text-[11px] font-semibold leading-4 text-[#D8CEFF]"
+              >
+                排队中
+              </span>
+              <h2 id="waiting-status-title" class="mt-3 text-lg font-semibold leading-6 text-[#FAFAF7]">任务已经创建</h2>
+              <p id="waiting-status-copy" class="mt-2 text-[13px] leading-[21px] text-white/58">
+                正在等待处理，不需要重复提交。
+              </p>
+              <div class="mt-3 flex items-center justify-between gap-3 text-[11px] leading-4 text-white/42">
+                <span id="waiting-task-id" class="min-w-0 truncate">任务 tryon-linman-001</span>
+                <span id="waiting-estimate" class="shrink-0">约 50 秒</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 h-2 overflow-hidden rounded-full bg-white/8" aria-hidden="true">
+            <div id="waiting-progress-bar" class="h-full w-[10%] rounded-full bg-[#9D7AFF] transition-all duration-300"></div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="waiting-context-summary"
+        data-object-id="obj-waiting-context-summary"
+        class="pt-4"
+        aria-label="本次任务摘要"
+      >
+        <article class="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+          <div class="flex gap-3">
+            <div class="relative h-[78px] w-[68px] shrink-0 overflow-hidden rounded-lg border border-white/10 bg-[#211E1B]">
+              <div class="reference-thumb absolute left-1/2 top-[15%] h-[68%] w-[52%] -translate-x-1/2 rounded-t-[44%]"></div>
+              <span class="absolute bottom-2 left-2 rounded-full bg-black/42 px-2 py-0.5 text-[10px] font-semibold text-white/72">衣服</span>
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <p class="text-xs font-semibold text-white/46">本次试穿对象</p>
+                <span id="waiting-intent-chip" class="shrink-0 rounded-full bg-[#9D7AFF]/14 px-2.5 py-1 text-xs font-semibold text-[#D8CEFF]">衣服上身</span>
+              </div>
+              <h2 id="waiting-reference-title" class="mt-2 text-base font-semibold leading-6 text-[#FAFAF7]">奶油白短外套</h2>
+              <p id="waiting-reference-source" class="mt-1 text-xs leading-5 text-white/52">电商截图 · 常用本人形象</p>
+            </div>
+          </div>
+
+          <div class="mt-3 grid grid-cols-[46px_minmax(0,1fr)] gap-3 rounded-md border border-white/10 bg-black/18 px-3 py-3">
+            <div class="relative h-12 w-[38px] overflow-hidden rounded-md border border-white/10 bg-[#25211F]">
+              <div class="absolute left-1/2 top-[12%] h-[26px] w-[26px] -translate-x-1/2 rounded-full bg-[#2B211F]"></div>
+              <div class="profile-thumb absolute left-1/2 top-[18%] h-[22px] w-[19px] -translate-x-1/2 rounded-[48%_48%_44%_44%]"></div>
+              <div class="absolute bottom-[-10px] left-1/2 h-[28px] w-[36px] -translate-x-1/2 rounded-t-full bg-[#FAFAF7]/82"></div>
+            </div>
+            <p id="waiting-decision-question" class="self-center text-xs leading-5 text-white/62">
+              这件外套会不会显得肩宽，适不适合通勤约会两用？
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="waiting-credit-policy"
+        data-object-id="obj-waiting-credit-policy"
+        class="pt-4"
+        aria-label="额度处理说明"
+      >
+        <article id="credit-policy-card" class="flex gap-3 rounded-lg border border-[#9AE6C4]/20 bg-[#9AE6C4]/10 p-4">
+          <span
+            id="credit-policy-icon"
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#9AE6C4]/14 text-sm font-semibold text-[#C7F5DF]"
+          >
+            1
+          </span>
+          <div class="min-w-0">
+            <p id="credit-policy-title" class="text-sm font-semibold leading-5 text-[#C7F5DF]">成功后才扣除 1 个生成额度</p>
+            <p id="credit-policy-copy" class="mt-1 text-xs leading-5 text-[#C7F5DF]/75">
+              如果生成失败，本次不会消耗额度；结果准备好后会进入结果页。
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="waiting-processing-steps"
+        data-object-id="obj-waiting-processing-steps"
+        class="pt-4"
+        aria-label="处理步骤"
+      >
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+          <div class="flex items-end justify-between gap-3">
+            <div class="min-w-0">
+              <h2 class="text-[15px] font-semibold leading-5 text-[#FAFAF7]">现在在准备什么</h2>
+              <p class="mt-1 text-xs leading-5 text-white/46">把等待拆成可理解的处理步骤。</p>
+            </div>
+            <span id="waiting-step-count" class="shrink-0 text-xs font-semibold text-white/44">1/4</span>
+          </div>
+          <ol id="processing-step-list" class="mt-4 grid gap-2"></ol>
+        </article>
+      </section>
+
+      <section
+        id="waiting-recovery-actions"
+        data-object-id="obj-waiting-recovery-actions"
+        class="pt-4"
+        aria-label="恢复动作"
+      >
+        <div id="waiting-action-list" class="grid gap-2"></div>
+        <p id="waiting-action-note" class="mt-2 text-center text-[11px] leading-5 text-white/42">
+          任务会继续处理；请保持网络可用。
+        </p>
+      </section>
+
+      <section
+        id="waiting-state-controls"
+        data-object-id="obj-waiting-state-controls"
+        class="pt-5"
+        aria-label="原型状态控制"
+      >
+        <p class="mb-2 text-xs font-semibold text-white/44">原型状态</p>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="queued">排队</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="generating">生成中</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="finalizing">整理中</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="success">完成</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="timeout">超时</button>
+          <button type="button" class="state-control tap-highlight min-h-11 rounded-md border border-white/10 px-2 py-2 text-xs font-semibold text-white/62" data-state="failed">失败</button>
+        </div>
+      </section>
+
+      <div
+        id="waiting-toast"
+        class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-20 hidden w-[min(388px,calc(100vw-32px))] -translate-x-1/2 rounded-lg border border-white/10 bg-[#1C1C1C] px-4 py-3 text-[13px] leading-5 text-[#FAFAF7] shadow-[0_16px_60px_rgba(0,0,0,0.42)]"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </main>
+
+    <script>
+      const app = document.getElementById('app');
+      const taskId = 'tryon-linman-cream-jacket-001';
+      let currentState = 'queued';
+      let toastTimer = 0;
+
+      const processingSteps = [
+        {
+          id: 'read-reference',
+          title: '读取参考图',
+          copy: '确认外套轮廓、颜色和主体完整度。',
+          activeFrom: ['queued'],
+          doneFrom: ['generating', 'finalizing', 'success', 'timeout', 'failed']
+        },
+        {
+          id: 'match-profile',
+          title: '匹配本人形象',
+          copy: '把常用本人形象与本次参考对象对齐。',
+          activeFrom: ['generating'],
+          doneFrom: ['finalizing', 'success', 'timeout']
+        },
+        {
+          id: 'generate-preview',
+          title: '生成试穿预览',
+          copy: '先生成能判断购买决策的一版效果。',
+          activeFrom: ['generating', 'timeout'],
+          doneFrom: ['finalizing', 'success']
+        },
+        {
+          id: 'organize-judgment',
+          title: '整理判断提示',
+          copy: '补充推荐程度、谨慎点和下一步建议。',
+          activeFrom: ['finalizing'],
+          doneFrom: ['success']
+        }
+      ];
+
+      const stateConfig = {
+        queued: {
+          chip: '排队中',
+          title: '任务已经创建',
+          copy: '正在等待处理，不需要重复提交。这个阶段通常很短。',
+          progress: 10,
+          estimate: '约 50 秒',
+          color: '#9D7AFF',
+          tone: 'mint',
+          creditIcon: '1',
+          creditTitle: '成功后才扣除 1 个生成额度',
+          creditCopy: '如果生成失败，本次不会消耗额度；结果准备好后会进入结果页。',
+          actions: ['wait', 'setup'],
+          note: '任务会继续处理；请保持网络可用。'
+        },
+        generating: {
+          chip: '生成中',
+          title: '正在生成试穿预览',
+          copy: 'AI 正在把奶油白短外套试到你的常用本人形象上。',
+          progress: 48,
+          estimate: '约 30 秒',
+          color: '#9D7AFF',
+          tone: 'mint',
+          creditIcon: '1',
+          creditTitle: '现在仍未扣除额度',
+          creditCopy: '额度会在结果成功准备好后扣除；中途失败不会扣除。',
+          actions: ['wait'],
+          note: '继续等待即可，不需要重新点击生成。'
+        },
+        finalizing: {
+          chip: '整理中',
+          title: '预览快好了',
+          copy: '结果已经返回，正在整理适合/谨慎的判断提示。',
+          progress: 82,
+          estimate: '约 10 秒',
+          color: '#9AE6C4',
+          tone: 'mint',
+          creditIcon: '1',
+          creditTitle: '成功后扣除 1 个生成额度',
+          creditCopy: '即将进入结果页；如果最后一步失败，仍不会扣除。',
+          actions: ['wait'],
+          note: '正在收尾，请再等一下。'
+        },
+        success: {
+          chip: '已完成',
+          title: '结果已经准备好',
+          copy: '可以查看本人试穿效果、推荐程度和需要谨慎的地方。',
+          progress: 100,
+          estimate: '已完成',
+          color: '#9AE6C4',
+          tone: 'mint',
+          creditIcon: '✓',
+          creditTitle: '本次成功后扣除 1 个生成额度',
+          creditCopy: '结果会保留在历史里，方便稍后对比或收藏。',
+          actions: ['result', 'setup'],
+          note: '结果已准备好，可以进入 03.5 查看试穿效果、推荐理由和谨慎点。'
+        },
+        timeout: {
+          chip: '等待较久',
+          title: '任务还在处理',
+          copy: '这次等待超过预期，但不代表已经失败。你可以继续等，或稍后回来查看。',
+          progress: 68,
+          estimate: '稍后查看',
+          color: '#F2C86B',
+          tone: 'amber',
+          creditIcon: '!',
+          creditTitle: '暂时还没有扣除额度',
+          creditCopy: '只有结果成功准备好才会扣除。等待较久不会额外消耗额度。',
+          actions: ['wait', 'setup'],
+          note: '如果网络不稳定，可以先返回设置页，稍后从历史入口继续。'
+        },
+        failed: {
+          chip: '生成失败',
+          title: '这次没有生成成功',
+          copy: '可能是图片条件或服务临时问题。可以保留当前设置直接重试。',
+          progress: 0,
+          estimate: '未完成',
+          color: '#F2A7A0',
+          tone: 'rose',
+          creditIcon: '!',
+          creditTitle: '失败未消耗生成额度',
+          creditCopy: '本次没有扣除额度。重试前可以保留参考图和本人形象。',
+          actions: ['retry', 'setup'],
+          note: '建议先重试一次；如果仍失败，再更换参考图或本人照片。'
+        }
+      };
+
+      const actionConfig = {
+        wait: {
+          label: '继续等待',
+          type: 'button',
+          style: 'primary',
+          action: () => {
+            const nextState = currentState === 'queued' ? 'generating' : currentState === 'generating' ? 'finalizing' : 'generating';
+            setWaitingState(nextState);
+          }
+        },
+        result: {
+          label: '查看生成结果',
+          type: 'link',
+          style: 'primary',
+          href: '03.5-tryon-result.html'
+        },
+        retry: {
+          label: '重试生成',
+          type: 'button',
+          style: 'primary',
+          action: () => setWaitingState('queued')
+        },
+        setup: {
+          label: '返回设置',
+          type: 'link',
+          style: 'secondary',
+          href: '03.3-tryon-setup.html'
+        }
+      };
+
+      function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+        }
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById('waiting-toast');
+        if (!toast) {
+          return;
+        }
+
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.remove('hidden');
+        toastTimer = window.setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2600);
+      }
+
+      function getStepStatus(step, state) {
+        if (state === 'failed') {
+          if (step.id === 'read-reference') {
+            return 'done';
+          }
+          if (step.id === 'match-profile' || step.id === 'generate-preview') {
+            return 'blocked';
+          }
+          return 'waiting';
+        }
+
+        if (step.doneFrom.includes(state)) {
+          return 'done';
+        }
+
+        if (step.activeFrom.includes(state)) {
+          return 'active';
+        }
+
+        return 'waiting';
+      }
+
+      function renderProcessingSteps(state) {
+        const list = document.getElementById('processing-step-list');
+        const statusLabels = {
+          done: '已完成',
+          active: '处理中',
+          waiting: '等待',
+          blocked: '未完成'
+        };
+        const iconLabels = {
+          done: '✓',
+          active: '…',
+          waiting: '·',
+          blocked: '!'
+        };
+
+        let completedCount = 0;
+
+        list.innerHTML = processingSteps.map((step) => {
+          const status = getStepStatus(step, state);
+          if (status === 'done') {
+            completedCount += 1;
+          }
+
+          const toneClass = {
+            done: 'border-[#9AE6C4]/26 bg-[#9AE6C4]/10 text-[#C7F5DF]',
+            active: 'border-[#9D7AFF]/32 bg-[#9D7AFF]/12 text-[#D8CEFF]',
+            waiting: 'border-white/10 bg-black/16 text-white/46',
+            blocked: 'border-[#F2A7A0]/28 bg-[#F2A7A0]/10 text-[#F6C4BF]'
+          }[status];
+
+          return `
+            <li class="grid min-h-[58px] grid-cols-[30px_minmax(0,1fr)_auto] items-start gap-3 rounded-lg border border-white/10 bg-black/16 p-3 max-[380px]:grid-cols-[30px_minmax(0,1fr)]">
+              <span class="flex h-[30px] w-[30px] items-center justify-center rounded-lg border text-sm font-semibold ${toneClass}" aria-hidden="true">${iconLabels[status]}</span>
+              <span class="min-w-0">
+                <span class="block text-[13px] font-semibold leading-5 text-[#FAFAF7]">${step.title}</span>
+                <span class="mt-0.5 block text-[11px] leading-[17px] text-white/45">${step.copy}</span>
+              </span>
+              <span class="rounded-full px-2.5 py-1 text-[10px] font-semibold leading-4 max-[380px]:col-start-2 ${toneClass}">${statusLabels[status]}</span>
+            </li>
+          `;
+        }).join('');
+
+        const displayCount = state === 'success' ? 4 : completedCount + (['queued', 'generating', 'finalizing', 'timeout'].includes(state) ? 1 : 0);
+        setText('waiting-step-count', `${Math.min(displayCount, 4)}/4`);
+      }
+
+      function buttonClass(style) {
+        const base = 'tap-highlight flex min-h-12 w-full items-center justify-center rounded-lg px-4 text-sm font-semibold no-underline active:scale-[0.995]';
+        if (style === 'primary') {
+          return `${base} bg-[#FAFAF7] text-[#111111] active:bg-white/82`;
+        }
+        return `${base} border border-white/10 bg-white/[0.04] text-white/68 active:bg-white/10`;
+      }
+
+      function renderActions(actionIds) {
+        const list = document.getElementById('waiting-action-list');
+        list.innerHTML = '';
+
+        actionIds.forEach((actionId) => {
+          const config = actionConfig[actionId];
+          if (!config) {
+            return;
+          }
+
+          const element = config.type === 'link' ? document.createElement('a') : document.createElement('button');
+          element.className = buttonClass(config.style);
+          element.textContent = config.label;
+
+          if (config.type === 'link') {
+            element.href = config.href;
+          } else {
+            element.type = 'button';
+          }
+
+          if (typeof config.action === 'function') {
+            element.addEventListener('click', (event) => {
+              console.info('[Style AI Prototype] waiting action', { actionId, state: currentState });
+              config.action(event);
+            });
+          }
+
+          list.appendChild(element);
+        });
+      }
+
+      function setCreditTone(tone) {
+        const card = document.getElementById('credit-policy-card');
+        const icon = document.getElementById('credit-policy-icon');
+        const title = document.getElementById('credit-policy-title');
+        const copy = document.getElementById('credit-policy-copy');
+
+        const tones = {
+          mint: {
+            card: 'flex gap-3 rounded-lg border border-[#9AE6C4]/20 bg-[#9AE6C4]/10 p-4',
+            icon: 'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#9AE6C4]/14 text-sm font-semibold text-[#C7F5DF]',
+            title: 'text-sm font-semibold leading-5 text-[#C7F5DF]',
+            copy: 'mt-1 text-xs leading-5 text-[#C7F5DF]/75'
+          },
+          amber: {
+            card: 'flex gap-3 rounded-lg border border-[#F2C86B]/22 bg-[#F2C86B]/10 p-4',
+            icon: 'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F2C86B]/14 text-sm font-semibold text-[#F8DF9A]',
+            title: 'text-sm font-semibold leading-5 text-[#F8DF9A]',
+            copy: 'mt-1 text-xs leading-5 text-[#F8DF9A]/75'
+          },
+          rose: {
+            card: 'flex gap-3 rounded-lg border border-[#F2A7A0]/22 bg-[#F2A7A0]/10 p-4',
+            icon: 'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F2A7A0]/14 text-sm font-semibold text-[#F6C4BF]',
+            title: 'text-sm font-semibold leading-5 text-[#F6C4BF]',
+            copy: 'mt-1 text-xs leading-5 text-[#F6C4BF]/75'
+          }
+        };
+
+        const selected = tones[tone] || tones.mint;
+        card.className = selected.card;
+        icon.className = selected.icon;
+        title.className = selected.title;
+        copy.className = selected.copy;
+      }
+
+      function setWaitingState(state) {
+        const normalized = Object.prototype.hasOwnProperty.call(stateConfig, state) ? state : 'queued';
+        const config = stateConfig[normalized];
+        const ring = document.getElementById('waiting-progress-ring');
+        const pulse = document.getElementById('waiting-progress-pulse');
+        const bar = document.getElementById('waiting-progress-bar');
+
+        currentState = normalized;
+        app.dataset.state = normalized;
+        app.dataset.taskId = taskId;
+
+        ring.style.setProperty('--progress', String(config.progress));
+        ring.style.setProperty('--status-color', config.color);
+        pulse.classList.toggle('hidden', ['success', 'timeout', 'failed'].includes(normalized));
+        bar.style.width = `${config.progress}%`;
+        bar.style.backgroundColor = config.color;
+
+        setText('waiting-progress-text', `${config.progress}%`);
+        setText('waiting-state-chip', config.chip);
+        setText('waiting-status-title', config.title);
+        setText('waiting-status-copy', config.copy);
+        setText('waiting-task-id', `任务 ${taskId}`);
+        setText('waiting-estimate', config.estimate);
+        setText('credit-policy-icon', config.creditIcon);
+        setText('credit-policy-title', config.creditTitle);
+        setText('credit-policy-copy', config.creditCopy);
+        setText('waiting-action-note', config.note);
+
+        setCreditTone(config.tone);
+        renderProcessingSteps(normalized);
+        renderActions(config.actions);
+
+        document.querySelectorAll('.state-control').forEach((button) => {
+          const active = button.dataset.state === normalized;
+          button.classList.toggle('border-[#9D7AFF]/50', active);
+          button.classList.toggle('bg-[#9D7AFF]/12', active);
+          button.classList.toggle('text-[#D8CEFF]', active);
+        });
+
+        console.info('[Style AI Prototype] 03.4 waiting state changed', {
+          state: normalized,
+          progress: config.progress,
+          taskId
+        });
+      }
+
+      document.querySelectorAll('.state-control').forEach((button) => {
+        button.addEventListener('click', () => setWaitingState(button.dataset.state));
+      });
+
+      document.getElementById('waiting-help-button').addEventListener('click', () => {
+        showToast('生成成功后才扣 1 个额度；失败不会扣除。等待较久时可以继续等或返回设置。');
+      });
+
+      window.__STYLE_AI_PROTOTYPE__ = {
+        scenario: '03-linman-tryon-decision',
+        page: '03.4-tryon-waiting',
+        states: ['queued', 'generating', 'finalizing', 'success', 'timeout', 'failed'],
+        setWaitingState
+      };
+
+      setWaitingState('queued');
+    </script>
+  </body>
+</html>

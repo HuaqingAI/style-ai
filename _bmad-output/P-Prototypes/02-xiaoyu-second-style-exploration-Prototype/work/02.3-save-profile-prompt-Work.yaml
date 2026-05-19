@@ -1,0 +1,164 @@
+metadata:
+  project: style-ai
+  scenario: 02-xiaoyu-second-style-exploration
+  logical_view: Save Profile Prompt View
+  page_number: "02.3"
+  page_name: save-profile-prompt
+  prototype_file: 02.3-save-profile-prompt.html
+  source_spec: _bmad-output/C-UX-Scenarios/02-xiaoyu-second-style-exploration/02.3-save-profile-prompt/02.3-save-profile-prompt.md
+  prototype_folder: _bmad-output/P-Prototypes/02-xiaoyu-second-style-exploration-Prototype
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  completed: 2026-05-18
+  spec_status: prototype-draft
+
+requirements:
+  purpose: 小雨保存历史结果后，可选保存常用形象，并理解这不是强迫建档。
+  entry_context: 她已经在 02.2 保存了一个有参考价值的历史结果。
+  exit_action: 选择保存常用形象或暂不保存后结束场景。
+  on_page_interactions:
+    - 查看刚刚保存到历史的结果摘要。
+    - 理解历史结果与常用形象的区别。
+    - 保存常用形象，暂不保存，或保存失败后重试。
+  user_concerns:
+    - 不想被默认长期保存个人形象。
+    - 需要知道不保存也可以继续使用。
+    - 需要知道常用形象之后可以更换。
+
+object_registry:
+  - id: save-profile-header
+    type: Mobile header
+    purpose: 标识常用形象提示步骤，并提供返回 02.2 的路径。
+    required: true
+  - id: save-profile-hero
+    type: Page prompt
+    purpose: 询问是否保存当前形象为常用形象。
+    required: true
+  - id: save-profile-context
+    type: Saved result context
+    purpose: 说明历史结果已保存，本页是额外选择。
+    required: true
+  - id: save-profile-benefits
+    type: Benefit list
+    purpose: 展示保存常用形象的实际收益。
+    required: true
+  - id: save-profile-boundary-note
+    type: Privacy boundary note
+    purpose: 区分历史结果、常用形象和跳过选择。
+    required: true
+  - id: save-profile-primary-action
+    type: Primary button
+    purpose: 保存当前形象为常用形象。
+    required: true
+  - id: save-profile-skip-action
+    type: Secondary button
+    purpose: 暂不保存并结束场景。
+    required: true
+  - id: save-profile-state-feedback
+    type: Status feedback
+    purpose: 展示保存成功、跳过或保存失败反馈。
+    required: true
+  - id: save-profile-state-controls
+    type: Prototype controls
+    purpose: 切换 default、saving-profile、profile-saved、skipped、save-error 状态。
+    required: true
+
+states:
+  - name: Default
+    data_state: default
+    requirements:
+      - 展示可选保存常用形象提示、收益说明、边界说明和两个动作。
+      - 主行动和跳过动作都可用。
+  - name: Saving profile
+    data_state: saving-profile
+    requirements:
+      - 主按钮显示保存中并禁用重复点击。
+      - 暂不保存动作暂时禁用。
+  - name: Profile saved
+    data_state: profile-saved
+    requirements:
+      - 显示已保存为常用形象的成功反馈。
+      - 主按钮变为返回首页。
+  - name: Skipped
+    data_state: skipped
+    requirements:
+      - 显示本次未保存常用形象的反馈。
+      - 明确历史结果仍保留。
+  - name: Save error
+    data_state: save-error
+    requirements:
+      - 显示可恢复错误提示。
+      - 用户可以重试保存或改为暂不保存。
+
+sections:
+  - number: 1
+    name: Full Page Save Profile Prompt
+    status: complete
+    estimate_minutes: 105
+    completed: 2026-05-18
+    actual_minutes: 105
+    object_ids:
+      - save-profile-header
+      - save-profile-hero
+      - save-profile-context
+      - save-profile-benefits
+      - save-profile-boundary-note
+      - save-profile-primary-action
+      - save-profile-skip-action
+      - save-profile-state-feedback
+      - save-profile-state-controls
+    scope:
+      - 建立移动端页面壳、顶部导航和品牌标识。
+      - 展示刚保存到历史的结果上下文。
+      - 解释保存常用形象的收益和隐私边界。
+      - 实现保存与暂不保存两条结束路径。
+      - 实现 default、saving-profile、profile-saved、skipped、save-error 本地状态控制。
+    acceptance:
+      - 必需 Object ID 全部存在。
+      - 默认状态显示保存和暂不保存两个动作。
+      - 保存动作进入 saving-profile 后转为 profile-saved。
+      - 跳过动作进入 skipped 状态。
+      - save-error 状态显示错误说明且两个动作仍可恢复。
+      - 成功或跳过后主行动可返回首页。
+      - 页面在 375px、393px、428px 宽度无横向滚动。
+    story_file: stories/02.3.1-save-profile-prompt-full-page.md
+
+verification_results:
+  verified_url: http://127.0.0.1:17867/02-xiaoyu-second-style-exploration-Prototype/02.3-save-profile-prompt.html
+  verified_date: 2026-05-18
+  method: Browser automation against local prototype server
+  screenshot: _bmad-output/P-Prototypes/02-xiaoyu-second-style-exploration-Prototype/02.3-save-profile-prompt-393.png
+  notes:
+    - In-app Browser screenshot capture timed out, so the screenshot was generated separately with local headless Chrome.
+    - Follow-up layout fix made primary sections `shrink-0` and added a CSS aspect-ratio/min-height fallback for the result preview so the flex scroll container does not compress visual content.
+  passed:
+    - Required object IDs exist.
+    - default, saving-profile, profile-saved, skipped, and save-error states are switchable.
+    - saving-profile disables both save and skip actions.
+    - profile-saved sets profileSaved=true and changes the primary action to return home.
+    - skipped keeps profileSaved=false and changes the primary action to return home.
+    - save-error shows visible recovery feedback while keeping save and skip available.
+    - Primary save action transitions from default to profile-saved after the saving state.
+    - Skip action transitions from default to skipped.
+    - 02.2 saved-state primary action routes to 02.3-save-profile-prompt.html.
+    - 375px, 393px, and 428px widths have no horizontal overflow.
+    - 375px, 393px, and 428px widths keep the saved-result context preview visible with stable height.
+    - Text inside visible labels, cards, and buttons has no measured overflow at 375px, 393px, or 428px.
+    - Console has no relevant errors.
+
+next_step:
+  workflow_step: Sue review of prototype draft, then scenario 02 acceptance testing

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.5 Generation Setup - Style AI</title>
+  <link rel="icon" href="assets/style-ai-reversible-s-symbol.svg" type="image/svg+xml">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--style-ai-black);
+      letter-spacing: 0;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .tap-highlight {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .photo-preview-frame {
+      background:
+        radial-gradient(circle at 64% 26%, rgb(157 122 255 / 0.22), transparent 31%),
+        linear-gradient(145deg, #2A2A28 0%, #181818 48%, #111111 100%);
+    }
+
+    .photo-face-shape {
+      background:
+        radial-gradient(circle at 38% 40%, rgb(250 250 247 / 0.72) 0 2px, transparent 3px),
+        radial-gradient(circle at 62% 40%, rgb(250 250 247 / 0.72) 0 2px, transparent 3px),
+        radial-gradient(ellipse at 50% 74%, rgb(250 250 247 / 0.34) 0 7px, transparent 8px),
+        linear-gradient(180deg, #D9C8B5 0%, #C6AA93 100%);
+      box-shadow: inset 0 -14px 28px rgb(17 17 17 / 0.16);
+    }
+
+    .selected-ring {
+      box-shadow: 0 0 0 1px rgb(157 122 255 / 0.58), 0 12px 34px rgb(0 0 0 / 0.20);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+  <main
+    id="app"
+    class="mx-auto flex min-h-[100svh] w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="01.5-generation-setup"
+    data-state="default"
+    data-selected-style="ai_recommend"
+  >
+    <header class="shrink-0" aria-label="生成设置页面顶部栏">
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="01.4-photo-quality-check.html"
+          class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回照片预检"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img
+              src="assets/style-ai-reversible-s-symbol.svg"
+              alt=""
+              class="h-full w-full"
+              aria-hidden="true"
+            >
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">生成设置</p>
+            <p id="generation-setup-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的首次预览</p>
+          </div>
+        </div>
+
+        <button
+          id="generation-setup-credit-help"
+          type="button"
+          class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-xs font-semibold text-white/70"
+          aria-label="查看额度说明"
+        >
+          额
+        </button>
+      </div>
+    </header>
+
+    <section class="mt-5" aria-label="生成设置说明">
+      <p class="text-xs font-medium text-[#C9BAFF]">首次真实预览</p>
+      <h1 class="mt-2 text-[26px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        先选一个方向，让 AI 生成你的首次预览。
+      </h1>
+      <p id="generation-setup-style-summary" class="mt-3 text-sm leading-6 text-white/58">
+        默认先由 AI 推荐一个稳妥主流方向，你也可以自己换成更明确的风格。
+      </p>
+    </section>
+
+    <section
+      id="generation-setup-context"
+      data-object-id="generation-setup-context"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.045] p-4"
+      aria-label="当前照片与生成说明"
+    >
+      <div class="flex gap-3">
+        <div class="photo-preview-frame relative h-[92px] w-[78px] shrink-0 overflow-hidden rounded-lg border border-white/10">
+          <div class="absolute left-1/2 top-[12%] h-[44%] w-[48%] -translate-x-1/2 rounded-full bg-[#2B211F]"></div>
+          <div class="photo-face-shape absolute left-1/2 top-[20%] h-[36%] w-[38%] -translate-x-1/2 rounded-[48%_48%_44%_44%]"></div>
+          <div class="absolute bottom-[-17%] left-1/2 h-[54%] w-[72%] -translate-x-1/2 rounded-t-full bg-[#FAFAF7]/86"></div>
+          <span class="absolute bottom-2 left-2 rounded-md bg-black/[0.44] px-2 py-0.5 text-[10px] font-medium text-white/82">当前照片</span>
+        </div>
+
+        <div class="min-w-0 flex-1">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">照片已准备好</p>
+              <p class="mt-1 text-xs leading-5 text-white/56">
+                这次先看一个主流方向，生成后可以继续换风格。
+              </p>
+            </div>
+            <span id="generation-setup-photo-chip" class="shrink-0 rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">可生成</span>
+          </div>
+
+          <div class="mt-3 flex gap-2">
+            <a
+              href="01.4-photo-quality-check.html"
+              class="tap-highlight flex min-h-[34px] items-center justify-center rounded-lg border border-white/10 px-3 text-xs font-medium text-white/62 no-underline"
+            >
+              查看预检
+            </a>
+            <a
+              href="01.3-photo-upload.html"
+              class="tap-highlight flex min-h-[34px] items-center justify-center rounded-lg border border-white/10 px-3 text-xs font-medium text-[#D8CEFF] no-underline"
+            >
+              换一张照片
+            </a>
+            <button
+              id="generation-setup-context-note"
+              type="button"
+              class="tap-highlight min-h-[34px] rounded-lg border border-white/10 px-3 text-xs font-medium text-white/62"
+            >
+              本次会话使用
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="generation-setup-style-selector"
+      data-object-id="generation-setup-style-selector"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="选择风格方向"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-base font-semibold leading-tight text-[#FAFAF7]">选择一个风格方向</p>
+          <p class="mt-2 text-sm leading-5 text-white/56">
+            先做一个能判断的方向，不需要自己写复杂提示词。
+          </p>
+        </div>
+        <span id="generation-setup-selected-chip" class="shrink-0 rounded-lg bg-[#9D7AFF]/14 px-2.5 py-1 text-xs font-medium text-[#D8CEFF]">
+          AI 推荐
+        </span>
+      </div>
+
+      <div id="generation-setup-style-list" class="mt-4 grid gap-2"></div>
+    </section>
+
+    <section
+      id="generation-setup-preference-note"
+      data-object-id="generation-setup-preference-note"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-4"
+      aria-label="可选偏好备注"
+    >
+      <label for="generation-setup-note-input" class="text-sm font-medium leading-5 text-[#FAFAF7]">
+        可选：补充一句不想尝试的点
+      </label>
+      <textarea
+        id="generation-setup-note-input"
+        rows="2"
+        maxlength="80"
+        class="mt-3 min-h-[72px] w-full resize-none rounded-lg border border-white/10 bg-black/20 px-3 py-3 text-sm leading-5 text-[#FAFAF7] outline-none placeholder:text-white/32 focus:border-[#9D7AFF]/58"
+        placeholder="例如：不要太夸张，先偏日常一点"
+      ></textarea>
+      <div class="mt-2 flex items-center justify-between gap-3 text-[11px] leading-5 text-white/42">
+        <span>不填也可以，AI 会按稳妥方向处理。</span>
+        <span id="generation-setup-note-count">0/80</span>
+      </div>
+    </section>
+
+    <section
+      id="generation-setup-credit-summary"
+      data-object-id="generation-setup-credit-summary"
+      class="mt-4 rounded-lg border border-[#9AE6C4]/22 bg-[#9AE6C4]/10 p-4"
+      aria-label="额度消耗说明"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p id="generation-setup-credit-title" class="text-sm font-semibold leading-5 text-[#C7F5DF]">本次预计消耗 1 次生成额度</p>
+          <p id="generation-setup-credit-copy" class="mt-1.5 text-xs leading-5 text-[#C7F5DF]/70">
+            生成失败不会扣除。成功后会进入历史，是否保存为常用形象稍后再决定。
+          </p>
+        </div>
+        <span id="generation-setup-credit-count" class="shrink-0 rounded-lg bg-black/18 px-2.5 py-1 text-xs font-medium text-[#C7F5DF]">剩余 1 次</span>
+      </div>
+
+      <button
+        id="generation-setup-credit-action"
+        type="button"
+        class="tap-highlight mt-3 hidden min-h-[36px] w-full rounded-lg border border-[#F2C86B]/24 bg-[#F2C86B]/10 px-3 text-xs font-medium text-[#F8DF9A]"
+      >
+        查看额度获取方式
+      </button>
+    </section>
+
+    <section
+      id="generation-setup-error-message"
+      class="mt-4 hidden rounded-lg border border-[#F2A7A0]/26 bg-[#F2A7A0]/10 p-4"
+      role="alert"
+      aria-live="polite"
+    >
+      <p class="text-sm font-semibold leading-5 text-[#F6C4BF]">这次任务还没有创建成功</p>
+      <p class="mt-1.5 text-xs leading-5 text-[#F6C4BF]/72">
+        不会扣除生成额度。可以直接重试，或返回换一张照片。
+      </p>
+    </section>
+
+    <div class="mt-5 flex flex-col gap-2">
+      <button
+        id="generation-setup-start-action"
+        data-object-id="generation-setup-start-action"
+        type="button"
+        data-next-href="01.6-generation-waiting.html"
+        class="tap-highlight flex min-h-[50px] w-full items-center justify-center rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] active:scale-[0.995]"
+      >
+        开始生成我的预览
+      </button>
+
+      <a
+        id="generation-setup-retake-link"
+        href="01.3-photo-upload.html"
+        class="tap-highlight flex min-h-[44px] w-full items-center justify-center rounded-lg border border-white/10 px-4 py-3 text-sm font-medium text-white/62 no-underline"
+      >
+        返回重新选择照片
+      </a>
+    </div>
+
+    <section
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-3"
+      aria-label="原型状态切换"
+    >
+      <div class="grid grid-cols-4 gap-1">
+        <button type="button" class="generation-state-button min-h-[34px] rounded-md bg-white/10 px-2 text-[11px] text-white" data-generation-state="default">默认</button>
+        <button type="button" class="generation-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-generation-state="no-credit">无额度</button>
+        <button type="button" class="generation-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-generation-state="submitting">提交中</button>
+        <button type="button" class="generation-state-button min-h-[34px] rounded-md px-2 text-[11px] text-white/58" data-generation-state="submit-error">失败</button>
+      </div>
+    </section>
+
+    <div
+      id="generation-setup-toast"
+      class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-20 hidden w-[min(388px,calc(100vw-32px))] -translate-x-1/2 rounded-lg border border-white/10 bg-[#1C1C1C] px-4 py-3 text-sm leading-5 text-[#FAFAF7] shadow-[0_16px_60px_rgba(0,0,0,0.42)]"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.5-generation-setup',
+      section: 'full-page',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      quota: {
+        personalImageGenerationsTotal: 1,
+        personalImageGenerationsUsed: 0
+      },
+      generation: {
+        id: 'demo-generation-001',
+        selectedStyleDirection: ''
+      }
+    };
+
+    const styleDirections = [
+      {
+        id: 'ai_recommend',
+        label: '先由 AI 推荐',
+        shortLabel: 'AI 推荐',
+        tone: 'bg-[#9D7AFF]/14 border-[#9D7AFF]/34 text-[#D8CEFF]',
+        selectedClass: 'border-[#9D7AFF]/70 bg-[#9D7AFF]/18 selected-ring',
+        copy: '根据照片先给一个稳妥首选方向。',
+        summary: '默认先由 AI 推荐一个稳妥主流方向，你也可以自己换成更明确的风格。'
+      },
+      {
+        id: 'natural_commute',
+        label: '自然通勤',
+        shortLabel: '通勤',
+        tone: 'bg-[#9AE6C4]/12 border-[#9AE6C4]/24 text-[#C7F5DF]',
+        selectedClass: 'border-[#9AE6C4]/58 bg-[#9AE6C4]/14 selected-ring',
+        copy: '干净、日常，适合上班上学也能用。',
+        summary: '自然通勤会优先保持真实感和日常可用度。'
+      },
+      {
+        id: 'soft_fresh',
+        label: '温柔清爽',
+        shortLabel: '清爽',
+        tone: 'bg-white/[0.06] border-white/12 text-white/72',
+        selectedClass: 'border-white/34 bg-white/[0.08] selected-ring',
+        copy: '更轻、更柔和，减少攻击感和厚重感。',
+        summary: '温柔清爽会让整体更轻，适合先看亲和方向。'
+      },
+      {
+        id: 'polished_mature',
+        label: '利落轻熟',
+        shortLabel: '轻熟',
+        tone: 'bg-[#F2C86B]/10 border-[#F2C86B]/22 text-[#F8DF9A]',
+        selectedClass: 'border-[#F2C86B]/48 bg-[#F2C86B]/14 selected-ring',
+        copy: '更有精神，偏成熟但不做过头。',
+        summary: '利落轻熟会强调精神感和轮廓干净度。'
+      },
+      {
+        id: 'sweet_cool',
+        label: '甜酷尝试',
+        shortLabel: '甜酷',
+        tone: 'bg-[#F2A7A0]/10 border-[#F2A7A0]/22 text-[#F6C4BF]',
+        selectedClass: 'border-[#F2A7A0]/48 bg-[#F2A7A0]/14 selected-ring',
+        copy: '比日常更有变化，但仍保持可判断。',
+        summary: '甜酷尝试会稍微放大变化感，用来测试新方向是否适合。'
+      }
+    ];
+
+    const stateConfig = {
+      default: {
+        availableOverride: null,
+        startText: '开始生成我的预览',
+        startEnabled: true,
+        errorVisible: false,
+        creditTone: 'mint',
+        creditTitle: '本次预计消耗 1 次生成额度',
+        creditCopy: '生成失败不会扣除。成功后会进入历史，是否保存为常用形象稍后再决定。',
+        creditActionVisible: false
+      },
+      'no-credit': {
+        availableOverride: 0,
+        startText: '额度不足，暂不能生成',
+        startEnabled: false,
+        errorVisible: false,
+        creditTone: 'amber',
+        creditTitle: '当前没有可用生成额度',
+        creditCopy: '本次不会创建生成任务。可以先查看额度获取方式，或返回照片页面。',
+        creditActionVisible: true
+      },
+      submitting: {
+        availableOverride: null,
+        startText: '正在创建生成任务...',
+        startEnabled: false,
+        errorVisible: false,
+        creditTone: 'mint',
+        creditTitle: '正在准备本次生成',
+        creditCopy: '提交中不会重复扣除。任务创建成功后进入等待页。',
+        creditActionVisible: false
+      },
+      'submit-error': {
+        availableOverride: null,
+        startText: '重试开始生成',
+        startEnabled: true,
+        errorVisible: true,
+        creditTone: 'rose',
+        creditTitle: '任务创建失败，未扣除额度',
+        creditCopy: '可以直接重试。失败不会消耗本次生成额度。',
+        creditActionVisible: false
+      }
+    };
+
+    let demoData = fallbackData;
+    let selectedStyleId = 'ai_recommend';
+    let currentState = 'default';
+    let toastTimer = 0;
+
+    function availablePersonalGenerations(data = demoData) {
+      const total = Number(data.quota && data.quota.personalImageGenerationsTotal) || 0;
+      const used = Number(data.quota && data.quota.personalImageGenerationsUsed) || 0;
+      return Math.max(total - used, 0);
+    }
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showGenerationSetupToast(message) {
+      const toast = document.getElementById('generation-setup-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2400);
+    }
+
+    function getSelectedStyle() {
+      return styleDirections.find((style) => style.id === selectedStyleId) || styleDirections[0];
+    }
+
+    function renderStyleOptions() {
+      const list = document.getElementById('generation-setup-style-list');
+      if (!list) {
+        return;
+      }
+
+      list.innerHTML = styleDirections.map((style) => {
+        const selected = style.id === selectedStyleId;
+        const objectAttrs = style.id === 'ai_recommend'
+          ? 'id="generation-setup-style-ai-recommend" data-object-id="generation-setup-style-ai-recommend"'
+          : `id="generation-setup-style-${style.id}"`;
+        const classes = selected
+          ? `${style.selectedClass} text-[#FAFAF7]`
+          : 'border-white/10 bg-black/18 text-[#FAFAF7]';
+
+        return `
+          <button
+            ${objectAttrs}
+            type="button"
+            class="generation-style-option tap-highlight min-h-[68px] w-full rounded-lg border ${classes} px-3 py-3 text-left active:scale-[0.995]"
+            data-style-id="${style.id}"
+            aria-pressed="${selected ? 'true' : 'false'}"
+          >
+            <span class="flex items-start justify-between gap-3">
+              <span class="min-w-0">
+                <span class="block text-sm font-semibold leading-5">${style.label}</span>
+                <span class="mt-1 block text-xs leading-5 text-white/54">${style.copy}</span>
+              </span>
+              <span class="shrink-0 rounded-lg border ${style.tone} px-2.5 py-1 text-[11px] font-medium">${style.shortLabel}</span>
+            </span>
+          </button>
+        `;
+      }).join('');
+
+      for (const button of document.querySelectorAll('.generation-style-option')) {
+        button.addEventListener('click', () => {
+          selectStyleDirection(button.dataset.styleId || 'ai_recommend');
+        });
+      }
+    }
+
+    function selectStyleDirection(styleId) {
+      if (currentState === 'submitting') {
+        showGenerationSetupToast('任务创建中，稍等一下。');
+        return;
+      }
+
+      selectedStyleId = styleDirections.some((style) => style.id === styleId) ? styleId : 'ai_recommend';
+      const selectedStyle = getSelectedStyle();
+      const app = document.getElementById('app');
+
+      if (app) {
+        app.dataset.selectedStyle = selectedStyleId;
+      }
+
+      setText('generation-setup-selected-chip', selectedStyle.shortLabel);
+      setText('generation-setup-style-summary', selectedStyle.summary);
+      renderStyleOptions();
+      console.info('[Style AI Prototype] generation style selected', { selectedStyleId });
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.generation-state-button')) {
+        const active = button.dataset.generationState === stateName;
+        button.classList.toggle('bg-white/10', active);
+        button.classList.toggle('text-white', active);
+        button.classList.toggle('text-white/58', !active);
+      }
+    }
+
+    function applyCreditTone(tone) {
+      const panel = document.getElementById('generation-setup-credit-summary');
+      if (!panel) {
+        return;
+      }
+
+      panel.className = 'mt-4 rounded-lg p-4';
+
+      if (tone === 'amber') {
+        panel.classList.add('border', 'border-[#F2C86B]/24', 'bg-[#F2C86B]/10');
+        return;
+      }
+
+      if (tone === 'rose') {
+        panel.classList.add('border', 'border-[#F2A7A0]/26', 'bg-[#F2A7A0]/10');
+        return;
+      }
+
+      panel.classList.add('border', 'border-[#9AE6C4]/22', 'bg-[#9AE6C4]/10');
+    }
+
+    function applyGenerationSetupState(stateName) {
+      const config = stateConfig[stateName] || stateConfig.default;
+      const app = document.getElementById('app');
+      const startButton = document.getElementById('generation-setup-start-action');
+      const creditAction = document.getElementById('generation-setup-credit-action');
+      const errorMessage = document.getElementById('generation-setup-error-message');
+      const available = config.availableOverride === null ? availablePersonalGenerations() : config.availableOverride;
+
+      currentState = stateName in stateConfig ? stateName : 'default';
+
+      if (app) {
+        app.dataset.state = currentState;
+      }
+
+      setText('generation-setup-credit-title', config.creditTitle);
+      setText('generation-setup-credit-copy', config.creditCopy);
+      setText('generation-setup-credit-count', `剩余 ${available} 次`);
+      setText('generation-setup-start-action', config.startText);
+
+      applyCreditTone(config.creditTone);
+      updateStateButtons(currentState);
+
+      if (startButton) {
+        startButton.disabled = !config.startEnabled;
+        startButton.setAttribute('aria-disabled', config.startEnabled ? 'false' : 'true');
+        startButton.classList.toggle('bg-[#FAFAF7]', config.startEnabled);
+        startButton.classList.toggle('text-[#111111]', config.startEnabled);
+        startButton.classList.toggle('bg-white/10', !config.startEnabled);
+        startButton.classList.toggle('text-white/42', !config.startEnabled);
+        startButton.classList.toggle('cursor-not-allowed', !config.startEnabled);
+      }
+
+      if (creditAction) {
+        creditAction.classList.toggle('hidden', !config.creditActionVisible);
+      }
+
+      if (errorMessage) {
+        errorMessage.classList.toggle('hidden', !config.errorVisible);
+      }
+
+      console.info('[Style AI Prototype] generation setup state changed', { stateName: currentState, available });
+    }
+
+    async function loadGenerationSetupDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        demoData = await response.json();
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback demo data', error);
+      }
+
+      const userName = (demoData.currentUser && demoData.currentUser.displayName) || fallbackData.currentUser.displayName;
+      const savedStyle = demoData.generation && demoData.generation.selectedStyleDirection;
+
+      if (savedStyle && styleDirections.some((style) => style.id === savedStyle)) {
+        selectedStyleId = savedStyle;
+      }
+
+      setText('generation-setup-user-line', `${userName}的首次预览`);
+    }
+
+    function initGenerationSetupActions() {
+      document.getElementById('generation-setup-credit-help')?.addEventListener('click', () => {
+        showGenerationSetupToast('本次成功后扣 1 次；失败不会扣除。');
+      });
+
+      document.getElementById('generation-setup-context-note')?.addEventListener('click', () => {
+        showGenerationSetupToast('这张照片只作为本次会话素材使用。');
+      });
+
+      document.getElementById('generation-setup-credit-action')?.addEventListener('click', () => {
+        showGenerationSetupToast('原型中暂不接入真实额度获取。');
+      });
+
+      document.getElementById('generation-setup-note-input')?.addEventListener('input', (event) => {
+        const value = event.target.value || '';
+        setText('generation-setup-note-count', `${value.length}/80`);
+      });
+
+      for (const button of document.querySelectorAll('.generation-state-button')) {
+        button.addEventListener('click', () => {
+          applyGenerationSetupState(button.dataset.generationState || 'default');
+        });
+      }
+
+      document.getElementById('generation-setup-start-action')?.addEventListener('click', () => {
+        const config = stateConfig[currentState] || stateConfig.default;
+        if (!config.startEnabled) {
+          showGenerationSetupToast(currentState === 'no-credit' ? '当前没有可用生成额度。' : '任务正在创建中。');
+          return;
+        }
+
+        const taskId = (demoData.generation && demoData.generation.id) || 'demo-generation-001';
+        const nextHref = `01.6-generation-waiting.html?taskId=${encodeURIComponent(taskId)}&style=${encodeURIComponent(selectedStyleId)}`;
+
+        applyGenerationSetupState('submitting');
+        console.info('[Style AI Prototype] simulated generation task created', {
+          taskId,
+          selectedStyleId,
+          nextHref
+        });
+
+        window.setTimeout(() => {
+          window.location.href = nextHref;
+        }, 650);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadGenerationSetupDemoData();
+      renderStyleOptions();
+      selectStyleDirection(selectedStyleId);
+      initGenerationSetupActions();
+      applyGenerationSetupState('default');
+      console.info('[Style AI Prototype] 01.5 generation setup ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

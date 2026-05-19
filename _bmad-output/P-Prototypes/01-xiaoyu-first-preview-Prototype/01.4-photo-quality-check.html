@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.4 Photo Quality Check - Style AI</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--style-ai-black);
+      letter-spacing: 0;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .tap-highlight {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .photo-preview-frame {
+      background:
+        linear-gradient(145deg, #2A2A28 0%, #1B1B1A 47%, #111111 100%);
+    }
+
+    .photo-face-shape {
+      background:
+        radial-gradient(circle at 38% 40%, rgb(250 250 247 / 0.70) 0 3px, transparent 4px),
+        radial-gradient(circle at 62% 40%, rgb(250 250 247 / 0.70) 0 3px, transparent 4px),
+        radial-gradient(ellipse at 50% 74%, rgb(250 250 247 / 0.34) 0 8px, transparent 9px),
+        linear-gradient(180deg, #D9C8B5 0%, #C6AA93 100%);
+      box-shadow: inset 0 -16px 30px rgb(17 17 17 / 0.16);
+    }
+
+    .summary-pass {
+      border-color: rgb(154 230 196 / 0.22);
+      background: rgb(154 230 196 / 0.10);
+    }
+
+    .summary-warning {
+      border-color: rgb(242 200 107 / 0.26);
+      background: rgb(242 200 107 / 0.10);
+    }
+
+    .summary-fail {
+      border-color: rgb(242 167 160 / 0.26);
+      background: rgb(242 167 160 / 0.10);
+    }
+
+    .summary-checking,
+    .summary-unavailable {
+      border-color: rgb(157 122 255 / 0.24);
+      background: rgb(157 122 255 / 0.10);
+    }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+      border-color: rgb(250 250 247 / 0.18);
+      border-top-color: var(--style-ai-spark-light);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+  <main
+    id="app"
+    class="mx-auto flex min-h-[100svh] w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="01.4-photo-quality-check"
+    data-state="checking"
+  >
+    <header class="shrink-0" aria-label="照片质量检查页面顶部栏">
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="01.3-photo-upload.html"
+          class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回照片上传"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img
+              src="assets/style-ai-reversible-s-symbol.svg"
+              alt=""
+              class="h-full w-full"
+              aria-hidden="true"
+            >
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">照片质量检查</p>
+            <p id="photo-quality-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的首次预览</p>
+          </div>
+        </div>
+
+        <button
+          id="photo-quality-help-button"
+          type="button"
+          class="tap-highlight flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-sm font-medium text-white/70"
+          aria-label="查看检查说明"
+        >
+          ?
+        </button>
+      </div>
+    </header>
+
+    <section class="mt-5" aria-label="照片质量检查说明">
+      <p class="text-xs font-medium text-[#C9BAFF]">轻量预检，不消耗生成额度</p>
+      <h1 class="mt-2 text-[26px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        先确认这张照片够清楚，再继续选择风格。
+      </h1>
+      <p class="mt-3 text-sm leading-6 text-white/58">
+        这里先看照片是否容易用于生成，不做精确人脸识别。结果只帮助你决定继续、重拍或换一张。
+      </p>
+    </section>
+
+    <section
+      id="photo-quality-review-preview"
+      data-object-id="photo-quality-review-preview"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="当前照片预览"
+    >
+      <div class="photo-preview-frame relative flex aspect-[4/3] w-full items-end justify-center overflow-hidden rounded-lg border border-white/10">
+        <div class="absolute left-1/2 top-[16%] h-[42%] w-[38%] -translate-x-1/2 rounded-full bg-[#2B211F]"></div>
+        <div class="photo-face-shape absolute left-1/2 top-[22%] h-[34%] w-[30%] -translate-x-1/2 rounded-[48%_48%_44%_44%]"></div>
+        <div class="absolute bottom-[-18%] left-1/2 h-[54%] w-[62%] -translate-x-1/2 rounded-t-full bg-[#FAFAF7]/86"></div>
+        <div class="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/72 to-black/0 px-3 pb-3 pt-10">
+          <span id="photo-quality-preview-source" class="rounded-lg bg-black/[0.44] px-2.5 py-1 text-xs font-medium text-white/82">
+            当前照片
+          </span>
+          <a
+            href="01.3-photo-upload.html"
+            class="tap-highlight min-h-[34px] rounded-lg border border-white/[0.18] bg-black/[0.34] px-3 py-2 text-xs font-medium text-white/86 no-underline"
+          >
+            重新选择
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-medium text-[#FAFAF7]">本次生成照片</p>
+          <p id="photo-quality-preview-copy" class="mt-1 text-xs leading-5 text-white/50">
+            这张照片只作为本次生成素材；是否保存为常用形象，等看到结果后再决定。
+          </p>
+        </div>
+        <span id="photo-quality-state-chip" class="shrink-0 rounded-lg bg-[#9D7AFF]/12 px-2.5 py-1 text-xs font-medium text-[#D8CEFF]">
+          检查中
+        </span>
+      </div>
+    </section>
+
+    <section
+      id="photo-quality-summary"
+      data-object-id="photo-quality-summary"
+      class="summary-checking mt-4 rounded-lg border p-4"
+      aria-label="照片质量总判断"
+      aria-live="polite"
+    >
+      <div class="flex items-start gap-3">
+        <span
+          id="photo-quality-summary-icon"
+          class="spinner mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 text-xs font-semibold text-[#111111]"
+          aria-hidden="true"
+        ></span>
+        <div class="min-w-0 flex-1">
+          <p id="photo-quality-summary-eyebrow" class="text-xs font-medium text-[#D8CEFF]">正在轻量检查</p>
+          <h2 id="photo-quality-summary-title" class="mt-1 text-lg font-semibold leading-6 text-[#FAFAF7]">
+            正在确认这张照片是否适合生成
+          </h2>
+          <p id="photo-quality-summary-copy" class="mt-2 text-sm leading-6 text-white/64">
+            只检查照片是否容易读取，不会消耗生成额度。
+          </p>
+          <p id="photo-quality-credit-note" class="mt-3 rounded-lg bg-black/18 px-3 py-2 text-xs leading-5 text-white/58">
+            检查不消耗额度；生成设置页确认后才会进入生成流程。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="photo-quality-checklist"
+      data-object-id="photo-quality-checklist"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="照片质量检查项"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-medium text-[#FAFAF7]">检查依据</p>
+          <p class="mt-1 text-xs leading-5 text-white/48">每一项都只用于判断生成稳定性。</p>
+        </div>
+        <span id="photo-quality-check-count" class="shrink-0 rounded-lg bg-white/[0.08] px-2.5 py-1 text-xs font-medium text-white/62">
+          0/5
+        </span>
+      </div>
+
+      <div id="photo-quality-checklist-items" class="mt-3 space-y-2"></div>
+    </section>
+
+    <section
+      id="photo-quality-recovery-actions"
+      data-object-id="photo-quality-recovery-actions"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-4"
+      aria-label="照片质量恢复动作"
+    >
+      <p class="text-sm font-medium text-[#FAFAF7]">下一步</p>
+      <div class="mt-3 grid gap-2" id="photo-quality-action-list">
+        <a
+          id="photo-quality-continue-button"
+          data-object-id="photo-quality-continue-button"
+          href="01.5-generation-setup.html"
+          class="tap-highlight flex min-h-[48px] w-full items-center justify-center rounded-lg bg-white/10 px-4 py-3 text-sm font-semibold text-white/42 no-underline"
+          aria-disabled="true"
+          tabindex="-1"
+        >
+          继续选择风格
+        </a>
+
+        <a
+          id="photo-quality-retake-button"
+          data-object-id="photo-quality-retake-button"
+          href="01.3-photo-upload.html"
+          class="tap-highlight flex min-h-[44px] w-full items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm font-semibold text-white/76 no-underline"
+        >
+          换一张照片
+        </a>
+
+        <div id="photo-quality-recovery-extra" class="grid gap-2"></div>
+      </div>
+
+      <div id="photo-quality-tips" class="mt-3 hidden rounded-lg border border-white/10 bg-black/18 p-3">
+        <p class="text-xs font-medium text-[#FAFAF7]">拍摄建议</p>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <p class="rounded-lg bg-white/[0.045] px-3 py-2 text-xs leading-5 text-white/58">脸部正对镜头</p>
+          <p class="rounded-lg bg-white/[0.045] px-3 py-2 text-xs leading-5 text-white/58">自然光或亮一点</p>
+          <p class="rounded-lg bg-white/[0.045] px-3 py-2 text-xs leading-5 text-white/58">不要遮住五官</p>
+          <p class="rounded-lg bg-white/[0.045] px-3 py-2 text-xs leading-5 text-white/58">少用强滤镜</p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-3"
+      aria-label="原型状态切换"
+    >
+      <div class="grid grid-cols-5 gap-1">
+        <button type="button" class="photo-quality-state-button min-h-[34px] rounded-md bg-white/10 px-1 text-[11px] text-white" data-quality-state="checking">检查</button>
+        <button type="button" class="photo-quality-state-button min-h-[34px] rounded-md px-1 text-[11px] text-white/58" data-quality-state="pass">通过</button>
+        <button type="button" class="photo-quality-state-button min-h-[34px] rounded-md px-1 text-[11px] text-white/58" data-quality-state="warning">提醒</button>
+        <button type="button" class="photo-quality-state-button min-h-[34px] rounded-md px-1 text-[11px] text-white/58" data-quality-state="fail">失败</button>
+        <button type="button" class="photo-quality-state-button min-h-[34px] rounded-md px-1 text-[11px] text-white/58" data-quality-state="unavailable">异常</button>
+      </div>
+    </section>
+
+    <div
+      id="photo-quality-toast"
+      class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-20 hidden w-[min(388px,calc(100vw-32px))] -translate-x-1/2 rounded-lg border border-white/10 bg-[#1C1C1C] px-4 py-3 text-sm leading-5 text-[#FAFAF7] shadow-[0_16px_60px_rgba(0,0,0,0.42)]"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.4-photo-quality-check',
+      section: 'full-page',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      quota: {
+        personalImageGenerationsTotal: 1,
+        personalImageGenerationsUsed: 0
+      },
+      photoSession: {
+        source: 'album',
+        qualityCheck: {
+          status: 'not_started'
+        }
+      }
+    };
+
+    const qualityFixtures = {
+      checking: {
+        chip: '检查中',
+        chipClass: 'bg-[#9D7AFF]/12 text-[#D8CEFF]',
+        summaryClass: 'summary-checking',
+        icon: '',
+        iconClass: 'spinner border-2',
+        eyebrow: '正在轻量检查',
+        eyebrowClass: 'text-[#D8CEFF]',
+        title: '正在确认这张照片是否适合生成',
+        copy: '只检查照片是否容易读取，不会消耗生成额度。',
+        creditNote: '检查不消耗额度；生成设置页确认后才会进入生成流程。',
+        continueEnabled: false,
+        continueLabel: '继续选择风格',
+        checks: [
+          ['pending', '脸部清楚', '正在确认画面是否容易读取'],
+          ['pending', '无遮挡', '正在查看五官是否被遮住'],
+          ['pending', '光线足够', '正在判断亮度是否稳定'],
+          ['pending', '近期照片', '等待本次照片信息'],
+          ['pending', '无强滤镜', '正在确认是否影响生成判断']
+        ],
+        extras: [
+          { type: 'button', id: 'photo-quality-simulate-finish', label: '模拟检查完成', action: 'simulate-pass' }
+        ]
+      },
+      pass: {
+        chip: '可继续',
+        chipClass: 'bg-[#9AE6C4]/12 text-[#C7F5DF]',
+        summaryClass: 'summary-pass',
+        icon: '✓',
+        iconClass: 'bg-[#9AE6C4] text-[#111111]',
+        eyebrow: '照片可以使用',
+        eyebrowClass: 'text-[#C7F5DF]',
+        title: '这张照片可以用来生成',
+        copy: '下一步选择你想先看的风格方向，系统会基于这张照片继续生成。',
+        creditNote: '质量检查已通过；此处仍未消耗生成额度。',
+        continueEnabled: true,
+        continueLabel: '继续选择风格',
+        checks: [
+          ['pass', '脸部清楚', '脸部区域可读，适合生成'],
+          ['pass', '无遮挡', '五官没有明显遮挡'],
+          ['pass', '光线足够', '亮度稳定，细节可见'],
+          ['pass', '近期照片', '适合作为当前形象参考'],
+          ['pass', '无强滤镜', '没有明显影响判断的滤镜']
+        ],
+        extras: []
+      },
+      warning: {
+        chip: '有提醒',
+        chipClass: 'bg-[#F2C86B]/12 text-[#F8DF9A]',
+        summaryClass: 'summary-warning',
+        icon: '!',
+        iconClass: 'bg-[#F2C86B] text-[#111111]',
+        eyebrow: '可以继续，但结果可能不稳',
+        eyebrowClass: 'text-[#F8DF9A]',
+        title: '这张照片基本可用，光线稍弱',
+        copy: '可以继续生成；如果想让结果更像本人，换一张更亮的照片会更稳。',
+        creditNote: '你可以继续，也可以先换照片；现在不会消耗额度。',
+        continueEnabled: true,
+        continueLabel: '仍然继续',
+        checks: [
+          ['pass', '脸部清楚', '脸部区域可以读取'],
+          ['pass', '无遮挡', '五官没有明显遮挡'],
+          ['warning', '光线足够', '光线偏暗，生成相似度可能受影响'],
+          ['pass', '近期照片', '适合作为当前形象参考'],
+          ['pass', '无强滤镜', '滤镜影响不明显']
+        ],
+        extras: [
+          { type: 'button', id: 'photo-quality-show-tips-warning', label: '查看拍摄建议', action: 'toggle-tips' }
+        ]
+      },
+      fail: {
+        chip: '建议换图',
+        chipClass: 'bg-[#F2A7A0]/12 text-[#FFD1CC]',
+        summaryClass: 'summary-fail',
+        icon: '×',
+        iconClass: 'bg-[#F2A7A0] text-[#111111]',
+        eyebrow: '这张照片有点难判断',
+        eyebrowClass: 'text-[#FFD1CC]',
+        title: '换一张光线更清楚的试试',
+        copy: '当前照片可能太暗或脸部不够清楚，继续生成容易不像本人。',
+        creditNote: '没有创建生成任务，也不会消耗额度。',
+        continueEnabled: false,
+        continueLabel: '继续选择风格',
+        checks: [
+          ['fail', '脸部清楚', '脸部细节不够清楚'],
+          ['warning', '无遮挡', '局部遮挡可能影响判断'],
+          ['fail', '光线足够', '画面偏暗，建议换一张'],
+          ['pass', '近期照片', '可以作为当前形象参考'],
+          ['warning', '无强滤镜', '滤镜或磨皮可能影响结果']
+        ],
+        extras: [
+          { type: 'link', id: 'photo-quality-reselect-album', label: '从相册重选', href: '01.3-photo-upload.html' },
+          { type: 'button', id: 'photo-quality-show-tips-fail', label: '查看拍摄建议', action: 'toggle-tips' }
+        ]
+      },
+      unavailable: {
+        chip: '检查异常',
+        chipClass: 'bg-[#9D7AFF]/12 text-[#D8CEFF]',
+        summaryClass: 'summary-unavailable',
+        icon: '…',
+        iconClass: 'bg-[#9D7AFF] text-[#111111]',
+        eyebrow: '暂时无法完成检查',
+        eyebrowClass: 'text-[#D8CEFF]',
+        title: '检查服务没有返回结果',
+        copy: '这不是照片失败。你可以重试检查，或者回到照片页重新选择。',
+        creditNote: '检查异常不会扣除生成额度，也不会创建生成任务。',
+        continueEnabled: false,
+        continueLabel: '继续选择风格',
+        checks: [
+          ['pending', '脸部清楚', '本次未能完成判断'],
+          ['pending', '无遮挡', '本次未能完成判断'],
+          ['pending', '光线足够', '本次未能完成判断'],
+          ['pending', '近期照片', '本次未能完成判断'],
+          ['pending', '无强滤镜', '本次未能完成判断']
+        ],
+        extras: [
+          { type: 'button', id: 'photo-quality-retry-button', label: '重试检查', action: 'retry-check' }
+        ]
+      }
+    };
+
+    const checkTone = {
+      pass: {
+        mark: '✓',
+        markClass: 'bg-[#9AE6C4] text-[#111111]',
+        textClass: 'text-[#C7F5DF]',
+        label: '通过'
+      },
+      warning: {
+        mark: '!',
+        markClass: 'bg-[#F2C86B] text-[#111111]',
+        textClass: 'text-[#F8DF9A]',
+        label: '提醒'
+      },
+      fail: {
+        mark: '×',
+        markClass: 'bg-[#F2A7A0] text-[#111111]',
+        textClass: 'text-[#FFD1CC]',
+        label: '需重试'
+      },
+      pending: {
+        mark: '…',
+        markClass: 'bg-white/[0.10] text-white/58',
+        textClass: 'text-white/54',
+        label: '待确认'
+      }
+    };
+
+    let demoData = fallbackData;
+    let currentQualityState = 'checking';
+    let toastTimer = 0;
+    let retryTimer = 0;
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showPhotoQualityToast(message) {
+      const toast = document.getElementById('photo-quality-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2400);
+    }
+
+    function renderChecklist(checks) {
+      const list = document.getElementById('photo-quality-checklist-items');
+      const count = document.getElementById('photo-quality-check-count');
+      if (!list) {
+        return;
+      }
+
+      list.innerHTML = '';
+      let passCount = 0;
+
+      for (const [status, title, copy] of checks) {
+        const tone = checkTone[status] || checkTone.pending;
+        if (status === 'pass') {
+          passCount += 1;
+        }
+
+        const item = document.createElement('div');
+        item.className = 'flex items-start gap-3 rounded-lg bg-black/18 px-3 py-3';
+        item.innerHTML = `
+          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${tone.markClass}" aria-hidden="true">${tone.mark}</span>
+          <span class="min-w-0 flex-1">
+            <span class="flex items-center justify-between gap-2">
+              <span class="text-sm font-medium text-[#FAFAF7]">${title}</span>
+              <span class="shrink-0 text-[11px] font-medium ${tone.textClass}">${tone.label}</span>
+            </span>
+            <span class="mt-1 block text-xs leading-5 text-white/50">${copy}</span>
+          </span>
+        `;
+        list.appendChild(item);
+      }
+
+      if (count) {
+        count.textContent = `${passCount}/${checks.length}`;
+      }
+    }
+
+    function renderExtraActions(extras) {
+      const container = document.getElementById('photo-quality-recovery-extra');
+      const tips = document.getElementById('photo-quality-tips');
+      if (!container) {
+        return;
+      }
+
+      container.innerHTML = '';
+      if (tips) {
+        tips.classList.add('hidden');
+      }
+
+      for (const extra of extras) {
+        if (extra.type === 'link') {
+          const link = document.createElement('a');
+          link.id = extra.id;
+          link.href = extra.href;
+          link.className = 'tap-highlight flex min-h-[44px] w-full items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm font-semibold text-white/76 no-underline';
+          link.textContent = extra.label;
+          container.appendChild(link);
+          continue;
+        }
+
+        const button = document.createElement('button');
+        button.id = extra.id;
+        button.type = 'button';
+        button.className = 'tap-highlight min-h-[44px] w-full rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm font-semibold text-white/76';
+        button.textContent = extra.label;
+        button.dataset.action = extra.action;
+        button.addEventListener('click', () => handleExtraAction(extra.action));
+        container.appendChild(button);
+      }
+    }
+
+    function setContinueState(config) {
+      const continueButton = document.getElementById('photo-quality-continue-button');
+      if (!continueButton) {
+        return;
+      }
+
+      continueButton.textContent = config.continueLabel;
+      continueButton.setAttribute('aria-disabled', config.continueEnabled ? 'false' : 'true');
+      continueButton.tabIndex = config.continueEnabled ? 0 : -1;
+      continueButton.classList.toggle('bg-[#FAFAF7]', config.continueEnabled);
+      continueButton.classList.toggle('text-[#111111]', config.continueEnabled);
+      continueButton.classList.toggle('bg-white/10', !config.continueEnabled);
+      continueButton.classList.toggle('text-white/42', !config.continueEnabled);
+      continueButton.classList.toggle('pointer-events-none', !config.continueEnabled);
+      continueButton.classList.toggle('cursor-not-allowed', !config.continueEnabled);
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.photo-quality-state-button')) {
+        const selected = button.dataset.qualityState === stateName;
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        button.classList.toggle('bg-white/10', selected);
+        button.classList.toggle('text-white', selected);
+        button.classList.toggle('text-white/58', !selected);
+      }
+    }
+
+    function applyPhotoQualityState(stateName) {
+      window.clearTimeout(retryTimer);
+      currentQualityState = stateName;
+      const config = qualityFixtures[stateName] || qualityFixtures.checking;
+      const app = document.getElementById('app');
+      const summary = document.getElementById('photo-quality-summary');
+      const icon = document.getElementById('photo-quality-summary-icon');
+      const chip = document.getElementById('photo-quality-state-chip');
+      const eyebrow = document.getElementById('photo-quality-summary-eyebrow');
+
+      if (app) {
+        app.dataset.state = stateName;
+      }
+
+      if (summary) {
+        summary.className = `${config.summaryClass} mt-4 rounded-lg border p-4`;
+      }
+
+      if (icon) {
+        icon.className = `mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${config.iconClass}`;
+        icon.textContent = config.icon;
+      }
+
+      if (chip) {
+        chip.className = `shrink-0 rounded-lg px-2.5 py-1 text-xs font-medium ${config.chipClass}`;
+        chip.textContent = config.chip;
+      }
+
+      if (eyebrow) {
+        eyebrow.className = `text-xs font-medium ${config.eyebrowClass}`;
+      }
+
+      setText('photo-quality-summary-eyebrow', config.eyebrow);
+      setText('photo-quality-summary-title', config.title);
+      setText('photo-quality-summary-copy', config.copy);
+      setText('photo-quality-credit-note', config.creditNote);
+      renderChecklist(config.checks);
+      renderExtraActions(config.extras);
+      setContinueState(config);
+      updateStateButtons(stateName);
+
+      console.info('[Style AI Prototype] photo quality state changed', { stateName });
+    }
+
+    function handleExtraAction(action) {
+      if (action === 'toggle-tips') {
+        const tips = document.getElementById('photo-quality-tips');
+        if (tips) {
+          const willShow = tips.classList.contains('hidden');
+          tips.classList.toggle('hidden', !willShow);
+          showPhotoQualityToast(willShow ? '已展开拍摄建议。' : '已收起拍摄建议。');
+        }
+        return;
+      }
+
+      if (action === 'retry-check' || action === 'simulate-pass') {
+        applyPhotoQualityState('checking');
+        showPhotoQualityToast('正在重新检查照片。');
+        retryTimer = window.setTimeout(() => {
+          applyPhotoQualityState('pass');
+          showPhotoQualityToast('检查完成，可以继续。');
+        }, 900);
+      }
+    }
+
+    async function loadPhotoQualityDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        demoData = await response.json();
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback demo data', error);
+      }
+
+      const userName = (demoData.currentUser && demoData.currentUser.displayName) || fallbackData.currentUser.displayName;
+      const source = (demoData.photoSession && demoData.photoSession.source) || 'album';
+      const sourceLabel = source === 'camera' ? '来自相机' : source === 'album' ? '来自相册' : '当前照片';
+      const quota = demoData.quota || fallbackData.quota;
+      const remaining = Math.max(0, Number(quota.personalImageGenerationsTotal || 0) - Number(quota.personalImageGenerationsUsed || 0));
+
+      setText('photo-quality-user-line', `${userName}的首次预览`);
+      setText('photo-quality-preview-source', sourceLabel);
+      setText('photo-quality-preview-copy', `本次还有 ${remaining} 次个人形象生成额度；照片检查本身不会消耗额度。`);
+    }
+
+    function initPhotoQualityActions() {
+      for (const button of document.querySelectorAll('.photo-quality-state-button')) {
+        button.addEventListener('click', () => {
+          applyPhotoQualityState(button.dataset.qualityState || 'checking');
+        });
+      }
+
+      document.getElementById('photo-quality-help-button')?.addEventListener('click', () => {
+        showPhotoQualityToast('这是轻量预检，不代表精确人脸识别。');
+      });
+
+      document.getElementById('photo-quality-continue-button')?.addEventListener('click', (event) => {
+        const config = qualityFixtures[currentQualityState] || qualityFixtures.checking;
+        if (!config.continueEnabled) {
+          event.preventDefault();
+          showPhotoQualityToast('这张照片还不适合继续，先换一张更清楚的试试。');
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadPhotoQualityDemoData();
+      initPhotoQualityActions();
+      applyPhotoQualityState('checking');
+      retryTimer = window.setTimeout(() => {
+        if (currentQualityState === 'checking') {
+          applyPhotoQualityState('pass');
+        }
+      }, 900);
+      console.info('[Style AI Prototype] 01.4 photo quality check ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

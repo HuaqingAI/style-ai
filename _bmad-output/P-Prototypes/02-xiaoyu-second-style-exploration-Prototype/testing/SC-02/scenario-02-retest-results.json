@@ -1,0 +1,52 @@
+{
+  "date": "2026-05-18",
+  "scope": "ISS-001 touch target fix plus short route regression",
+  "baseUrl": "http://127.0.0.1:17868",
+  "touchTargets": {
+    "status": "pass",
+    "viewports": [
+      { "width": 375, "height": 667 },
+      { "width": 393, "height": 852 },
+      { "width": 428, "height": 926 }
+    ],
+    "pages": [
+      {
+        "page": "02.1-second-style-exploration.html",
+        "controls": [
+          { "label": "返回首次结果", "width": 44, "height": 44, "pass": true },
+          { "label": "返回首页", "width": 44, "height": 44, "pass": true }
+        ]
+      },
+      {
+        "page": "02.2-save-result.html",
+        "controls": [
+          { "label": "返回二次探索", "width": 44, "height": 44, "pass": true },
+          { "label": "返回首页", "width": 44, "height": 44, "pass": true }
+        ]
+      },
+      {
+        "page": "02.3-save-profile-prompt.html",
+        "controls": [
+          { "label": "返回保存结果", "width": 44, "height": 44, "pass": true },
+          { "label": "返回首页", "width": 44, "height": 44, "pass": true }
+        ]
+      }
+    ]
+  },
+  "layout": {
+    "horizontalOverflow": false,
+    "viewportsChecked": [375, 393, 428]
+  },
+  "routeRegression": {
+    "status": "pass",
+    "steps": [
+      "01.7 entry link exists",
+      "01.7 -> 02.1",
+      "02.1 -> 02.2",
+      "02.2 saved state -> 02.3",
+      "02.3 skip action -> skipped end state"
+    ]
+  },
+  "consoleErrors": 0,
+  "result": "pass"
+}

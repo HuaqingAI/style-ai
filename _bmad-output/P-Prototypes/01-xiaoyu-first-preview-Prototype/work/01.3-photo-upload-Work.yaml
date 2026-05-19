@@ -1,0 +1,223 @@
+metadata:
+  project: style-ai
+  scenario: 01-xiaoyu-first-preview
+  logical_view: Photo Upload View
+  page_number: "01.3"
+  page_name: photo-upload
+  prototype_file: 01.3-photo-upload.html
+  source_spec: _bmad-output/C-UX-Scenarios/01-xiaoyu-first-preview/01.3-photo-upload/01.3-photo-upload.md
+  device_compatibility:
+    type: Mobile-Only
+    test_viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+    touch_optimized: true
+    hover_interactions: false
+  design_fidelity: Design System Components
+  primary_language: zh-CN
+  language_switcher: false
+  status: built
+  created: 2026-05-14
+  approved_by: Sue
+
+requirements:
+  purpose: "让小雨在上传或拍照前理解本次照片、历史结果和常用形象档案的边界，并完成一张当前照片的选择。"
+  success_criteria:
+    - 用户可以模拟拍照或从相册选择一张当前照片。
+    - 用户理解“不保存为常用形象也可以生成”。
+    - 用户知道可以重新选择照片。
+    - 权限失败或读取失败时停留在本页并给出恢复说明。
+    - 照片输入模型可复用于个人形象建议和试穿场景，但本页实例的默认意图是 personal_style_advice。
+  entry_points:
+    - 01.2-home-dual-entry 点击“开始看看效果”。
+  exit_points:
+    - 选择合格照片后点击“用这张生成预览”直接进入 01.6-generation-waiting.html，并使用默认生成意图 daily_judgment_safe_direction。
+    - 轻微质量提醒在本页 inline 展示，仍可继续进入 01.6-generation-waiting.html。
+    - 严重质量问题停留本页，只提供重新上传。
+    - 权限失败、取消或读取失败时停留本页。
+
+photo_intake_contract:
+  reusable_component: true
+  current_intent: personal_style_advice
+  reusable_for:
+    - personal_style_advice
+    - try_on
+  photo_scope: session_photo
+  persistence_rule: 常用形象必须在结果页或明确保存动作中由用户主动确认，不能由本页默认创建。
+  next_target: 01.6-generation-waiting.html
+  default_generation_intent: daily_judgment_safe_direction
+
+object_registry:
+  - id: photo-upload-boundary-note
+    type: Info note
+    purpose: 上传前隐私与保存边界
+    required: true
+  - id: photo-upload-picker
+    type: Picker
+    purpose: 拍照/相册入口容器
+    required: true
+  - id: photo-upload-camera-button
+    type: Button
+    purpose: 打开相机
+    required: true
+  - id: photo-upload-album-button
+    type: Button
+    purpose: 打开相册
+    required: true
+  - id: photo-upload-selected-preview
+    type: Image preview
+    purpose: 确认所选照片
+    required: true
+  - id: photo-upload-quality-status
+    type: Inline status
+    purpose: 照片质量 pass/warning/fail/unavailable 状态
+    required: true
+  - id: photo-upload-continue-button
+    type: Button
+    purpose: 带着本次照片进入生成路径
+    required: true
+  - id: photo-upload-photo-tips
+    type: Guidance list
+    purpose: 照片建议
+    required: true
+
+states:
+  - name: Empty
+    trigger: 未选择照片
+    requirements:
+      - 显示上传区域、拍照按钮和相册按钮。
+      - 继续按钮不可用或明确提示先选择照片。
+  - name: Permission denied
+    trigger: 用户拒绝相机或相册权限
+    requirements:
+      - 显示权限解释和系统设置引导。
+      - 用户可重新尝试或返回上一页。
+  - name: Selected
+    trigger: 已选择照片
+    requirements:
+      - 显示照片预览、来源、重选入口和继续按钮。
+      - 点击继续直接创建默认生成任务并进入 01.6-generation-waiting.html；不进入 01.4 或 01.5。
+  - name: Selected warning
+    trigger: 已选择照片且仅有轻微质量提醒
+    requirements:
+      - 在本页显示 inline warning。
+      - 仍允许继续进入 01.6-generation-waiting.html。
+  - name: Selected fail
+    trigger: 已选择照片但严重不可用
+    requirements:
+      - 在本页显示阻断说明。
+      - 只提供重新上传，不进入 01.6。
+  - name: Upload error
+    trigger: 照片读取失败
+    requirements:
+      - 显示具体错误说明。
+      - 用户可重新选择或稍后再试。
+
+sections:
+  - number: 1
+    name: Page Shell and Boundary Note
+    status: complete
+    estimate_minutes: 30
+    completed: 2026-05-14
+    actual_minutes: 25
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - photo-upload-boundary-note
+    scope:
+      - 建立移动端页面容器、返回入口、页面标题和上传前边界说明。
+      - 默认展示短句边界说明，并提供可展开的完整说明。
+      - 沿用 01.1/01.2 的深色移动端视觉语言和 icn-001 品牌资产。
+    acceptance:
+      - 返回入口目标为 01.2-home-dual-entry.html。
+      - 边界说明包含“本次照片”“历史结果”“常用形象”三个概念。
+      - 展开/收起说明不造成横向滚动。
+  - number: 2
+    name: Photo Picker Actions
+    status: complete
+    estimate_minutes: 35
+    completed: 2026-05-14
+    actual_minutes: 35
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - photo-upload-picker
+      - photo-upload-camera-button
+      - photo-upload-album-button
+    scope:
+      - 构建拍照与相册两个入口。
+      - 原型中用本地模拟状态替代真实系统权限和文件读取。
+      - 支持权限拒绝和上传错误状态验证。
+    acceptance:
+      - 拍照按钮可以切到 selected 状态并标记来源为 camera。
+      - 相册按钮可以切到 selected 状态并标记来源为 album。
+      - 权限拒绝和上传错误状态有明确恢复说明。
+  - number: 3
+    name: Selected Preview and Continue
+    status: complete
+    estimate_minutes: 35
+    completed: 2026-05-14
+    actual_minutes: 35
+    approved_by: Sue
+    issues: []
+    improvements: []
+    object_ids:
+      - photo-upload-selected-preview
+      - photo-upload-continue-button
+    scope:
+      - 空态显示照片占位。
+      - 已选状态显示模拟照片预览、来源、质量状态和重选入口。
+      - 继续按钮在 pass/warning 状态后直接跳转到 01.6-generation-waiting.html。
+    acceptance:
+      - 未选照片时继续按钮不误导用户进入下一步。
+      - 已选照片时继续按钮可用且目标明确为继续生成。
+      - 重选入口可回到 empty 状态。
+  - number: 4
+    name: Photo Tips and Prototype State Handling
+    status: complete
+    estimate_minutes: 25
+    completed: 2026-05-14
+    actual_minutes: 30
+    approved_by: Sue
+    issues: []
+    improvements:
+      - Added compact prototype state controls so empty, permission denied, selected, and upload error states can be verified without native permissions.
+    object_ids:
+      - photo-upload-photo-tips
+    scope:
+      - 展示光线、无遮挡、无强滤镜、近期照片等建议。
+      - 加入紧凑原型状态切换控件。
+      - 加入 toast/状态信息，便于验证取消、失败和继续动作。
+    acceptance:
+      - 四个文档状态都可本地切换并保持无控制台错误。
+      - 建议文案短句清晰，不遮挡主操作。
+      - 375px、393px、428px 宽度无横向滚动。
+
+dependencies:
+  design_system:
+    - _bmad-output/D-Design-System/design-tokens.md
+    - _bmad-output/D-Design-System/components/style-ai-app-icon-system.md
+  demo_data:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/data/demo-data.json
+  prior_page:
+    - _bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html
+
+implementation_notes:
+  - This prototype does not use native Expo image picker APIs; it simulates camera, album, permission denied, and read error states in browser.
+  - Keep upload, trust note, preview, and guidance patterns prototype-local until validated across the full DD-001 flow.
+  - Treat this page as a reusable Photo Intake instance. Downstream flows should pass intent, photo requirements, and next target instead of duplicating picker logic.
+  - Distinguish session photo, generation result, and persistent profile. Session photos can be reused within the current flow; persistent profile reuse requires explicit user save after seeing results.
+  - IMP-001 moves 01.4 and 01.5 out of the first happy path. Keep quality check and generation setup capabilities as system/secondary states.
+
+next_step:
+  workflow_step: 3-logical-view-breakdown
+  next_logical_view: Generation Waiting View

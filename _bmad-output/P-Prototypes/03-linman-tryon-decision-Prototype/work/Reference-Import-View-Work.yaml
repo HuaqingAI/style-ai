@@ -1,0 +1,136 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: Reference Import View
+  source_step: 03.2-import-reference
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.2-import-reference/03.2-import-reference.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.2-import-reference.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  spec_status: prototype-draft
+
+view_summary:
+  purpose: 林曼从相册、截图或当前页面导入外部参考图，并在下一步设置前确认参考对象。
+  entry_context: 她已经进入试穿决策流程，手上有一个想买或想尝试的具体参考对象。
+  exit_action: 确认导入参考图，进入 03.3 tryon-setup。
+  user_state:
+    hope: 尽快把眼前的心动对象放进 Style AI。
+    worry: 选错图、导入失败、还没确认就消耗额度。
+
+object_inventory:
+  - id: obj-import-header
+    name: 页面顶部导航
+    role: 标识当前导入步骤，并提供返回 03.1 的路径。
+  - id: obj-import-hero
+    name: 导入说明区
+    role: 说明本页先导入参考图，下一步再确认本人形象和额度。
+  - id: obj-import-source-options
+    name: 导入来源选项
+    role: 支持相册/截图、当前页面分享图、示例参考图。
+  - id: obj-reference-preview
+    name: 参考图预览
+    role: 展示空状态、导入中、已导入和失败状态。
+  - id: obj-reference-details
+    name: 参考图信息
+    role: 展示来源、类别、标题、决策问题和紧迫性。
+  - id: obj-import-recovery
+    name: 导入恢复提示
+    role: 在失败或未选择时给出重试方式。
+  - id: obj-confirm-reference-action
+    name: 确认参考图主行动
+    role: 导入成功后进入 03.3。
+  - id: obj-prototype-state-controls
+    name: 原型状态控制
+    role: 支持评审各状态。
+
+functional_requirements:
+  - 生成额度必须说明为下一步确认后再消耗。
+  - 未导入时主行动不可继续。
+  - 导入成功后主行动指向 03.3-tryon-setup.html。
+  - 支持 empty、importing、imported、error 四种状态。
+  - 移动端 375/393/428px 宽度无水平滚动。
+
+sections:
+  - id: 1
+    name: Import Shell & Context
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 15
+    objects:
+      - obj-import-header
+      - obj-import-hero
+    acceptance_criteria:
+      - 页面顶部清楚标识为参考图导入。
+      - 说明本页不会直接消耗生成额度。
+    story_file: stories/03.2.1-import-reference-full-page.md
+
+  - id: 2
+    name: Source Options
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 20
+    objects:
+      - obj-import-source-options
+    acceptance_criteria:
+      - 三个导入入口均可触发状态变化。
+      - 触控目标适合移动端。
+    story_file: stories/03.2.1-import-reference-full-page.md
+
+  - id: 3
+    name: Preview & Details
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 25
+    objects:
+      - obj-reference-preview
+      - obj-reference-details
+    acceptance_criteria:
+      - 成功状态展示参考图、来源、标题、问题和紧迫性。
+      - 空状态和导入中状态不会误导用户已经完成导入。
+    story_file: stories/03.2.1-import-reference-full-page.md
+
+  - id: 4
+    name: Confirmation & Recovery
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 20
+    objects:
+      - obj-import-recovery
+      - obj-confirm-reference-action
+      - obj-prototype-state-controls
+    acceptance_criteria:
+      - 主行动只在 imported 状态可继续。
+      - error 状态提供明确重试路径。
+      - 原型状态控制可切换四种状态。
+    story_file: stories/03.2.1-import-reference-full-page.md
+
+verification:
+  static_checks: passed
+  browser_automation: passed-at-375-393-428
+  user_review: pending
+
+implementation_rules:
+  - This page is a prototype draft because 03.2 did not previously have a full approved page spec.
+  - Do not mark as final-approved until Sue reviews the draft spec and prototype behavior.
+  - Keep 03.3 route as a forward link placeholder until 03.3 is built.
+
+progress:
+  current_section: 4
+  completed_sections: 4
+  total_sections: 4
+  total_estimate_minutes: 80

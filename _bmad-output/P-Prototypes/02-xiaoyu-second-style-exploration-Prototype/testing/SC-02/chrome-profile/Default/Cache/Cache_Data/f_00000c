@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02.3 Save Profile Prompt - Style AI</title>
+  <link rel="icon" href="assets/style-ai-reversible-s-symbol.svg" type="image/svg+xml">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .soft-panel {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.032));
+      border: 1px solid rgb(255 255 255 / 0.10);
+    }
+
+    .profile-visual {
+      aspect-ratio: 5 / 4;
+      min-height: 250px;
+      background:
+        radial-gradient(circle at 26% 16%, rgb(154 230 196 / 0.13), transparent 25%),
+        radial-gradient(circle at 74% 18%, rgb(157 122 255 / 0.18), transparent 27%),
+        linear-gradient(145deg, #262521 0%, #171717 58%, #0D0D0D 100%);
+    }
+
+    .mobile-scroll-page {
+      height: 100vh;
+      height: 100svh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .state-control[aria-pressed="true"] {
+      background: rgb(255 255 255 / 0.10);
+      color: #FAFAF7;
+    }
+  </style>
+</head>
+<body>
+  <main
+    id="app"
+    class="mobile-scroll-page mx-auto flex w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="02.3-save-profile-prompt"
+    data-state="default"
+    data-profile-saved="false"
+  >
+    <header
+      id="save-profile-header"
+      data-object-id="save-profile-header"
+      class="shrink-0"
+      aria-label="常用形象提示顶部"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="02.2-save-result.html"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回保存结果"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img src="assets/style-ai-reversible-s-symbol.svg" alt="" class="h-full w-full" aria-hidden="true">
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">常用形象</p>
+            <p id="save-profile-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的可选保存</p>
+          </div>
+        </div>
+
+        <a
+          id="save-profile-home-link"
+          href="/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-xs font-semibold text-white/70 no-underline"
+          aria-label="返回首页"
+        >
+          首页
+        </a>
+      </div>
+    </header>
+
+    <section
+      id="save-profile-hero"
+      data-object-id="save-profile-hero"
+      class="mt-5 shrink-0"
+      aria-label="常用形象提示"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <p class="text-xs font-medium text-[#C9BAFF]">历史结果已保存</p>
+        <span id="save-profile-status-chip" class="rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">可选</span>
+      </div>
+      <h1 id="save-profile-title" class="mt-2 text-[25px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        保存这张作为常用形象？
+      </h1>
+      <p id="save-profile-hero-copy" class="mt-3 text-sm leading-6 text-white/58">
+        下次生成可以少传一次照片。不保存也可以继续使用，刚才的历史结果仍然会保留。
+      </p>
+    </section>
+
+    <section
+      id="save-profile-state-feedback"
+      data-object-id="save-profile-state-feedback"
+      class="mt-4 hidden shrink-0 rounded-lg border p-4"
+      role="status"
+      aria-live="polite"
+    >
+      <p id="save-profile-feedback-title" class="text-sm font-semibold leading-5"></p>
+      <p id="save-profile-feedback-copy" class="mt-1.5 text-xs leading-5"></p>
+    </section>
+
+    <section
+      id="save-profile-context"
+      data-object-id="save-profile-context"
+      class="soft-panel mt-4 shrink-0 overflow-hidden rounded-lg"
+      aria-label="已保存结果上下文"
+    >
+      <div class="profile-visual relative aspect-[5/4] w-full overflow-hidden">
+        <img
+          id="save-profile-preview-image"
+          src="assets/first-result-preview.png"
+          alt="小雨刚保存的日常轻层次结果预览"
+          class="absolute left-1/2 top-1/2 h-[124%] w-auto max-w-none -translate-x-1/2 -translate-y-[42%] opacity-95"
+        >
+        <div class="absolute left-3 top-3 rounded-lg bg-black/38 px-2.5 py-1 text-[11px] font-medium text-white/82">
+          已进历史
+        </div>
+        <div class="absolute right-3 top-3 rounded-lg bg-[#9AE6C4]/16 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]">
+          可复用
+        </div>
+        <div class="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-black/46 px-3 py-2 backdrop-blur">
+          <div class="grid gap-1">
+            <span id="save-profile-result-label" class="text-xs font-semibold leading-4 text-white/86">日常轻层次</span>
+            <span id="save-profile-result-subtitle" class="text-[11px] font-medium leading-4 text-[#C7F5DF]">刚保存到历史的第二次结果</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-4">
+        <p class="text-[11px] font-medium text-white/42">这一步不会改变刚才的历史保存</p>
+        <p id="save-profile-context-copy" class="mt-1.5 text-sm leading-6 text-white/70">
+          你已经把这个结果留在历史里。本页只是单独询问：以后是否默认用这张形象少走一次上传。
+        </p>
+      </div>
+    </section>
+
+    <section
+      id="save-profile-benefits"
+      data-object-id="save-profile-benefits"
+      class="mt-4 shrink-0"
+      aria-label="常用形象收益"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">保存后会带来什么</p>
+          <p class="mt-1 text-xs leading-5 text-white/48">只为减少重复上传，不改变你的选择权。</p>
+        </div>
+        <span class="shrink-0 rounded-lg bg-[#9D7AFF]/14 px-2.5 py-1 text-[11px] font-medium text-[#D8CEFF]">3 点</span>
+      </div>
+      <div id="save-profile-benefit-list" class="mt-3 grid gap-2">
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-3">
+          <p class="text-sm font-semibold leading-5 text-white/78">下次少传一次</p>
+          <p class="mt-1.5 text-xs leading-5 text-white/52">继续换发型、试穿或看妆容时，可以默认使用这张形象。</p>
+        </article>
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-3">
+          <p class="text-sm font-semibold leading-5 text-white/78">判断更连贯</p>
+          <p class="mt-1.5 text-xs leading-5 text-white/52">后续结果会围绕同一个本人形象，比较起来更省心。</p>
+        </article>
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-3">
+          <p class="text-sm font-semibold leading-5 text-white/78">之后可以更换</p>
+          <p class="mt-1.5 text-xs leading-5 text-white/52">如果照片不合适，之后仍然可以重新上传或替换常用形象。</p>
+        </article>
+      </div>
+    </section>
+
+    <section
+      id="save-profile-boundary-note"
+      data-object-id="save-profile-boundary-note"
+      class="mt-4 shrink-0 rounded-lg border border-[#F2C86B]/20 bg-[#F2C86B]/10 p-4"
+      aria-label="隐私与边界说明"
+    >
+      <div class="flex items-start gap-3">
+        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#F8DF9A] text-xs font-bold text-[#111111]">i</span>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold leading-5 text-[#FAFAF7]">先把边界说清楚</p>
+          <ul id="save-profile-boundary-list" class="mt-2 grid gap-1.5 text-xs leading-5 text-[#F8DF9A]/78">
+            <li>保存到历史结果不等于保存常用形象。</li>
+            <li>暂不保存也可以继续查看历史、继续生成或之后再保存。</li>
+            <li>常用形象只用于减少重复上传，不会替你自动发布或分享。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-4 grid shrink-0 gap-2" aria-label="保存常用形象动作">
+      <button
+        id="save-profile-primary-action"
+        data-object-id="save-profile-primary-action"
+        type="button"
+        class="min-h-[50px] rounded-lg bg-[#FAFAF7] px-4 py-3 text-sm font-semibold text-[#111111] disabled:cursor-not-allowed disabled:bg-white/14 disabled:text-white/36"
+      >
+        保存为常用形象
+      </button>
+      <button
+        id="save-profile-skip-action"
+        data-object-id="save-profile-skip-action"
+        type="button"
+        class="min-h-[48px] rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-white/62 disabled:cursor-not-allowed disabled:text-white/30"
+      >
+        暂不保存，结束
+      </button>
+    </section>
+
+    <section
+      id="save-profile-state-controls"
+      data-object-id="save-profile-state-controls"
+      class="mt-5 shrink-0 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="原型状态控制"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold text-white/70">原型状态</p>
+          <p class="mt-1 text-[11px] leading-4 text-white/42">用于验证保存、跳过和失败状态。</p>
+        </div>
+        <span id="save-profile-state-label" class="shrink-0 rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/54">default</span>
+      </div>
+      <div class="mt-3 grid grid-cols-2 gap-2">
+        <button type="button" class="state-control min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-profile-state="default">默认</button>
+        <button type="button" class="state-control min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-profile-state="saving-profile">保存中</button>
+        <button type="button" class="state-control min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-profile-state="profile-saved">已保存</button>
+        <button type="button" class="state-control min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-profile-state="skipped">已跳过</button>
+        <button type="button" class="state-control col-span-2 min-h-[38px] rounded-lg border border-white/10 px-2 text-xs font-medium text-white/58" data-profile-state="save-error">保存失败</button>
+      </div>
+    </section>
+
+    <div
+      id="save-profile-toast"
+      class="pointer-events-none fixed bottom-5 left-1/2 z-20 hidden w-[calc(100%-40px)] max-w-[388px] -translate-x-1/2 rounded-lg border border-white/10 bg-[#FAFAF7] px-4 py-3 text-center text-sm font-semibold text-[#111111] shadow-2xl"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      project: 'style-ai',
+      scenario: '02-xiaoyu-second-style-exploration',
+      page: '02.3-save-profile-prompt'
+    };
+
+    const homeHref = '/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html';
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      commonProfilePrompt: {
+        sourceResultLabel: '日常轻层次',
+        sourceResultSubtitle: '刚保存到历史的第二次结果',
+        previewImageUrl: 'assets/first-result-preview.png',
+        promptTitle: '保存这张作为常用形象？',
+        promptCopy: '下次生成可以少传一次照片。不保存也可以继续使用，刚才的历史结果仍然会保留。',
+        primaryLabel: '保存为常用形象',
+        skipLabel: '暂不保存，结束',
+        homeHref,
+        benefits: [
+          {
+            title: '下次少传一次',
+            copy: '继续换发型、试穿或看妆容时，可以默认使用这张形象。'
+          },
+          {
+            title: '判断更连贯',
+            copy: '后续结果会围绕同一个本人形象，比较起来更省心。'
+          },
+          {
+            title: '之后可以更换',
+            copy: '如果照片不合适，之后仍然可以重新上传或替换常用形象。'
+          }
+        ],
+        boundaries: [
+          '保存到历史结果不等于保存常用形象。',
+          '暂不保存也可以继续查看历史、继续生成或之后再保存。',
+          '常用形象只用于减少重复上传，不会替你自动发布或分享。'
+        ],
+        savedFeedbackTitle: '已保存为常用形象',
+        savedFeedbackCopy: '之后生成可以默认使用这张形象；你仍然可以在需要时重新上传照片。',
+        skippedFeedbackTitle: '这次先不保存常用形象',
+        skippedFeedbackCopy: '历史结果已经保留。下次如果想减少上传步骤，可以再选择保存常用形象。',
+        errorTitle: '常用形象没有保存成功',
+        errorCopy: '可能是网络暂时不可用。历史结果已保存，你可以重试，也可以先跳过。'
+      }
+    };
+
+    const stateConfig = {
+      default: {
+        chip: '可选',
+        chipClass: 'rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]',
+        feedbackVisible: false,
+        feedbackTone: 'neutral',
+        primaryDisabled: false,
+        skipDisabled: false,
+        primaryMode: 'save',
+        skipMode: 'skip',
+        profileSaved: false
+      },
+      'saving-profile': {
+        chip: '保存中',
+        chipClass: 'rounded-lg bg-[#9D7AFF]/14 px-2.5 py-1 text-[11px] font-medium text-[#D8CEFF]',
+        feedbackVisible: false,
+        feedbackTone: 'neutral',
+        primaryDisabled: true,
+        skipDisabled: true,
+        primaryMode: 'saving',
+        skipMode: 'disabled',
+        profileSaved: false
+      },
+      'profile-saved': {
+        chip: '已保存',
+        chipClass: 'rounded-lg bg-[#9AE6C4]/12 px-2.5 py-1 text-[11px] font-medium text-[#C7F5DF]',
+        feedbackVisible: true,
+        feedbackTone: 'success',
+        primaryDisabled: false,
+        skipDisabled: true,
+        primaryMode: 'home',
+        skipMode: 'hidden',
+        profileSaved: true
+      },
+      skipped: {
+        chip: '已跳过',
+        chipClass: 'rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] font-medium text-white/58',
+        feedbackVisible: true,
+        feedbackTone: 'skipped',
+        primaryDisabled: false,
+        skipDisabled: true,
+        primaryMode: 'home',
+        skipMode: 'hidden',
+        profileSaved: false
+      },
+      'save-error': {
+        chip: '需重试',
+        chipClass: 'rounded-lg bg-[#F2A7A0]/14 px-2.5 py-1 text-[11px] font-medium text-[#F6C4BF]',
+        feedbackVisible: true,
+        feedbackTone: 'error',
+        primaryDisabled: false,
+        skipDisabled: false,
+        primaryMode: 'retry',
+        skipMode: 'skip',
+        profileSaved: false
+      }
+    };
+
+    let demoData = fallbackData;
+    let currentState = 'default';
+    let toastTimer = 0;
+    let saveTimer = 0;
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function promptData() {
+      return demoData.commonProfilePrompt || fallbackData.commonProfilePrompt;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('save-profile-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2200);
+    }
+
+    function renderList(containerId, items, itemRenderer) {
+      const container = document.getElementById(containerId);
+      if (!container) {
+        return;
+      }
+
+      container.innerHTML = '';
+      for (const item of items) {
+        container.insertAdjacentHTML('beforeend', itemRenderer(item));
+      }
+    }
+
+    function updateStateControls(stateName) {
+      for (const button of document.querySelectorAll('.state-control')) {
+        const active = button.dataset.profileState === stateName;
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      }
+    }
+
+    function updateActionLabels(config) {
+      const data = promptData();
+      const primary = document.getElementById('save-profile-primary-action');
+      const skip = document.getElementById('save-profile-skip-action');
+
+      if (primary) {
+        if (config.primaryMode === 'saving') {
+          primary.textContent = '正在保存常用形象...';
+        } else if (config.primaryMode === 'home') {
+          primary.textContent = '返回首页';
+        } else if (config.primaryMode === 'retry') {
+          primary.textContent = '重新保存为常用形象';
+        } else {
+          primary.textContent = data.primaryLabel || fallbackData.commonProfilePrompt.primaryLabel;
+        }
+        primary.disabled = config.primaryDisabled;
+      }
+
+      if (skip) {
+        skip.textContent = config.skipMode === 'hidden'
+          ? '已完成'
+          : data.skipLabel || fallbackData.commonProfilePrompt.skipLabel;
+        skip.disabled = config.skipDisabled;
+      }
+    }
+
+    function updateFeedback(config) {
+      const data = promptData();
+      const feedback = document.getElementById('save-profile-state-feedback');
+      const title = document.getElementById('save-profile-feedback-title');
+      const copy = document.getElementById('save-profile-feedback-copy');
+      if (!feedback || !title || !copy) {
+        return;
+      }
+
+      feedback.className = config.feedbackVisible
+        ? 'mt-4 shrink-0 rounded-lg border p-4'
+        : 'mt-4 hidden shrink-0 rounded-lg border p-4';
+      title.className = 'text-sm font-semibold leading-5';
+      copy.className = 'mt-1.5 text-xs leading-5';
+
+      if (config.feedbackTone === 'success') {
+        feedback.classList.add('border-[#9AE6C4]/28', 'bg-[#9AE6C4]/10');
+        title.classList.add('text-[#C7F5DF]');
+        copy.classList.add('text-[#C7F5DF]/72');
+        title.textContent = data.savedFeedbackTitle || fallbackData.commonProfilePrompt.savedFeedbackTitle;
+        copy.textContent = data.savedFeedbackCopy || fallbackData.commonProfilePrompt.savedFeedbackCopy;
+      } else if (config.feedbackTone === 'skipped') {
+        feedback.classList.add('border-white/12', 'bg-white/[0.04]');
+        title.classList.add('text-[#FAFAF7]');
+        copy.classList.add('text-white/58');
+        title.textContent = data.skippedFeedbackTitle || fallbackData.commonProfilePrompt.skippedFeedbackTitle;
+        copy.textContent = data.skippedFeedbackCopy || fallbackData.commonProfilePrompt.skippedFeedbackCopy;
+      } else if (config.feedbackTone === 'error') {
+        feedback.classList.add('border-[#F2A7A0]/28', 'bg-[#F2A7A0]/10');
+        title.classList.add('text-[#F6C4BF]');
+        copy.classList.add('text-[#F6C4BF]/74');
+        title.textContent = data.errorTitle || fallbackData.commonProfilePrompt.errorTitle;
+        copy.textContent = data.errorCopy || fallbackData.commonProfilePrompt.errorCopy;
+      }
+    }
+
+    function applySaveProfileState(stateName) {
+      const config = stateConfig[stateName] || stateConfig.default;
+      const app = document.getElementById('app');
+      const chip = document.getElementById('save-profile-status-chip');
+
+      currentState = stateName in stateConfig ? stateName : 'default';
+      if (app) {
+        app.dataset.state = currentState;
+        app.dataset.profileSaved = config.profileSaved ? 'true' : 'false';
+      }
+      if (chip) {
+        chip.textContent = config.chip;
+        chip.className = config.chipClass;
+      }
+
+      setText('save-profile-state-label', currentState);
+      updateActionLabels(config);
+      updateFeedback(config);
+      updateStateControls(currentState);
+      console.info('[Style AI Prototype] save profile state changed', { stateName: currentState });
+    }
+
+    function renderDemoData(data) {
+      const userName = data.currentUser?.displayName || fallbackData.currentUser.displayName;
+      const prompt = {
+        ...fallbackData.commonProfilePrompt,
+        ...(data.commonProfilePrompt || {})
+      };
+      const preview = document.getElementById('save-profile-preview-image');
+      const homeLink = document.getElementById('save-profile-home-link');
+
+      setText('save-profile-user-line', `${userName}的可选保存`);
+      setText('save-profile-title', prompt.promptTitle);
+      setText('save-profile-hero-copy', prompt.promptCopy);
+      setText('save-profile-result-label', prompt.sourceResultLabel);
+      setText('save-profile-result-subtitle', prompt.sourceResultSubtitle);
+      setText('save-profile-context-copy', `你已经把「${prompt.sourceResultLabel}」留在历史里。本页只是单独询问：以后是否默认用这张形象少走一次上传。`);
+
+      if (preview && prompt.previewImageUrl) {
+        preview.src = prompt.previewImageUrl;
+        preview.alt = `${userName}刚保存的${prompt.sourceResultLabel}结果预览`;
+      }
+      if (homeLink && prompt.homeHref) {
+        homeLink.href = prompt.homeHref;
+      }
+
+      renderList('save-profile-benefit-list', prompt.benefits || fallbackData.commonProfilePrompt.benefits, (item) => `
+        <article class="rounded-lg border border-white/10 bg-white/[0.035] p-3">
+          <p class="text-sm font-semibold leading-5 text-white/78">${item.title}</p>
+          <p class="mt-1.5 text-xs leading-5 text-white/52">${item.copy}</p>
+        </article>
+      `);
+      renderList('save-profile-boundary-list', prompt.boundaries || fallbackData.commonProfilePrompt.boundaries, (item) => `<li>${item}</li>`);
+
+      demoData.commonProfilePrompt = prompt;
+      applySaveProfileState(currentState);
+    }
+
+    async function loadSaveProfileDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        const loaded = await response.json();
+        demoData = {
+          ...fallbackData,
+          ...loaded,
+          currentUser: {
+            ...fallbackData.currentUser,
+            ...(loaded.currentUser || {})
+          },
+          commonProfilePrompt: {
+            ...fallbackData.commonProfilePrompt,
+            ...(loaded.commonProfilePrompt || {})
+          }
+        };
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback save profile data', error);
+      }
+
+      renderDemoData(demoData);
+      console.info('[Style AI Prototype] save profile demo data loaded', {
+        userName: demoData.currentUser?.displayName || fallbackData.currentUser.displayName
+      });
+    }
+
+    function goHome() {
+      window.location.href = promptData().homeHref || homeHref;
+    }
+
+    function initActions() {
+      document.getElementById('save-profile-primary-action')?.addEventListener('click', () => {
+        if (currentState === 'saving-profile') {
+          return;
+        }
+
+        if (currentState === 'profile-saved' || currentState === 'skipped') {
+          goHome();
+          return;
+        }
+
+        applySaveProfileState('saving-profile');
+        showToast('正在保存为常用形象。');
+        window.clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(() => {
+          applySaveProfileState('profile-saved');
+          showToast('已保存为常用形象。');
+        }, 650);
+      });
+
+      document.getElementById('save-profile-skip-action')?.addEventListener('click', () => {
+        if (currentState === 'saving-profile') {
+          return;
+        }
+        window.clearTimeout(saveTimer);
+        applySaveProfileState('skipped');
+        showToast('这次先不保存常用形象。');
+      });
+
+      for (const button of document.querySelectorAll('.state-control')) {
+        button.addEventListener('click', () => {
+          window.clearTimeout(saveTimer);
+          applySaveProfileState(button.dataset.profileState || 'default');
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadSaveProfileDemoData();
+      initActions();
+      applySaveProfileState('default');
+      console.info('[Style AI Prototype] 02.3 save profile prompt ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

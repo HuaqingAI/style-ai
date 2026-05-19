@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01.3 Photo Upload - Style AI</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            styleai: {
+              black: '#111111',
+              ivory: '#FAFAF7',
+              spark: '#7B52FA',
+              sparkLight: '#9D7AFF',
+              mint: '#9AE6C4',
+              amber: '#F2C86B',
+              rose: '#F2A7A0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --style-ai-black: #111111;
+      --style-ai-ivory: #FAFAF7;
+      --style-ai-spark: #7B52FA;
+      --style-ai-spark-light: #9D7AFF;
+      --style-ai-mint: #9AE6C4;
+      --style-ai-amber: #F2C86B;
+      --style-ai-rose: #F2A7A0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--style-ai-black);
+      letter-spacing: 0;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--style-ai-black);
+      color: var(--style-ai-ivory);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .tap-highlight {
+      -webkit-tap-highlight-color: rgb(157 122 255 / 0.14);
+    }
+
+    .photo-preview-frame {
+      background:
+        radial-gradient(circle at 62% 32%, rgb(157 122 255 / 0.26), transparent 30%),
+        linear-gradient(145deg, #2A2A28 0%, #171717 45%, #111111 100%);
+    }
+
+    .photo-face-shape {
+      background:
+        radial-gradient(circle at 38% 40%, rgb(250 250 247 / 0.70) 0 3px, transparent 4px),
+        radial-gradient(circle at 62% 40%, rgb(250 250 247 / 0.70) 0 3px, transparent 4px),
+        radial-gradient(ellipse at 50% 74%, rgb(250 250 247 / 0.34) 0 8px, transparent 9px),
+        linear-gradient(180deg, #D9C8B5 0%, #C6AA93 100%);
+      box-shadow: inset 0 -16px 30px rgb(17 17 17 / 0.16);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#111111] text-[#FAFAF7] antialiased">
+  <main
+    id="app"
+    class="mx-auto flex min-h-[100svh] w-full max-w-[428px] flex-col px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))]"
+    data-page="01.3-photo-upload"
+    data-state="empty"
+    data-photo-intent="personal_style_advice"
+    data-photo-scope="session_photo"
+  >
+    <header class="shrink-0" aria-label="照片上传页面顶部栏">
+      <div class="flex items-center justify-between gap-3">
+        <a
+          href="01.2-home-dual-entry.html"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-lg leading-none text-white/76 no-underline"
+          aria-label="返回首页"
+        >
+          ‹
+        </a>
+
+        <div class="flex min-w-0 flex-1 items-center justify-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/16 bg-[#FAFAF7] p-1">
+            <img
+              src="assets/style-ai-reversible-s-symbol.svg"
+              alt=""
+              class="h-full w-full"
+              aria-hidden="true"
+            >
+          </span>
+          <div class="min-w-0 text-center">
+            <p class="text-[15px] font-semibold leading-none text-[#FAFAF7]">选择生成照片</p>
+            <p id="photo-upload-user-line" class="mt-1 text-[11px] leading-none text-white/45">小雨的首次预览</p>
+          </div>
+        </div>
+
+        <button
+          id="photo-upload-help-button"
+          type="button"
+          class="tap-highlight flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.035] text-sm font-medium text-white/70"
+          aria-label="查看照片说明"
+        >
+          ?
+        </button>
+      </div>
+    </header>
+
+    <section class="mt-5" aria-label="照片上传说明">
+      <p class="text-xs font-medium text-[#C9BAFF]">本次生成使用，不默认存为常用形象</p>
+      <h1 class="mt-2 text-[26px] font-semibold leading-[1.12] text-[#FAFAF7]">
+        选一张现在的照片，用它继续生成你的预览。
+      </h1>
+    </section>
+
+    <section
+      id="photo-upload-boundary-note"
+      data-object-id="photo-upload-boundary-note"
+      class="mt-4 rounded-lg border border-[#9D7AFF]/24 bg-[#9D7AFF]/10 p-4"
+      aria-label="照片使用边界说明"
+    >
+      <div class="flex items-start gap-3">
+        <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#FAFAF7] text-xs font-semibold text-[#111111]">
+          明
+        </span>
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-medium leading-5 text-[#FAFAF7]">
+            这张照片先用于本次生成。生成结果会进历史；是否保存为常用形象，等你看到结果后再决定。
+          </p>
+          <div id="photo-upload-boundary-detail" class="mt-3 hidden text-xs leading-5 text-white/58">
+            发型/形象建议和试穿可以共用这套照片入口。正式版本会把照片先作为本次会话素材处理；常用形象档案需要你在结果页单独确认，不会在这里默认创建。
+          </div>
+          <button
+            id="photo-upload-boundary-toggle"
+            type="button"
+            class="tap-highlight mt-3 min-h-[44px] rounded-lg border border-white/10 px-3 text-xs font-medium text-[#D8CEFF]"
+            aria-expanded="false"
+            aria-controls="photo-upload-boundary-detail"
+          >
+            查看完整说明
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="photo-upload-picker"
+      data-object-id="photo-upload-picker"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.045] p-4"
+      aria-label="照片选择入口"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-base font-semibold leading-tight text-[#FAFAF7]">选择一张当前照片</p>
+          <p id="photo-upload-picker-copy" class="mt-2 text-sm leading-5 text-white/56">
+            正面、清晰、近期的照片最容易进入后续生成。
+          </p>
+        </div>
+        <span
+          id="photo-upload-state-chip"
+          class="shrink-0 rounded-lg bg-white/[0.08] px-2.5 py-1 text-xs font-medium text-white/62"
+        >
+          未选择
+        </span>
+      </div>
+
+      <div class="mt-4 grid grid-cols-2 gap-2">
+        <button
+          id="photo-upload-camera-button"
+          data-object-id="photo-upload-camera-button"
+          type="button"
+          class="tap-highlight min-h-[72px] rounded-lg border border-[#9AE6C4]/22 bg-[#9AE6C4]/10 px-3 py-3 text-left active:scale-[0.995]"
+        >
+          <span class="block text-lg font-semibold leading-none text-[#C7F5DF]">拍</span>
+          <span class="mt-2 block text-sm font-medium leading-5 text-[#FAFAF7]">拍一张当前照片</span>
+        </button>
+
+        <button
+          id="photo-upload-album-button"
+          data-object-id="photo-upload-album-button"
+          type="button"
+          class="tap-highlight min-h-[72px] rounded-lg border border-[#9D7AFF]/24 bg-[#9D7AFF]/10 px-3 py-3 text-left active:scale-[0.995]"
+        >
+          <span class="block text-lg font-semibold leading-none text-[#D8CEFF]">相</span>
+          <span class="mt-2 block text-sm font-medium leading-5 text-[#FAFAF7]">从相册选照片</span>
+        </button>
+      </div>
+
+      <div
+        id="photo-upload-state-message"
+        class="mt-3 hidden rounded-lg border px-3 py-2 text-xs leading-5"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </section>
+
+    <section
+      id="photo-upload-selected-preview"
+      data-object-id="photo-upload-selected-preview"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.035] p-4"
+      aria-label="已选照片预览"
+    >
+      <div class="photo-preview-frame relative flex aspect-[4/3] w-full items-end justify-center overflow-hidden rounded-lg border border-white/10">
+        <div id="photo-upload-empty-preview" class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+          <span class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-black/20 text-lg text-white/48">照</span>
+          <p class="mt-3 text-sm font-medium text-white/74">还没有选择照片</p>
+          <p class="mt-1 text-xs leading-5 text-white/44">选好后会在这里确认，再继续生成。</p>
+        </div>
+
+        <div id="photo-upload-photo-preview" class="hidden h-full w-full">
+          <div class="relative flex h-full w-full items-end justify-center overflow-hidden">
+            <div class="absolute left-1/2 top-[16%] h-[42%] w-[38%] -translate-x-1/2 rounded-full bg-[#2B211F]"></div>
+            <div class="photo-face-shape absolute left-1/2 top-[22%] h-[34%] w-[30%] -translate-x-1/2 rounded-[48%_48%_44%_44%]"></div>
+            <div class="absolute bottom-[-18%] left-1/2 h-[54%] w-[62%] -translate-x-1/2 rounded-t-full bg-[#FAFAF7]/86"></div>
+            <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-black/72 to-black/0 px-3 pb-3 pt-10">
+              <span id="photo-upload-preview-source" class="rounded-lg bg-black/[0.44] px-2.5 py-1 text-xs font-medium text-white/82">
+                当前照片
+              </span>
+              <button
+                id="photo-upload-reselect-button"
+                type="button"
+                class="tap-highlight min-h-[44px] rounded-lg border border-white/[0.18] bg-black/[0.34] px-3 text-xs font-medium text-white/86"
+              >
+                重新选择
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p id="photo-upload-preview-title" class="text-sm font-medium text-[#FAFAF7]">等待选择照片</p>
+          <p id="photo-upload-preview-copy" class="mt-1 text-xs leading-5 text-white/50">
+            本页只负责选择本次照片；生成结果出来后再决定是否保存为常用形象。
+          </p>
+        </div>
+      </div>
+
+      <div
+        id="photo-upload-quality-status"
+        data-object-id="photo-upload-quality-status"
+        class="mt-3 hidden rounded-lg border px-3 py-3"
+        role="status"
+        aria-live="polite"
+      >
+        <p id="photo-upload-quality-title" class="text-xs font-semibold leading-5"></p>
+        <p id="photo-upload-quality-copy" class="mt-1 text-xs leading-5"></p>
+      </div>
+
+      <a
+        id="photo-upload-continue-button"
+        data-object-id="photo-upload-continue-button"
+        href="01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default"
+        class="tap-highlight mt-4 flex min-h-[48px] w-full items-center justify-center rounded-lg bg-white/10 px-4 py-3 text-sm font-semibold text-white/42 no-underline"
+        aria-disabled="true"
+      >
+        用这张生成预览
+      </a>
+    </section>
+
+    <section
+      id="photo-upload-photo-tips"
+      data-object-id="photo-upload-photo-tips"
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-4"
+      aria-label="照片建议"
+    >
+      <p class="text-sm font-medium text-[#FAFAF7]">让生成结果更稳定的照片建议</p>
+      <div class="mt-3 grid grid-cols-2 gap-2">
+        <p class="rounded-lg bg-black/18 px-3 py-2 text-xs leading-5 text-white/58">光线清楚</p>
+        <p class="rounded-lg bg-black/18 px-3 py-2 text-xs leading-5 text-white/58">脸部无遮挡</p>
+        <p class="rounded-lg bg-black/18 px-3 py-2 text-xs leading-5 text-white/58">不要用强滤镜</p>
+        <p class="rounded-lg bg-black/18 px-3 py-2 text-xs leading-5 text-white/58">尽量使用近期照片</p>
+      </div>
+    </section>
+
+    <section
+      class="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-3"
+      aria-label="原型状态切换"
+    >
+      <div class="grid grid-cols-4 gap-1">
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md bg-white/10 px-2 text-[11px] text-white" data-upload-state="empty">空态</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="selected">已选</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="selected-warning">提醒</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="selected-fail">阻断</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="permission-denied">权限</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="upload-error">错误</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="check-unavailable">检查</button>
+        <button type="button" class="photo-upload-state-button min-h-[44px] rounded-md px-2 text-[11px] text-white/58" data-upload-state="submit-error">提交</button>
+      </div>
+    </section>
+
+    <div
+      id="photo-upload-toast"
+      class="pointer-events-none fixed left-1/2 top-[max(18px,env(safe-area-inset-top))] z-20 hidden w-[min(388px,calc(100vw-32px))] -translate-x-1/2 rounded-lg border border-white/10 bg-[#1C1C1C] px-4 py-3 text-sm leading-5 text-[#FAFAF7] shadow-[0_16px_60px_rgba(0,0,0,0.42)]"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <script>
+    const pageMeta = {
+      page: '01.3-photo-upload',
+      section: 'full-page',
+      prototype: 'DD-001-first-real-preview'
+    };
+
+    const photoIntakeContract = {
+      intent: 'personal_style_advice',
+      reusableFor: ['personal_style_advice', 'try_on'],
+      photoScope: 'session_photo',
+      nextTarget: '01.6-generation-waiting.html',
+      defaultGenerationIntent: 'daily_judgment_safe_direction',
+      persistentProfileRequiresExplicitSave: true
+    };
+
+    const fallbackData = {
+      currentUser: {
+        displayName: '小雨'
+      },
+      photoSession: {
+        privacyBoundary: {
+          temporaryPhotoUse: true,
+          requiresExplicitSaveAfterResult: true
+        }
+      }
+    };
+
+    const stateConfig = {
+      empty: {
+        chip: '未选择',
+        chipClass: 'bg-white/[0.08] text-white/62',
+        message: '',
+        messageTone: 'neutral',
+        title: '等待选择照片',
+        copy: '本页只负责选择本次照片；生成结果出来后再决定是否保存为常用形象。',
+        continueEnabled: false,
+        sourceLabel: ''
+      },
+      selected: {
+        chip: '已选择',
+        chipClass: 'bg-[#9AE6C4]/12 text-[#C7F5DF]',
+        message: '照片已选好。系统会用默认稳妥方向直接生成，不需要先选风格。',
+        messageTone: 'success',
+        title: '这张照片可以用来生成',
+        copy: '这不是常用形象档案；生成后你可以再决定是否保存为以后复用。',
+        qualityVisible: true,
+        qualityTone: 'success',
+        qualityTitle: '这张可以生成',
+        qualityCopy: '先给你生成一个变化明显但不突兀的方向，方便判断适不适合。',
+        cta: '用这张生成预览',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
+      },
+      'selected-warning': {
+        chip: '可继续',
+        chipClass: 'bg-[#F2C86B]/12 text-[#F8DF9A]',
+        message: '照片可以先试，但有轻微质量提醒。你可以继续，也可以换一张。',
+        messageTone: 'warning',
+        title: '这张照片可以先试',
+        copy: '系统会保留提醒，结果如果不够准可以再换照片或换方向。',
+        qualityVisible: true,
+        qualityTone: 'warning',
+        qualityTitle: '轻微提醒，不阻断',
+        qualityCopy: '这张可以先试，但光线略暗，结果可能没那么准。',
+        cta: '仍然生成预览',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
+      },
+      'selected-fail': {
+        chip: '需重传',
+        chipClass: 'bg-[#F2A7A0]/12 text-[#FFD1CC]',
+        message: '这张照片暂时不适合生成。请换一张脸部更清楚的照片。',
+        messageTone: 'error',
+        title: '这张脸部不够清楚',
+        copy: '严重问题会阻断生成，避免浪费额度和得到误导性结果。',
+        qualityVisible: true,
+        qualityTone: 'error',
+        qualityTitle: '需要重新上传',
+        qualityCopy: '脸部不够清楚，换一张更容易生成。失败状态不会扣除额度。',
+        cta: '重新上传',
+        continueEnabled: false,
+        sourceLabel: '当前照片'
+      },
+      'permission-denied': {
+        chip: '需要授权',
+        chipClass: 'bg-[#F2C86B]/12 text-[#F8DF9A]',
+        message: '没有照片权限。请在系统设置里允许 Style AI 访问相机或相册，然后回到这里重试。',
+        messageTone: 'warning',
+        title: '暂时无法读取照片',
+        copy: '授权失败不会扣除额度，也不会离开本页。',
+        qualityVisible: false,
+        cta: '用这张生成预览',
+        continueEnabled: false,
+        sourceLabel: ''
+      },
+      'upload-error': {
+        chip: '读取失败',
+        chipClass: 'bg-[#F2A7A0]/12 text-[#FFD1CC]',
+        message: '这张照片读取失败。可以重新选择一张，或稍后再试。',
+        messageTone: 'error',
+        title: '照片没有成功读取',
+        copy: '请换一张清晰的近期照片，确认后再继续生成。',
+        qualityVisible: false,
+        cta: '用这张生成预览',
+        continueEnabled: false,
+        sourceLabel: ''
+      },
+      'check-unavailable': {
+        chip: '可先试',
+        chipClass: 'bg-[#F2C86B]/12 text-[#F8DF9A]',
+        message: '暂时无法完成精确检查，但照片可以读取。你可以先生成预览。',
+        messageTone: 'warning',
+        title: '检查暂时不可用',
+        copy: '不会承诺已经完成精确人脸识别；如果结果不准，可以回到这里换照片。',
+        qualityVisible: true,
+        qualityTone: 'warning',
+        qualityTitle: '检查暂时不可用',
+        qualityCopy: '照片可以读取，先生成预览；失败不会扣除额度。',
+        cta: '先生成预览',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
+      },
+      'submit-error': {
+        chip: '未提交',
+        chipClass: 'bg-[#F2A7A0]/12 text-[#FFD1CC]',
+        message: '生成任务刚才没有创建成功，没有扣除额度。可以重试。',
+        messageTone: 'error',
+        title: '任务还没创建成功',
+        copy: '照片仍然保留在本页，重试会继续使用默认稳妥方向。',
+        qualityVisible: true,
+        qualityTone: 'error',
+        qualityTitle: '提交失败，不扣额度',
+        qualityCopy: '请检查网络后重试生成，或重新选择照片。',
+        cta: '重试生成',
+        continueEnabled: true,
+        sourceLabel: '当前照片'
+      }
+    };
+
+    let demoData = fallbackData;
+    let currentUploadState = 'empty';
+    let selectedSource = '';
+    let toastTimer = 0;
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    function showPhotoUploadToast(message) {
+      const toast = document.getElementById('photo-upload-toast');
+      if (!toast) {
+        return;
+      }
+
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toastTimer = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2400);
+    }
+
+    function setStateMessage(config) {
+      const messageElement = document.getElementById('photo-upload-state-message');
+      if (!messageElement) {
+        return;
+      }
+
+      messageElement.textContent = config.message || '';
+      messageElement.className = 'mt-3 hidden rounded-lg border px-3 py-2 text-xs leading-5';
+
+      if (!config.message) {
+        return;
+      }
+
+      const toneClasses = {
+        success: 'border-[#9AE6C4]/18 bg-[#9AE6C4]/8 text-[#C7F5DF]',
+        warning: 'border-[#F2C86B]/20 bg-[#F2C86B]/10 text-[#F8DF9A]',
+        error: 'border-[#F2A7A0]/20 bg-[#F2A7A0]/10 text-[#FFD1CC]',
+        neutral: 'border-white/10 bg-white/[0.035] text-white/58'
+      };
+
+      messageElement.className = `mt-3 rounded-lg border px-3 py-2 text-xs leading-5 ${toneClasses[config.messageTone] || toneClasses.neutral}`;
+    }
+
+    function setQualityStatus(config) {
+      const status = document.getElementById('photo-upload-quality-status');
+      if (!status) {
+        return;
+      }
+
+      status.className = 'mt-3 hidden rounded-lg border px-3 py-3';
+
+      if (!config.qualityVisible) {
+        return;
+      }
+
+      const toneClasses = {
+        success: 'border-[#9AE6C4]/20 bg-[#9AE6C4]/10 text-[#C7F5DF]',
+        warning: 'border-[#F2C86B]/20 bg-[#F2C86B]/10 text-[#F8DF9A]',
+        error: 'border-[#F2A7A0]/20 bg-[#F2A7A0]/10 text-[#FFD1CC]'
+      };
+
+      status.className = `mt-3 rounded-lg border px-3 py-3 ${toneClasses[config.qualityTone] || toneClasses.success}`;
+      setText('photo-upload-quality-title', config.qualityTitle || '');
+      setText('photo-upload-quality-copy', config.qualityCopy || '');
+    }
+
+    function updateStateButtons(stateName) {
+      for (const button of document.querySelectorAll('.photo-upload-state-button')) {
+        const selected = button.dataset.uploadState === stateName;
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        button.classList.toggle('bg-white/10', selected);
+        button.classList.toggle('text-white', selected);
+        button.classList.toggle('text-white/58', !selected);
+      }
+    }
+
+    function applyPhotoUploadState(stateName, options = {}) {
+      currentUploadState = stateName;
+      const config = stateConfig[stateName] || stateConfig.empty;
+      const app = document.getElementById('app');
+      const stateChip = document.getElementById('photo-upload-state-chip');
+      const continueButton = document.getElementById('photo-upload-continue-button');
+      const emptyPreview = document.getElementById('photo-upload-empty-preview');
+      const photoPreview = document.getElementById('photo-upload-photo-preview');
+      const previewSource = document.getElementById('photo-upload-preview-source');
+      const hasPhoto = ['selected', 'selected-warning', 'selected-fail', 'check-unavailable', 'submit-error'].includes(stateName);
+
+      if (options.source) {
+        selectedSource = options.source;
+      }
+
+      if (!hasPhoto && stateName !== 'selected') {
+        selectedSource = '';
+      }
+
+      if (app) {
+        app.dataset.state = stateName;
+      }
+
+      if (stateChip) {
+        stateChip.textContent = config.chip;
+        stateChip.className = `shrink-0 rounded-lg px-2.5 py-1 text-xs font-medium ${config.chipClass}`;
+      }
+
+      if (emptyPreview && photoPreview) {
+        emptyPreview.classList.toggle('hidden', hasPhoto);
+        photoPreview.classList.toggle('hidden', !hasPhoto);
+      }
+
+      if (previewSource) {
+        const sourceText = selectedSource === 'album' ? '来自相册' : selectedSource === 'camera' ? '来自相机' : config.sourceLabel;
+        previewSource.textContent = sourceText || '当前照片';
+      }
+
+      setText('photo-upload-preview-title', config.title);
+      setText('photo-upload-preview-copy', config.copy);
+      setStateMessage(config);
+      setQualityStatus(config);
+      updateStateButtons(stateName);
+
+      if (continueButton) {
+        continueButton.textContent = config.cta || '用这张生成预览';
+        continueButton.href = '01.6-generation-waiting.html?taskId=demo-generation-001&source=first_preview_auto_default';
+        continueButton.setAttribute('aria-disabled', config.continueEnabled ? 'false' : 'true');
+        continueButton.tabIndex = config.continueEnabled ? 0 : -1;
+        continueButton.classList.toggle('bg-[#FAFAF7]', config.continueEnabled);
+        continueButton.classList.toggle('text-[#111111]', config.continueEnabled);
+        continueButton.classList.toggle('bg-white/10', !config.continueEnabled);
+        continueButton.classList.toggle('text-white/42', !config.continueEnabled);
+        continueButton.classList.toggle('pointer-events-none', !config.continueEnabled);
+        continueButton.classList.toggle('cursor-not-allowed', !config.continueEnabled);
+      }
+
+      console.info('[Style AI Prototype] photo upload state changed', { stateName, selectedSource });
+    }
+
+    async function loadPhotoUploadDemoData() {
+      try {
+        const response = await fetch('data/demo-data.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`demo data request failed: ${response.status}`);
+        }
+        demoData = await response.json();
+      } catch (error) {
+        demoData = fallbackData;
+        console.warn('[Style AI Prototype] using fallback demo data', error);
+      }
+
+      const userName = (demoData.currentUser && demoData.currentUser.displayName) || fallbackData.currentUser.displayName;
+      setText('photo-upload-user-line', `${userName}的首次预览`);
+    }
+
+    function initBoundaryNote() {
+      const toggle = document.getElementById('photo-upload-boundary-toggle');
+      const detail = document.getElementById('photo-upload-boundary-detail');
+      const help = document.getElementById('photo-upload-help-button');
+
+      function setExpanded(expanded) {
+        if (!toggle || !detail) {
+          return;
+        }
+
+        detail.classList.toggle('hidden', !expanded);
+        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        toggle.textContent = expanded ? '收起说明' : '查看完整说明';
+      }
+
+      toggle?.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        setExpanded(!expanded);
+      });
+
+      help?.addEventListener('click', () => {
+        setExpanded(true);
+        showPhotoUploadToast('这张照片不会在这里默认保存为常用形象。');
+      });
+    }
+
+    function initPhotoUploadActions() {
+      document.getElementById('photo-upload-camera-button')?.addEventListener('click', () => {
+        applyPhotoUploadState('selected', { source: 'camera' });
+        showPhotoUploadToast('已模拟拍照完成。');
+      });
+
+      document.getElementById('photo-upload-album-button')?.addEventListener('click', () => {
+        applyPhotoUploadState('selected', { source: 'album' });
+        showPhotoUploadToast('已模拟从相册选择照片。');
+      });
+
+      document.getElementById('photo-upload-reselect-button')?.addEventListener('click', () => {
+        applyPhotoUploadState('empty');
+        showPhotoUploadToast('可以重新选择照片。');
+      });
+
+      document.getElementById('photo-upload-continue-button')?.addEventListener('click', () => {
+        if (stateConfig[currentUploadState]?.continueEnabled) {
+          console.info('[Style AI Prototype] default generation task requested', photoIntakeContract);
+        }
+      });
+
+      for (const button of document.querySelectorAll('.photo-upload-state-button')) {
+        button.addEventListener('click', () => {
+          const targetState = button.dataset.uploadState || 'empty';
+          const photoStates = ['selected', 'selected-warning', 'selected-fail', 'check-unavailable', 'submit-error'];
+          applyPhotoUploadState(targetState, photoStates.includes(targetState) ? { source: selectedSource || 'album' } : {});
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadPhotoUploadDemoData();
+      initBoundaryNote();
+      initPhotoUploadActions();
+      applyPhotoUploadState('empty');
+      console.info('[Style AI Prototype] 01.3 photo upload ready', pageMeta);
+    });
+  </script>
+</body>
+</html>

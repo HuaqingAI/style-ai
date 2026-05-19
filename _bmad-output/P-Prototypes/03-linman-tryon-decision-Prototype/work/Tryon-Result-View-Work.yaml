@@ -1,0 +1,131 @@
+metadata:
+  project: style-ai
+  scenario: 03-linman-tryon-decision
+  logical_view: Tryon Result View
+  source_step: 03.5-tryon-result
+  source_spec: _bmad-output/C-UX-Scenarios/03-linman-tryon-decision/03.5-tryon-result/03.5-tryon-result.md
+  prototype_folder: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype
+  output_file: 03.5-tryon-result.html
+  language: zh-CN
+  device_compatibility:
+    type: Mobile-Only
+    viewports:
+      - name: iPhone SE
+        width: 375
+        height: 667
+      - name: iPhone 14 Pro
+        width: 393
+        height: 852
+      - name: iPhone 14 Pro Max
+        width: 428
+        height: 926
+  design_fidelity: Design System Components
+  status: complete
+  created: 2026-05-18
+  spec_status: prototype-draft
+
+view_summary:
+  purpose: 林曼查看本次试穿效果、推荐理由、谨慎点和下一步建议。
+  entry_context: 03.4 等待页显示生成成功，结果已准备好。
+  exit_action: 保存、加入对比、再试一个参考图，或进入后续历史/额度判断。
+  user_state:
+    hope: 立刻判断这件外套值不值得买。
+    worry: 图像不像自己，推荐理由不够具体，额度花了但仍然无法决策。
+
+object_inventory:
+  - id: obj-result-header
+    name: 页面顶部导航
+    role: 标识当前结果页，并提供返回等待页和首页入口。
+  - id: obj-result-hero
+    name: 结果说明区
+    role: 说明结果已完成、本次额度已扣除，并承接即时决策场景。
+  - id: obj-result-viewer
+    name: 本人试穿效果
+    role: 展示林曼穿上奶油白短外套后的主视觉。
+  - id: obj-result-reference-summary
+    name: 参考对象摘要
+    role: 展示参考对象、来源、紧迫性和决策问题。
+  - id: obj-result-fit-summary
+    name: 推荐与谨慎总结
+    role: 展示推荐程度、适合理由、谨慎点和购买前检查。
+  - id: obj-result-judgment-feedback
+    name: 轻量判断反馈
+    role: 收集像不像本人、能否帮助判断。
+  - id: obj-result-next-actions
+    name: 下一步动作
+    role: 支持保存、加入对比、再试一个和额度入口。
+  - id: obj-result-state-controls
+    name: 原型状态控制
+    role: 支持评审 default、saved、compared、detail、load-error。
+
+functional_requirements:
+  - 默认状态展示本人试穿主视觉、推荐结论、理由、谨慎点和下一步动作。
+  - 保存状态必须显示结果已保存，不重复提示未保存。
+  - 加入对比状态必须说明已加入 03.6 对比入口。
+  - 详细状态必须展开更多购买前检查项。
+  - 加载失败状态必须隐藏结果内容并提供重试和返回等待页。
+  - 03.6 已建页时，保存/对比动作必须能继续进入 03.6；03.7 未建页时，用 toast 说明原型下一步。
+  - 移动端 375/393/428px 宽度无水平滚动。
+
+sections:
+  - id: 1
+    name: Result Shell & Viewer
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 35
+    objects:
+      - obj-result-header
+      - obj-result-hero
+      - obj-result-viewer
+      - obj-result-reference-summary
+    acceptance_criteria:
+      - 页面清楚标识为 03.5 试穿结果。
+      - 主视觉能表达本人试穿奶油白短外套。
+      - 参考对象、来源、决策问题可见。
+    story_file: stories/03.5.1-tryon-result-full-page.md
+
+  - id: 2
+    name: Recommendation & Decision Notes
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 30
+    objects:
+      - obj-result-fit-summary
+    acceptance_criteria:
+      - 展示明确推荐程度、两个适合理由和一个谨慎点。
+      - 购买前检查项具体，不只做审美评价。
+    story_file: stories/03.5.1-tryon-result-full-page.md
+
+  - id: 3
+    name: Feedback, Actions & States
+    status: complete
+    completed: 2026-05-18
+    estimate_minutes: 35
+    objects:
+      - obj-result-judgment-feedback
+      - obj-result-next-actions
+      - obj-result-state-controls
+    acceptance_criteria:
+      - 五种原型状态均可切换。
+      - 保存、加入对比和反馈交互会更新页面状态。
+      - 03.6 路由可进入历史/收藏页；03.7 未建时有明确占位提示。
+    story_file: stories/03.5.1-tryon-result-full-page.md
+
+verification:
+  static_checks: passed
+  browser_automation: passed-at-375-393-428
+  route_from_03_4_success: passed
+  screenshot: _bmad-output/P-Prototypes/03-linman-tryon-decision-Prototype/03.5-tryon-result-393.png
+  user_review: pending
+
+implementation_rules:
+  - This page is a prototype draft because 03.5 did not previously have a full approved page spec.
+  - Do not mark as final-approved until Sue reviews the draft spec and prototype behavior.
+  - Route saved/compared results into 03.6-history-collection.html; keep 03.7 as an explanatory toast placeholder until that page is built.
+  - Reuse the dark Style AI mobile visual language from 03.2 through 03.4.
+
+progress:
+  current_section: 3
+  completed_sections: 3
+  total_sections: 3
+  total_estimate_minutes: 100
