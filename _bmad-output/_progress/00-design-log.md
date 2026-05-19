@@ -78,10 +78,31 @@
 | 04-xiaoyu-seed-feedback | 04.1 | result-quick-feedback-panel | building | 2026-05-18 |
 | 04-xiaoyu-seed-feedback | 04.1 | result-quick-feedback-panel | built | 2026-05-18 |
 | 04-xiaoyu-seed-feedback | 04.1 | result-quick-feedback-panel | approved | 2026-05-18 |
+| IMP-001-DD001-short-path | 01.1-01.7 | short first preview path | WDS-8 acceptance passed | 2026-05-19 |
 
 ---
 
 ## Log
+
+### 2026-05-19 - WDS-8 acceptance test passed for IMP-001
+- Agent: Codex / Freya Product Evolution
+- Activity: Acceptance Test
+- Branch: `evolution/imp-001-dd001-short-path`
+- Report: `_bmad-output/evolution/test-reports/TR-IMP-001-DD001-short-path-validation.md`
+- Scope: validated IMP-001 short-path local HTML prototype against `_bmad-output/evolution/specs/IMP-001-DD001-short-path-design-spec.md`.
+- Result: approved for local prototype acceptance. Final retest passed 26/26 checks after fixing touch target issues.
+- Fixes made during acceptance: raised interactive controls to at least 44px in `_bmad-output/P-Prototypes/01-xiaoyu-first-preview-Prototype/01.2-home-dual-entry.html`, `01.3-photo-upload.html`, `01.6-generation-waiting.html`, and `01.7-image-result.html`.
+- Verified: `01.1 -> 01.2 -> 01.3 -> 01.6 -> 01.7` route, no `01.4`/`01.5` in first happy path, inline warning/fail states, default-direction waiting copy, result first-screen actions, Scenario 02/03 compatibility, 375/393/428 px no-horizontal-overflow, 44px touch targets, and no console errors.
+- Limitation: this validates the local HTML prototype only; native Expo camera/photo permissions, backend quota, storage, async generation, and feedback/save/profile APIs still require production validation.
+- Next: run WDS-8 `[P] Deploy` to package the change, or run BMad Architect walkthrough before production implementation planning.
+
+### 2026-05-19 - WDS-8 deploy package prepared for IMP-001
+- Agent: Codex / Freya Product Evolution
+- Activity: Deploy
+- Branch: `evolution/imp-001-dd001-short-path`
+- Delivery summary: `_bmad-output/evolution/deliveries/DEL-IMP-001-DD001-short-path.md`
+- Package includes: analysis, improvement, scenario, design spec, validation report, prototype updates, acceptance touch-target fixes, and design log updates.
+- Status: ready to commit, push, and open draft PR to `main`.
 
 ### 2026-05-18 - WDS-8 implement completed for IMP-001
 - Agent: Codex / Freya Product Evolution
